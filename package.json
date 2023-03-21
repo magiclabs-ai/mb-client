@@ -2,6 +2,7 @@
   "name": "mb-package",
   "private": true,
   "version": "0.0.1",
+  "description": "A TypeScript package that creates a photobook, resize and uploads images, update photobook and returns the book nautilus JSON",
   "type": "module",
   "main": "./dist/mb-package.umd.cjs",
   "module": "./dist/mb-package.js",
@@ -13,10 +14,8 @@
     }
   },
   "scripts": {
-    "dev": "vite",
     "watch": "vite build --watch",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "tsc && vite build"
   },
   "devDependencies": {
     "@types/node": "^18.15.5",
