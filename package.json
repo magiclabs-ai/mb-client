@@ -1,33 +1,43 @@
 {
-  "name": "mb-package",
+  "name": "magicbook-client",
   "private": true,
   "version": "0.0.1",
   "description": "A TypeScript package that creates a photobook, resize and uploads images, update photobook and returns the book nautilus JSON",
   "type": "module",
-  "main": "./dist/mb-package.umd.cjs",
-  "module": "./dist/mb-package.js",
+  "main": "./dist/magicbook-client.umd.cjs",
+  "module": "./dist/magicbook-client.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/mb-package.js",
-      "require": "./dist/mb-package.umd.cjs"
+      "import": "./dist/magicbook-client.js",
+      "require": "./dist/magicbook-client.umd.cjs"
     }
   },
   "scripts": {
     "watch": "vite build --watch",
-    "build": "tsc && vite build"
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext js,jsx,ts,tsx --config .eslintrc.json --no-eslintrc",
+    "test": "vitest --ui",
+    "coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "@types/node": "^18.15.5",
-    "@typescript-eslint/eslint-plugin": "^5.48.2",
-    "@typescript-eslint/parser": "^5.48.2",
+    "@types/node": "^18.15.10",
+    "@types/uuid": "^9.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/parser": "^5.56.0",
+    "@vitest/coverage-c8": "^0.29.7",
+    "@vitest/coverage-istanbul": "^0.29.7",
+    "@vitest/ui": "^0.29.7",
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
-    "typescript": "^4.9.3",
-    "vite": "^4.2.0",
-    "vite-plugin-dts": "^2.1.0"
+    "typescript": "^5.0.2",
+    "vite": "^4.2.1",
+    "vite-plugin-dts": "^2.1.0",
+    "vitest": "^0.29.7"
   },
   "dependencies": {
+    "@faker-js/faker": "^7.6.0",
     "axios": "^1.3.4",
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "uuid": "^9.0.0"
   }
 }
