@@ -5,7 +5,8 @@ export default defineConfig({
     coverage: {
       all: true,
       include: ['src/**/*.ts'],
-      provider: 'istanbul'
+      provider: 'istanbul',
+      reporter: ['text', 'json-summary', 'json']
     }
   }
 })
