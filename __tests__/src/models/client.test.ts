@@ -1,16 +1,20 @@
 import {MagicBookClient} from '../../../src/index'
-import {describe, test} from 'vitest'
+import {describe, expect, test} from 'vitest'
 
 describe('Client', () => {
-  test('createDesignRequest', () => {
+  test('createDesignRequest', async () => {
     const client = new MagicBookClient('123')
-    client.createDesignRequest({
+    const InitDesignRequest = {
       pages: 50,
       occasion: 'Birthday',
       style: 'Cartoon',
       bookFormat: 'Hardcover',
       coverType: 'Matte',
       pageType: 'Glossy'
+    }
+    const designRequest = await client.createDesignRequest(InitDesignRequest)
+    Object.keys(InitDesignRequest).forEach((key) => {
+      expect(designRequest[key]).toBe(InitDesignRequest[key])
     })
   })
 })
