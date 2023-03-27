@@ -6,7 +6,7 @@ A TypeScript package that creates a photobook, add images, update photobook and 
 ### Installing the latest version
 You can install the latest version by using:
 - `npm install mb-package@latest`
-
+___
 ### 1. Create the MagicBook client with your API key
 `const client = new MagicBookClient('api-key')`
 
@@ -58,3 +58,9 @@ designRequest.submitDesignRequest({
 
 ### 6. Retrieve the Nautilus JSON
 ```await designRequest.getNautilusJSON()```
+___
+### Example
+You will find a working example in `./example` to see it in action just run the following:
+- `cd example`
+- `npm i`
+- `npm run dev`
