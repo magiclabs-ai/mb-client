@@ -1,6 +1,16 @@
 import {DesignRequestEvent, Image, MagicBookClient} from 'magicbook-client'
 
-const image = {} as Image
+const image: Image = {
+  id: 'imageId',
+  url: 'imageURL',
+  width: 500,
+  height: 500,
+  rotation: 0,
+  captureTime: '2021-01-01T00:00:00.000Z',
+  cameraMake: 'cameraMake',
+  cameraModel: 'cameraModel',
+  filename: 'filename'
+}
 
 getData()
 window.addEventListener('Magicbook.designRequestUpdated',

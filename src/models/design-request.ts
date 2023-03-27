@@ -16,7 +16,7 @@ export type SubmitDesignRequest = {
 }
 
 export type DesignRequestEventDetail = {
-  state: 'starting' | 'pending' | 'in progress' | 'completed' | 'failed'
+  state: 'pending' | 'starting' | 'in progress' | 'completed' | 'failed'
 }
 
 export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>

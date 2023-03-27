@@ -1,3 +1,5 @@
+
+![GitHub CI](https://github.com/56k/mb-package/actions/workflows/test.yml/badge.svg) ![GitHub CI](https://github.com/56k/mb-package/actions/workflows/linter.yml/badge.svg)
 # magicbook-client
 A TypeScript package that creates a photobook, add images, update photobook and returns the book nautilus JSON
 
@@ -26,8 +28,11 @@ const designRequest = await client.createDesignRequest({
 This "connexion" enables MagicBook to fetch and analyze images as soon they're  uploaded to the Shutterfly image server. Is the API calls become too "chatty", we can batch images to reduce the number of API calls.
 
 ```
+import {Image} from 'magicbook-client'
+
 window.addEventListener('Kraken.itemCompleted', (item) => {
-  designRequest.addImage(item)
+  const image: Image = {...}
+  designRequest.addImage(image)
 })
 ```
 
