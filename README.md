@@ -1,5 +1,5 @@
 
-![GitHub CI](https://github.com/56k/mb-package/actions/workflows/test.yml/badge.svg) ![GitHub CI](https://github.com/56k/mb-package/actions/workflows/linter.yml/badge.svg)
+![GitHub CI](https://github.com/56kcloud/mb-package/actions/workflows/test.yml/badge.svg) ![GitHub CI](https://github.com/56kcloud/mb-package/actions/workflows/linter.yml/badge.svg)
 # magicbook-client
 A TypeScript package that creates a photobook, add images, update photobook and returns the book nautilus JSON
 
