@@ -53,7 +53,7 @@ export default class DesignRequest {
     this.imageDensity = submitDesignRequest.imageDensity
     this.embellishmentLevel = submitDesignRequest.embellishmentLevel
     this.textStickerLevel = submitDesignRequest.textStickerLevel
-    // this.startFakeProgress()
+    this.startFakeProgress()
     return new Promise((resolve) => {
       resolve(this)
     })
@@ -65,33 +65,33 @@ export default class DesignRequest {
     })
   }
 
-  // startFakeProgress() {
-  //   setTimeout(() => {
-  //     const event = new CustomEvent<DesignRequestEventDetail>('Magicbook.designRequestUpdated', {
-  //       bubbles: true,
-  //       detail: {
-  //         state: 'starting'
-  //       }
-  //     })
-  //     window.dispatchEvent(event)
-  //   }, 2000)
-  //   setTimeout(() => {
-  //     const event = new CustomEvent<DesignRequestEventDetail>('Magicbook.designRequestUpdated', {
-  //       bubbles: true,
-  //       detail: {
-  //         state: 'in progress'
-  //       }
-  //     })
-  //     window.dispatchEvent(event)
-  //   }, 3000)
-  //   setTimeout(() => {
-  //     const event = new CustomEvent<DesignRequestEventDetail>('Magicbook.designRequestUpdated', {
-  //       bubbles: true,
-  //       detail: {
-  //         state: 'completed'
-  //       }
-  //     })
-  //     window.dispatchEvent(event)
-  //   }, 6000)
-  // }
+  startFakeProgress() {
+    setTimeout(() => {
+      const event = new CustomEvent<DesignRequestEventDetail>('Magicbook.designRequestUpdated', {
+        bubbles: true,
+        detail: {
+          state: 'starting'
+        }
+      })
+      window.dispatchEvent(event)
+    }, 2000)
+    setTimeout(() => {
+      const event = new CustomEvent<DesignRequestEventDetail>('Magicbook.designRequestUpdated', {
+        bubbles: true,
+        detail: {
+          state: 'in progress'
+        }
+      })
+      window.dispatchEvent(event)
+    }, 3000)
+    setTimeout(() => {
+      const event = new CustomEvent<DesignRequestEventDetail>('Magicbook.designRequestUpdated', {
+        bubbles: true,
+        detail: {
+          state: 'completed'
+        }
+      })
+      window.dispatchEvent(event)
+    }, 6000)
+  }
 }

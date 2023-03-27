@@ -1,18 +1,12 @@
 /* istanbul ignore file */
 export type Image = {
-  batchNumber: number
-  captureTime: string
-  filename: string
-  getThumbnailUrlPromise: Promise<string>
-  height: number
-  item: unknown
-  largeThumbnailUrl: string
-  largeThumbnailUrlEffects: string
-  smallThumbnailUrl: string
-  smallThumbnailUrlEffects: string
-  title: string
-  type: string
-  uploadTime: string
+  id: string
+  url: string
   width: number
-  xid: string
+  height: number
+  rotation: number
+  captureTime: string
+  cameraMake: string
+  cameraModel: string
+  filename: string
 }

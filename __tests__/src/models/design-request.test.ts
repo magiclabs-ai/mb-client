@@ -1,6 +1,6 @@
 import {Image} from '../../../src/models/image'
 import {MagicBookClient} from '../../../src/index'
-import {describe, expect, test} from 'vitest'
+import {describe, expect, test, vi} from 'vitest'
 
 describe('Design Request', async () => {
   const client = new MagicBookClient('123')
@@ -16,21 +16,15 @@ describe('Design Request', async () => {
 
   test('addImage', async () => {
     const image: Image = {
-      batchNumber: 0,
-      captureTime: '2021-05-12T18:30:00.000Z',
-      filename: 'test.jpg',
-      getThumbnailUrlPromise: Promise.resolve(''),
-      height: 100,
-      item: {},
-      largeThumbnailUrl: '',
-      largeThumbnailUrlEffects: '',
-      smallThumbnailUrl: '',
-      smallThumbnailUrlEffects: '',
-      title: 'test',
-      type: 'image/jpeg',
-      uploadTime: '2021-05-12T18:30:00.000Z',
-      width: 100,
-      xid: '123'
+      id: 'imageId',
+      url: 'imageURL',
+      width: 500,
+      height: 500,
+      rotation: 0,
+      captureTime: '2021-01-01T00:00:00.000Z',
+      cameraMake: 'cameraMake',
+      cameraModel: 'cameraModel',
+      filename: 'filename'
     }
     expect(await designRequest.addImage(image)).toStrictEqual(image)
   })
@@ -44,5 +38,21 @@ describe('Design Request', async () => {
       textStickerLevel: 'Low'
     })
     expect(submitDesignRequest).toStrictEqual(designRequest)
+  })
+  test('fakeProgress', async () => {
+    vi.useFakeTimers()
+    await designRequest.submitDesignRequest({
+      imageDensity: 'High',
+      embellishmentLevel: 'Medium',
+      textStickerLevel: 'Low'
+    })
+    const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
+    vi.runAllTimers()
+    expect(dispatchEventSpy.mock.calls[0][0].type).toBe('Magicbook.designRequestUpdated')
+    expect(dispatchEventSpy.mock.calls[0][0]['detail']['state']).toBe('starting')
+    expect(dispatchEventSpy.mock.calls[1][0].type).toBe('Magicbook.designRequestUpdated')
+    expect(dispatchEventSpy.mock.calls[1][0]['detail']['state']).toBe('in progress')
+    expect(dispatchEventSpy.mock.calls[2][0].type).toBe('Magicbook.designRequestUpdated')
+    expect(dispatchEventSpy.mock.calls[2][0]['detail']['state']).toBe('completed')
   })
 })
