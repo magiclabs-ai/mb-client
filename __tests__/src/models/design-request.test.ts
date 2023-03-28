@@ -1,6 +1,7 @@
 import {Image} from '../../../src/models/image'
 import {MagicBookClient} from '../../../src/index'
 import {describe, expect, test, vi} from 'vitest'
+import {nautilusJSON} from '../../../src/data/nautilus'
 
 describe('Design Request', async () => {
   const client = new MagicBookClient('123')
@@ -10,7 +11,8 @@ describe('Design Request', async () => {
     style: 'Cartoon',
     bookFormat: 'Hardcover',
     coverType: 'Matte',
-    pageType: 'Glossy'
+    pageType: 'Glossy',
+    title: 'My Book'
   }
   const designRequest = await client.createDesignRequest(InitDesignRequest)
 
@@ -29,7 +31,9 @@ describe('Design Request', async () => {
     expect(await designRequest.addImage(image)).toStrictEqual(image)
   })
   test('getNautilusJSON', async () => {
-    expect(await designRequest.getNautilusJSON()).toBe(`getNautilusJSON for ${designRequest.id}`)
+    const nautilus = await designRequest.getNautilusJSON()
+    expect(nautilus.title).toBe(designRequest.title)
+    expect(nautilusJSON).toBe(nautilusJSON)
   })
   test('submitDesignRequest', async () => {
     const submitDesignRequest = await designRequest.submitDesignRequest({
@@ -49,9 +53,9 @@ describe('Design Request', async () => {
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
     vi.runAllTimers()
     expect(dispatchEventSpy.mock.calls[0][0].type).toBe('Magicbook.designRequestUpdated')
-    expect(dispatchEventSpy.mock.calls[0][0]['detail']['state']).toBe('starting')
+    expect(dispatchEventSpy.mock.calls[0][0]['detail']['state']).toBe('new')
     expect(dispatchEventSpy.mock.calls[1][0].type).toBe('Magicbook.designRequestUpdated')
-    expect(dispatchEventSpy.mock.calls[1][0]['detail']['state']).toBe('in progress')
+    expect(dispatchEventSpy.mock.calls[1][0]['detail']['state']).toBe('designing')
     expect(dispatchEventSpy.mock.calls[2][0].type).toBe('Magicbook.designRequestUpdated')
     expect(dispatchEventSpy.mock.calls[2][0]['detail']['state']).toBe('completed')
   })

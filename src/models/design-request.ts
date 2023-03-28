@@ -1,7 +1,10 @@
+import {BookCreationRequest} from './nautilus'
 import {Image} from './image'
+import {nautilusJSON} from '../data/nautilus'
 
 export type InitDesignRequest = {
   pages: number
+  title: string
   occasion: string
   style: string
   bookFormat: string
@@ -16,7 +19,7 @@ export type SubmitDesignRequest = {
 }
 
 export type DesignRequestEventDetail = {
-  state: 'pending' | 'starting' | 'in progress' | 'completed' | 'failed'
+  state: 'new' | 'designing' | 'completed' | 'canceled' | 'error'
 }
 
 export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>
@@ -24,6 +27,7 @@ export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>
 export default class DesignRequest {
   id: string
   pages: number
+  title: string
   occasion: string
   style: string
   bookFormat: string
@@ -36,6 +40,7 @@ export default class DesignRequest {
   constructor(id: string, initProps: InitDesignRequest) {
     this.id = id
     this.pages = initProps.pages
+    this.title = initProps.title
     this.occasion = initProps.occasion
     this.style = initProps.style
     this.bookFormat = initProps.bookFormat
@@ -44,7 +49,7 @@ export default class DesignRequest {
   }
 
   async addImage(item: Image) {
-    return new Promise((resolve) => {
+    return new Promise<Image>((resolve) => {
       resolve(item)
     })
   }
@@ -54,14 +59,14 @@ export default class DesignRequest {
     this.embellishmentLevel = submitDesignRequest.embellishmentLevel
     this.textStickerLevel = submitDesignRequest.textStickerLevel
     this.startFakeProgress()
-    return new Promise((resolve) => {
+    return new Promise<DesignRequest>((resolve) => {
       resolve(this)
     })
   }
 
   async getNautilusJSON() {
-    return new Promise((resolve) => {
-      resolve(`getNautilusJSON for ${this.id}`)
+    return new Promise<BookCreationRequest>((resolve) => {
+      resolve(nautilusJSON)
     })
   }
 
@@ -70,7 +75,7 @@ export default class DesignRequest {
       const event = new CustomEvent<DesignRequestEventDetail>('Magicbook.designRequestUpdated', {
         bubbles: true,
         detail: {
-          state: 'starting'
+          state: 'new'
         }
       })
       window.dispatchEvent(event)
@@ -79,7 +84,7 @@ export default class DesignRequest {
       const event = new CustomEvent<DesignRequestEventDetail>('Magicbook.designRequestUpdated', {
         bubbles: true,
         detail: {
-          state: 'in progress'
+          state: 'designing'
         }
       })
       window.dispatchEvent(event)
