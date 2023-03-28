@@ -1,7 +1,7 @@
 {
   "name": "magicbook-client",
   "private": false,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A TypeScript package that creates a photobook, resize and uploads images, update photobook and returns the book nautilus JSON",
   "type": "module",
   "main": "./dist/magicbook-client.umd.cjs",
