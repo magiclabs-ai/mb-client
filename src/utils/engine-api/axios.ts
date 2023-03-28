@@ -18,12 +18,8 @@ type createAxiosConfigProps = {
 
 function createAxiosConfig({needsToken = true ,options}: createAxiosConfigProps): AxiosRequestConfig<any> {
   let config = {}
-  if (needsToken) {
-    assign(config, ['headers', 'Authorization'] , 'Bearer TEST')
-  }
-  if (options) {
-    config = mergeNestedObject(config, options)
-  }
+  needsToken && assign(config, ['headers', 'Authorization'] , 'Bearer TEST')
+  options && (config = mergeNestedObject(config, options))
   return config
 }
 

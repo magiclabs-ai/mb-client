@@ -1,6 +1,12 @@
+/* istanbul ignore file */
 export type Image = {
   id: string
-  blob: Blob | null
+  url: string
   width: number
   height: number
+  rotation: number
+  captureTime: string
+  cameraMake: string
+  cameraModel: string
+  filename: string
 }

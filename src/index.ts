@@ -1,13 +1,4 @@
-import {BackgroundUploading} from './utils/images'
-
-export function uploadImages(test: any) {
-  BackgroundUploading('',test)
-}
-
-export function setBook() {
-  console.log('setBook')
-}
-
-export function getNautilusJSON() {
-  console.log('getNautilusJSON')
-}
+export {default as MagicBookClient} from './models/client'
+export type {Image} from './models/image'
+export type {DesignRequestEvent, InitDesignRequest, SubmitDesignRequest, DesignRequestEventDetail}
+  from './models/design-request'
