@@ -23,6 +23,7 @@ async function getData() {
   const client = new MagicBookClient('YOUR_API_KEY')
   const designRequest = await client.createDesignRequest({
     pages: 10,
+    title: 'title',
     occasion: 'travel',
     style: '1234',
     bookFormat: '8x8',
