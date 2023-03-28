@@ -7,6 +7,10 @@
   "main": "./dist/magicbook-client.umd.cjs",
   "module": "./dist/magicbook-client.js",
   "types": "./index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/56kcloud/mb-client.git"
+  },
   "exports": {
     ".": {
       "import": "./dist/magicbook-client.js",
