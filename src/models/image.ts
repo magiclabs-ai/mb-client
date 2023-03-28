@@ -6,7 +6,7 @@ export type Image = {
   height: number
   rotation: number
   captureTime: string
-  cameraMake: string
-  cameraModel: string
+  cameraMake?: string
+  cameraModel?: string
   filename: string
 }
