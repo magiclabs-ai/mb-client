@@ -61,6 +61,7 @@ designRequest.submitDesignRequest({
 ___
 ### Example
 You will find a working example in `./example` to see it in action just run the following:
+- `npm run build`
 - `cd example`
 - `npm i`
 - `npm run dev`
