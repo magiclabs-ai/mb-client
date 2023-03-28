@@ -13,7 +13,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: npm i
       - run: npm run coverage
-      - run: chmod +x ./deploy-npm.sh && ./deploy-npm.sh
+      - run: chmod +x ./scripts/deploy-npm.sh && ./scripts/deploy-npm.sh
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
