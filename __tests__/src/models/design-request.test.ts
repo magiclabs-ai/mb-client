@@ -1,12 +1,12 @@
 import {Image} from '../../../src/models/image'
-import {MagicBookClient} from '../../../src/index'
+import {InitDesignRequest, MagicBookClient} from '../../../src/index'
 import {describe, expect, test, vi} from 'vitest'
 import {nautilusJSON} from '../../../src/data/nautilus'
 
 describe('Design Request', async () => {
   const client = new MagicBookClient('123')
-  const InitDesignRequest = {
-    pages: 50,
+  const initDesignRequest: InitDesignRequest = {
+    images: 50,
     occasion: 'Birthday',
     style: 'Cartoon',
     bookFormat: 'Hardcover',
@@ -14,7 +14,7 @@ describe('Design Request', async () => {
     pageType: 'Glossy',
     title: 'My Book'
   }
-  const designRequest = await client.createDesignRequest(InitDesignRequest)
+  const designRequest = await client.createDesignRequest(initDesignRequest)
 
   test('addImage', async () => {
     const image: Image = {

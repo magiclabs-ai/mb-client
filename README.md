@@ -16,7 +16,9 @@ Call this method when entering the MagicBook funnel. The user might already have
 
 ```
 const designRequest = await client.createDesignRequest({
-  occasion: 'travel'
+  images: 32,
+  title: 'Australia 2023',
+  occasion: 'travel',
   style: '1234',
   bookFormat: '8x8',
   coverType: 'HC',
@@ -30,9 +32,9 @@ This "connexion" enables MagicBook to fetch and analyze images as soon they're  
 ```
 import {Image} from 'magicbook-client'
 
-window.addEventListener('Kraken.itemCompleted', (item) => {
+window.addEventListener('Kraken.itemCompleted', async (item) => {
   const image: Image = {...}
-  designRequest.addImage(image)
+  await designRequest.addImage(image)
 })
 ```
 

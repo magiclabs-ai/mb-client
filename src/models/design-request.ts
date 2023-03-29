@@ -3,7 +3,7 @@ import {Image} from './image'
 import {nautilusJSON} from '../data/nautilus'
 
 export type InitDesignRequest = {
-  pages: number
+  images: number
   title: string
   occasion: string
   style: string
@@ -26,7 +26,7 @@ export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>
 
 export default class DesignRequest {
   id: string
-  pages: number
+  images: number
   title: string
   occasion: string
   style: string
@@ -39,7 +39,7 @@ export default class DesignRequest {
 
   constructor(id: string, initProps: InitDesignRequest) {
     this.id = id
-    this.pages = initProps.pages
+    this.images = initProps.images
     this.title = initProps.title
     this.occasion = initProps.occasion
     this.style = initProps.style
