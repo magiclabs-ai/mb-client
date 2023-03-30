@@ -76,6 +76,7 @@ export class DesignRequest {
     submitDesignRequest && Object.assign(this, submitDesignRequest)
     this.startFakeProgress()
     return new Promise<DesignRequest>((resolve) => {
+      camelCaseObjectKeysToSnakeCase(this as Record<string, unknown>)
       resolve(this)
     })
   }

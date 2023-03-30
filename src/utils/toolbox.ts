@@ -16,3 +16,19 @@ export function mergeNestedObject(obj: Record<string, any>, objToMerge: Record<s
   })
   return obj
 }
+
+
+export function camelCaseToSnakeCase(str: string) {
+  return str.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase()
+}
+
+export function camelCaseObjectKeysToSnakeCase(camelCaseObject: Record<string, unknown>) {
+  Object.keys(camelCaseObject).map(key => {
+    const snakeCaseKey = camelCaseToSnakeCase(key)
+    if (snakeCaseKey.includes('_')) {
+      camelCaseObject[snakeCaseKey] = camelCaseObject[key]
+      delete camelCaseObject[key]
+    }
+  })
+  return camelCaseObject
+}

@@ -1,4 +1,5 @@
-import {assign, mergeNestedObject} from '../../../src/utils/toolbox'
+import {assign, camelCaseObjectKeysToSnakeCase, camelCaseToSnakeCase,
+  mergeNestedObject} from '../../../src/utils/toolbox'
 import {describe, expect, test} from 'vitest'
 
 describe('Toolbox', () => {
@@ -14,5 +15,14 @@ describe('Toolbox', () => {
     const objectToMerge = {item: {item: {item: 'test'}}}
     expect(mergeNestedObject(initialObject, objectToMerge))
       .toStrictEqual({item: {item: {name: 'itemName', item: 'test'}}})
+  })
+  test('camelCaseToSnakeCase', () => {
+    expect(camelCaseToSnakeCase('helloWorld')).toBe('hello_world')
+    expect(camelCaseToSnakeCase('helloWorldTest')).toBe('hello_world_test')
+  })
+  test('camelCaseObjectKeysToSnakeCase', () => {
+    const camelCaseObject = {helloWorld: 'helloWorld', helloWorldTest: 'helloWorldTest'}
+    const snakeCaseObject = {hello_world: 'helloWorld', hello_world_test: 'helloWorldTest'}
+    expect(camelCaseObjectKeysToSnakeCase(camelCaseObject)).toStrictEqual(snakeCaseObject)
   })
 })
