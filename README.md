@@ -1,8 +1,7 @@
 
 ![GitHub CI](https://github.com/56kcloud/mb-package/actions/workflows/test.yml/badge.svg) ![GitHub CI](https://github.com/56kcloud/mb-package/actions/workflows/linter.yml/badge.svg)
 # magicbook-client
-A TypeScript package that allows you to create a design request, add images to it and returns the corresponding nautilus JSON.
-
+This is a TypeScript package that allows you to generate a design request, add images to it, make updates to the design request, and obtain the corresponding design request JSON.
 ### Installing the latest version
 You can install the latest version by using:
 - `npm install mb-package@latest`
@@ -16,7 +15,6 @@ Call this method when entering the MagicBook funnel. The user might already have
 
 ```
 const designRequest = await client.createDesignRequest({
-  images: 32,
   title: 'Australia 2023',
   occasion: 'travel',
   style: '1234',
@@ -24,6 +22,18 @@ const designRequest = await client.createDesignRequest({
   coverType: 'HC',
   pageType: 'LF'
 })
+```
+
+or
+
+```
+const designRequest = await client.createDesignRequest()
+designRequest.title = 'Australia 2023',
+designRequest.occasion = 'travel',
+designRequest.style = '1234',
+designRequest.bookFormat = '8x8',
+designRequest.coverType = 'HC',
+designRequest.pageType = 'LF'
 ```
 
 ### 3. Connect Kraken::itemCompleted to MagicBook client
@@ -34,7 +44,7 @@ import {Image} from 'magicbook-client'
 
 window.addEventListener('Kraken.itemCompleted', async (item) => {
   const image: Image = {...}
-  await designRequest.addImage(image)
+  await designRequest.images.add(image)
 })
 ```
 
@@ -51,15 +61,15 @@ window.addEventListener('Magicbook.designRequestUpdated', async ((designRequestE
 Once all images are uploaded, we would ask a few more questions to the user before submitting the design request. As all images have already been uploaded and ingested, the design process should take less than 30 seconds, depending on the size of the book.
 
 ```
-designRequest.submitDesignRequest({
+designRequest.submit({
   imageDensity: 'high',
   embellishmentLevel: 'few',
   textStickerLevel: 'none'
 })
 ```
 
-### 6. Retrieve the Nautilus JSON
-```await designRequest.getNautilusJSON()```
+### 6. Retrieve design request JSON
+```await designRequest.getJSON()```
 ___
 ### Example
 You will find a working example in `./example` to see it in action just run the following:

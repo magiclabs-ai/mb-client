@@ -1,12 +1,12 @@
+import {DesignRequestProps} from '../../../src/models/design-request'
 import {Image} from '../../../src/models/image'
-import {InitDesignRequest, MagicBookClient} from '../../../src/index'
+import {MagicBookClient} from '../../../src/index'
 import {describe, expect, test, vi} from 'vitest'
 import {nautilusJSON} from '../../../src/data/nautilus'
 
 describe('Design Request', async () => {
   const client = new MagicBookClient('123')
-  const initDesignRequest: InitDesignRequest = {
-    images: 50,
+  const designRequestProps: DesignRequestProps = {
     occasion: 'Birthday',
     style: 'Cartoon',
     bookFormat: 'Hardcover',
@@ -14,7 +14,7 @@ describe('Design Request', async () => {
     pageType: 'Glossy',
     title: 'My Book'
   }
-  const designRequest = await client.createDesignRequest(initDesignRequest)
+  const designRequest = await client.createDesignRequest(designRequestProps)
 
   test('addImage', async () => {
     const image: Image = {
@@ -24,19 +24,19 @@ describe('Design Request', async () => {
       height: 500,
       rotation: 0,
       captureTime: '2021-01-01T00:00:00.000Z',
-      cameraMake: 'cameraMake',
+      cameraMake: 'cameraMake', 
       cameraModel: 'cameraModel',
       filename: 'filename'
     }
-    expect(await designRequest.addImage(image)).toStrictEqual(image)
+    expect(await designRequest.images.add(image)).toStrictEqual(image)
   })
-  test('getNautilusJSON', async () => {
-    const nautilus = await designRequest.getNautilusJSON()
+  test('getJSON', async () => {
+    const nautilus = await designRequest.getJSON()
     expect(nautilus.title).toBe(designRequest.title)
     expect(nautilusJSON).toBe(nautilusJSON)
   })
   test('submitDesignRequest', async () => {
-    const submitDesignRequest = await designRequest.submitDesignRequest({
+    const submitDesignRequest = await designRequest.submit({
       imageDensity: 'High',
       embellishmentLevel: 'Medium',
       textStickerLevel: 'Low'
@@ -45,7 +45,7 @@ describe('Design Request', async () => {
   })
   test('fakeProgress', async () => {
     vi.useFakeTimers()
-    await designRequest.submitDesignRequest({
+    await designRequest.submit({
       imageDensity: 'High',
       embellishmentLevel: 'Medium',
       textStickerLevel: 'Low'

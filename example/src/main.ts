@@ -12,17 +12,17 @@ const image: Image = {
   filename: 'filename'
 }
 
-getData()
+initializer()
+
 window.addEventListener('Magicbook.designRequestUpdated',
   ((designRequestEvent: DesignRequestEvent) => {
     console.log('Magicbook.designRequestUpdated', designRequestEvent.detail)
   }) as EventListener
 )
 
-async function getData() {
+async function initializer() {
   const client = new MagicBookClient('YOUR_API_KEY')
   const designRequest = await client.createDesignRequest({
-    images: 10,
     title: 'title',
     occasion: 'travel',
     style: '1234',
@@ -31,11 +31,11 @@ async function getData() {
     pageType: 'LF'
   })
   console.log('designRequest:', designRequest)
-  console.log('designRequest.addImage:', await designRequest.addImage(image))
-  console.log('designRequest.submitDesignRequest:', await designRequest.submitDesignRequest({
+  console.log('designRequest.images.add:', await designRequest.images.add(image))
+  console.log('designRequest.submit:', await designRequest.submit({
     imageDensity: 'high',
     embellishmentLevel: 'few',
     textStickerLevel: 'none'
   }))
-  console.log('designRequest.getNautilusJSON:', await designRequest.getNautilusJSON())
+  console.log('designRequest.getJSON:', await designRequest.getJSON())
 }

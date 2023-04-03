@@ -1,5 +1,5 @@
 import {faker} from '@faker-js/faker'
-import DesignRequest, {InitDesignRequest} from './design-request'
+import DesignRequest, {DesignRequestProps} from './design-request'
 
 export default class MagicBookClient {
   apiKey: string
@@ -8,9 +8,9 @@ export default class MagicBookClient {
     this.apiKey = apiKey
   }
 
-  async createDesignRequest(initDesignRequest: InitDesignRequest): Promise<DesignRequest> {
+  async createDesignRequest(designRequestProps?: DesignRequestProps): Promise<DesignRequest> {
     return new Promise((resolve) => {
-      resolve(new DesignRequest(faker.datatype.uuid(), initDesignRequest))
+      resolve(new DesignRequest(faker.datatype.uuid(), designRequestProps))
     })
   }
 }
