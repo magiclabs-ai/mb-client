@@ -1,7 +1,7 @@
 import {DesignRequestEvent, Image, MagicBookClient} from 'magicbook-client'
 
 const image: Image = {
-  id: 'imageId',
+  handle: 'imageId',
   url: 'imageURL',
   width: 500,
   height: 500,
@@ -12,25 +12,25 @@ const image: Image = {
   filename: 'filename'
 }
 
-initializer()
-
 window.addEventListener('Magicbook.designRequestUpdated',
   ((designRequestEvent: DesignRequestEvent) => {
     console.log('Magicbook.designRequestUpdated', designRequestEvent.detail)
   }) as EventListener
 )
 
-async function initializer() {
+await (async () => {
   const client = new MagicBookClient('YOUR_API_KEY')
   const designRequest = await client.createDesignRequest({
-    title: 'title',
     occasion: 'travel',
     style: '1234',
     bookFormat: '8x8',
     coverType: 'HC',
     pageType: 'LF'
   })
+  designRequest.title = 'My Book'
   console.log('designRequest:', designRequest)
+  console.log('designRequest.images.add:', await designRequest.images.add(image))
+  console.log('designRequest.images.add:', await designRequest.images.add(image))
   console.log('designRequest.images.add:', await designRequest.images.add(image))
   console.log('designRequest.submit:', await designRequest.submit({
     imageDensity: 'high',
@@ -38,4 +38,4 @@ async function initializer() {
     textStickerLevel: 'none'
   }))
   console.log('designRequest.getJSON:', await designRequest.getJSON())
-}
+})()

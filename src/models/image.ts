@@ -1,5 +1,5 @@
 export type Image = {
-  id: string
+  handle: string
   url: string
   width: number
   height: number

@@ -1,10 +1,10 @@
 
-![GitHub CI](https://github.com/56kcloud/mb-package/actions/workflows/test.yml/badge.svg) ![GitHub CI](https://github.com/56kcloud/mb-package/actions/workflows/linter.yml/badge.svg) [![npm version](https://img.shields.io/npm/v/magicbook-client.svg)](https://www.npmjs.com/package/magicbook-client)
+![GitHub CI](https://github.com/magiclabs-ai/mb-client/actions/workflows/test.yml/badge.svg) ![GitHub CI](https://github.com/magiclabs-ai/mb-client/actions/workflows/linter.yml/badge.svg) [![npm version](https://img.shields.io/npm/v/magicbook-client.svg)](https://www.npmjs.com/package/magicbook-client)
 # magicbook-client
 This is a TypeScript package that allows you to generate a design request, add images to it, make updates to the design request, and obtain the corresponding design request JSON.
 ### Installing the latest version
 You can install the latest version by using:
-- `npm install mb-package@latest`
+- `npm install magicbook-client@latest`
 ___
 ### 1. Create the MagicBook client with your API key
 `const client = new MagicBookClient('api-key')`

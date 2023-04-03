@@ -18,7 +18,7 @@ describe('Design Request', async () => {
 
   test('addImage', async () => {
     const image: Image = {
-      id: 'imageId',
+      handle: 'imageId',
       url: 'imageURL',
       width: 500,
       height: 500,
