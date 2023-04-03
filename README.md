@@ -1,22 +1,28 @@
 
-![GitHub CI](https://github.com/56kcloud/mb-package/actions/workflows/test.yml/badge.svg) ![GitHub CI](https://github.com/56kcloud/mb-package/actions/workflows/linter.yml/badge.svg)
+![GitHub CI](https://github.com/magiclabs-ai/mb-client/actions/workflows/test.yml/badge.svg) ![GitHub CI](https://github.com/magiclabs-ai/mb-client/actions/workflows/linter.yml/badge.svg) [![npm version](https://img.shields.io/npm/v/@magiclabs.ai/magicbook-client.svg)](https://www.npmjs.com/package/@magiclabs.ai/magicbook-client)
+
 # magicbook-client
-A TypeScript package that allows you to create a design request, add images to it and returns the corresponding nautilus JSON.
 
-### Installing the latest version
-You can install the latest version by using:
-- `npm install mb-package@latest`
-___
-### 1. Create the MagicBook client with your API key
-`const client = new MagicBookClient('api-key')`
+TypeScript package to create photo books with the Magicbook API.
 
-### 2. Create a design request, you can pass known design request parameters
+## Installation
 
-Call this method when entering the MagicBook funnel. The user might already have made some design choices. Pass them via the initialization object.
-
+```bash
+npm install @magiclabs.ai/magicbook-client
 ```
+
+## Usage
+
+Create a Magicbook API client instance with your API key. 
+
+```ts
+const client = new MagicBookClient('api-key')`
+```
+
+Initiate the creation of a photo book by creating a design request. The design request can be initialized by passing parameters (design choices) to the initialization object.
+
+```ts
 const designRequest = await client.createDesignRequest({
-  images: 32,
   title: 'Australia 2023',
   occasion: 'travel',
   style: '1234',
@@ -26,44 +32,70 @@ const designRequest = await client.createDesignRequest({
 })
 ```
 
-### 3. Connect Kraken::itemCompleted to MagicBook client
-This "connexion" enables MagicBook to fetch and analyze images as soon they're  uploaded to the Shutterfly image server. Is the API calls become too "chatty", we can batch images to reduce the number of API calls.
+Individual parameters can also be set directly on the design request instance:
 
+```ts
+const designRequest = await client.createDesignRequest()
+designRequest.title = 'Australia 2023',
+designRequest.occasion = 'travel',
+designRequest.style = '1234',
+designRequest.bookFormat = '8x8',
+designRequest.coverType = 'HC',
+designRequest.pageType = 'LF'
 ```
-import {Image} from 'magicbook-client'
 
-window.addEventListener('Kraken.itemCompleted', async (item) => {
+As images are getting ready to be handed over to Magicbook, for example when successfully uploaded, add them to the design request object.
+
+```ts
+import {Image} from '@magiclabs.ai/magicbook-client'
+
+const image: Image = {...}
+await designRequest.images.add(image)
+```
+
+This would typically be done in an event handler connected to the image manager.
+
+```ts
+window.addEventListener('ImageManager.ImageUploaded', async (item) => {
   const image: Image = {...}
-  await designRequest.addImage(image)
+  await designRequest.images.add(image)
 })
 ```
 
-### 4. Get design progress updates from backend
-During the book design, the server will notify the client about progress. This information can be displayed to the user.
+Before submitting the design request to Magicbook, register a callback to receive update events.
 
-```
+```ts
 window.addEventListener('Magicbook.designRequestUpdated', async ((designRequestEvent: DesignRequestEvent) => {
   console.log(designRequestEvent.detail)
 }) as EventListener)
 ```
 
-### 5. Submit design request, passing remaining design request parameters
-Once all images are uploaded, we would ask a few more questions to the user before submitting the design request. As all images have already been uploaded and ingested, the design process should take less than 30 seconds, depending on the size of the book.
+Submit the design request. Again, the argument object can receive additional or updated design parameters.
 
-```
-designRequest.submitDesignRequest({
+```ts
+designRequest.submit({
   imageDensity: 'high',
   embellishmentLevel: 'few',
   textStickerLevel: 'none'
 })
 ```
 
-### 6. Retrieve the Nautilus JSON
-```await designRequest.getNautilusJSON()```
+Finally, once the design request is complete, retrieve it in JSON format.
+
+```ts
+await designRequest.getJSON()
+```
+
 ___
-### Example
-You will find a working example in `./example` to see it in action just run the following:
-- `npm run build`
-- `cd example`
-- `npm i`
-- `npm run dev`
+
+
+## Example
+
+To see the Magicbook client in action, run the following commands after navigating to the `./example` directory:
+
+```bash
+npm run build
+cd example
+npm i
+npm run dev
+```

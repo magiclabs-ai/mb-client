@@ -1,21 +1,17 @@
 import {BookCreationRequest} from './nautilus'
-import {Image} from './image'
+import {Images} from './image'
 import {nautilusJSON} from '../data/nautilus'
 
-export type InitDesignRequest = {
-  images: number
-  title: string
-  occasion: string
-  style: string
-  bookFormat: string
-  coverType: string
-  pageType: string
-}
-
-export type SubmitDesignRequest = {
-  imageDensity: string
-  embellishmentLevel: string
-  textStickerLevel: string
+export type DesignRequestProps = {
+  title?: string
+  occasion?: string
+  style?: string
+  bookFormat?: string
+  coverType?: string
+  pageType?: string
+  imageDensity?: string
+  embellishmentLevel?: string
+  textStickerLevel?: string
 }
 
 export type DesignRequestEventDetail = {
@@ -26,45 +22,32 @@ export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>
 
 export default class DesignRequest {
   id: string
-  images: number
-  title: string
-  occasion: string
-  style: string
-  bookFormat: string
-  coverType: string
-  pageType: string
+  title?: string
+  occasion?: string
+  style?: string
+  bookFormat?: string
+  coverType?: string
+  pageType?: string
   imageDensity?: string
   embellishmentLevel?: string
   textStickerLevel?: string
+  images: Images
 
-  constructor(id: string, initProps: InitDesignRequest) {
+  constructor(id: string, designRequestProps?: DesignRequestProps) {
     this.id = id
-    this.images = initProps.images
-    this.title = initProps.title
-    this.occasion = initProps.occasion
-    this.style = initProps.style
-    this.bookFormat = initProps.bookFormat
-    this.coverType = initProps.coverType
-    this.pageType = initProps.pageType
+    designRequestProps && Object.assign(this, designRequestProps)
+    this.images = new Images()
   }
 
-  async addImage(item: Image) {
-    return new Promise<Image>((resolve) => {
-      resolve(item)
-    })
-  }
-
-  async submitDesignRequest(submitDesignRequest: SubmitDesignRequest) {
-    this.imageDensity = submitDesignRequest.imageDensity
-    this.embellishmentLevel = submitDesignRequest.embellishmentLevel
-    this.textStickerLevel = submitDesignRequest.textStickerLevel
+  async submit(submitDesignRequest?: DesignRequestProps) {
+    submitDesignRequest && Object.assign(this, submitDesignRequest)
     this.startFakeProgress()
     return new Promise<DesignRequest>((resolve) => {
       resolve(this)
     })
   }
 
-  async getNautilusJSON() {
+  async getJSON() {
     return new Promise<BookCreationRequest>((resolve) => {
       resolve(nautilusJSON)
     })
