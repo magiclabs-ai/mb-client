@@ -1,5 +1,5 @@
 
-![GitHub CI](https://github.com/56kcloud/mb-package/actions/workflows/test.yml/badge.svg) ![GitHub CI](https://github.com/56kcloud/mb-package/actions/workflows/linter.yml/badge.svg)
+![GitHub CI](https://github.com/56kcloud/mb-package/actions/workflows/test.yml/badge.svg) ![GitHub CI](https://github.com/56kcloud/mb-package/actions/workflows/linter.yml/badge.svg) [![npm version](https://img.shields.io/npm/v/magicbook-client.svg)](https://www.npmjs.com/package/magicbook-client)
 # magicbook-client
 This is a TypeScript package that allows you to generate a design request, add images to it, make updates to the design request, and obtain the corresponding design request JSON.
 ### Installing the latest version
@@ -10,9 +10,7 @@ ___
 `const client = new MagicBookClient('api-key')`
 
 ### 2. Create a design request, you can pass known design request parameters
-
-Call this method when entering the MagicBook funnel. The user might already have made some design choices. Pass them via the initialization object.
-
+Invoke this method when the user enters the MagicBook funnel. If the user has already made some design choices, you can pass them via the initialization object.
 ```
 const designRequest = await client.createDesignRequest({
   title: 'Australia 2023',
@@ -23,9 +21,7 @@ const designRequest = await client.createDesignRequest({
   pageType: 'LF'
 })
 ```
-
 or
-
 ```
 const designRequest = await client.createDesignRequest()
 designRequest.title = 'Australia 2023',
@@ -37,7 +33,7 @@ designRequest.pageType = 'LF'
 ```
 
 ### 3. Connect Kraken::itemCompleted to MagicBook client
-This "connexion" enables MagicBook to fetch and analyze images as soon they're  uploaded to the Shutterfly image server. Is the API calls become too "chatty", we can batch images to reduce the number of API calls.
+This connection allows MagicBook to retrieve and analyze images from the Shutterfly image server as soon as they are uploaded. If the number of API calls becomes excessive, we can group the images into batches to reduce the API calls frequency.
 
 ```
 import {Image} from 'magicbook-client'
@@ -49,7 +45,7 @@ window.addEventListener('Kraken.itemCompleted', async (item) => {
 ```
 
 ### 4. Get design progress updates from backend
-During the book design, the server will notify the client about progress. This information can be displayed to the user.
+While designing the book, the server will send progress updates to the client which can be shown to the user.
 
 ```
 window.addEventListener('Magicbook.designRequestUpdated', async ((designRequestEvent: DesignRequestEvent) => {
@@ -72,7 +68,7 @@ designRequest.submit({
 ```await designRequest.getJSON()```
 ___
 ### Example
-You will find a working example in `./example` to see it in action just run the following:
+To see this package in action, you can run the following commands after navigating to the `./example` directory:
 - `npm run build`
 - `cd example`
 - `npm i`
