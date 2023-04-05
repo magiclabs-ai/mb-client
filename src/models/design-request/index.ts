@@ -58,9 +58,29 @@ export class DesignRequest {
   embellishmentLevel?: EmbellishmentLevel
   textStickerLevel?: TextStickerLevel
   images: Images
+  protected book: Book
 
-  constructor(id: string, designRequestProps?: DesignRequestProps) {
-    this.id = id
+  constructor(designRequestProps?: DesignRequestProps) {
+    const test = {
+      'state': 'new',
+      'title': '',
+      'design_request': {
+        'occasion': '',
+        'style': '',
+        'book_format': '',
+        'cover_type': '',
+        'page_type': '',
+        'image_density': '',
+        'embellishment_level': '',
+        'text_sticker_level': ''
+      },
+      'design_specs': {
+        'sbitems': [],
+        'image_sorting': 'datetime'
+      }
+    }
+    this.id = '123'
+    this.book = new Book(test)
     designRequestProps && Object.assign(this, designRequestProps)
     this.images = new Images()
   }

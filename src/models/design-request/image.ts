@@ -20,30 +20,31 @@ export class Images {
   async add(image: Image): Promise<Image> {
     this.images.push(image)
     return new Promise<Image>((resolve) => {
+      new ImageServer(image)
       resolve(image)
     })
   }
 }
 export class ImageServer {
-  sfly_id: string
+  handle: string
   url: string
   width: number
   height: number
   orientation: number
-  capture_time: string
+  taken_at: string
   camera_make?: string
-  camera_model?: string
+  camera?: string
   filename: string
 
   constructor(image: Image) {
-    this.sfly_id = image.handle
+    this.handle = image.handle
     this.url = image.url
     this.width = image.width
     this.height = image.height
     this.orientation = image.rotation
-    this.capture_time = image.captureTime
+    this.taken_at = image.captureTime
     this.camera_make = image.cameraMake
-    this.camera_model = image.cameraModel
+    this.camera = image.cameraModel
     this.filename = image.filename
   }
 }
