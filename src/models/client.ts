@@ -8,7 +8,8 @@ export default class MagicBookClient {
     this.apiKey = apiKey
   }
 
-  async createDesignRequest(designRequestProps?: DesignRequestProps): Promise<DesignRequest> {
+  async createDesignRequest(designRequestProps?: DesignRequestProps)
+  : Promise<DesignRequest> {
     return new Promise((resolve) => {
       resolve(new DesignRequest(faker.datatype.uuid(), designRequestProps))
     })

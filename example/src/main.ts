@@ -22,10 +22,10 @@ await (async () => {
   const client = new MagicBookClient('YOUR_API_KEY')
   const designRequest = await client.createDesignRequest({
     occasion: 'travel',
-    style: '1234',
-    bookFormat: '8x8',
-    coverType: 'HC',
-    pageType: 'LF'
+    style: '2020-what-a-year-sfly',
+    bookSize: '10x10',
+    coverType: 'hc',
+    pageType: 'sp'
   })
   designRequest.title = 'My Book'
   console.log('designRequest:', designRequest)
