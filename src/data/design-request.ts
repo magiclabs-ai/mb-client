@@ -1,4 +1,22 @@
-/* istanbul ignore next */
+export const DesignRequestStates = ['new', 'designing', 'completed', 'canceled', 'error'] as const
+export const DesignRequestOccasions = [
+  'baby',
+  'birthday',
+  'default',
+  'everyday',
+  'family',
+  'kids',
+  'life-stories',
+  'none',
+  'portfolio',
+  'school-memories',
+  'seasonal-holidays',
+  'special-celebrations',
+  'sports-and-hobbies',
+  'travel',
+  'wedding',
+  'year-in-review'
+] as const
 export const DesignRequestStyles = [
   '2020-what-a-year-sfly',
   'a-year-in-color-sfly',
@@ -161,3 +179,10 @@ export const DesignRequestStyles = [
   'winter-memories-by-sarah-hawkins-design-sfly',
   'world-travel-sfly'
 ] as const
+export const DesignRequestBookSizes = ['8x8', '10x10', '12x12', '8x11', '11x8', '11x14'] as const
+export const DesignRequestBookCoverTypes = ['sc', 'hc', 'pl'] as const
+export const DesignRequestBookPageTypes = ['sp', 'sl', 'dl'] as const
+export const DesignRequestBookImageDensities = ['low', 'medium', 'high'] as const
+export const DesignRequestBookImageFilterings = ['best', 'most', 'all'] as const
+export const DesignRequestBookEmbellishmentLevels = ['none', 'few', 'lots'] as const
+export const DesignRequestBookTextStickerLevels = ['none', 'few', 'lots'] as const

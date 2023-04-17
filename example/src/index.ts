@@ -1,6 +1,6 @@
-import {DesignRequestEvent, Image, MagicBookClient} from '@magiclabs.ai/magicbook-client'
+import {DesignRequestEvent, DesignRequestImage, MagicBookClient} from '@magiclabs.ai/magicbook-client'
 
-const image: Image = {
+const image: DesignRequestImage = {
   handle: 'imageId',
   url: 'imageURL',
   width: 500,

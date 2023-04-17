@@ -1,7 +1,7 @@
+import {DesignRequest, DesignRequestProps} from './design-request'
 import {faker} from '@faker-js/faker'
-import DesignRequest, {DesignRequestProps} from './design-request'
 
-export default class MagicBookClient {
+export class MagicBookClient {
   apiKey: string
 
   public constructor(apiKey: string) {

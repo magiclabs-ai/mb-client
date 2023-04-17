@@ -1,14 +1,14 @@
-import {DesignRequestProps} from '../../../src/models/design-request'
-import {Image} from '../../../src/models/image'
-import {MagicBookClient} from '../../../src/index'
+import {DesignRequestEvent, DesignRequestProps} from '@/models/design-request'
+import {DesignRequestImage} from '@/models/design-request/image'
+import {MagicBookClient} from '@/index'
 import {describe, expect, test, vi} from 'vitest'
-import {galleonJSON} from '../../../src/data/galleon'
+import {galleonJSON} from '@/data/galleon'
 
 describe('Design Request', async () => {
   const client = new MagicBookClient('123')
   const designRequestProps: DesignRequestProps = {
     occasion: 'birthday',
-    style: 'babys-first-sfly',
+    style: '2020-what-a-year-sfly',
     bookSize: '10x10',
     coverType: 'hc',
     pageType: 'dl',
@@ -17,7 +17,7 @@ describe('Design Request', async () => {
   const designRequest = await client.createDesignRequest(designRequestProps)
 
   test('addImage', async () => {
-    const image: Image = {
+    const image: DesignRequestImage = {
       handle: 'imageId',
       url: 'imageURL',
       width: 500,
@@ -52,11 +52,14 @@ describe('Design Request', async () => {
     })
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
     vi.runAllTimers()
-    expect(dispatchEventSpy.mock.calls[0][0].type).toBe('Magicbook.designRequestUpdated')
-    expect(dispatchEventSpy.mock.calls[0][0]['detail']['state']).toBe('new')
-    expect(dispatchEventSpy.mock.calls[1][0].type).toBe('Magicbook.designRequestUpdated')
-    expect(dispatchEventSpy.mock.calls[1][0]['detail']['state']).toBe('designing')
-    expect(dispatchEventSpy.mock.calls[2][0].type).toBe('Magicbook.designRequestUpdated')
-    expect(dispatchEventSpy.mock.calls[2][0]['detail']['state']).toBe('completed')
+    const newCall = dispatchEventSpy.mock.calls[0][0] as DesignRequestEvent
+    const designingCall = dispatchEventSpy.mock.calls[1][0] as DesignRequestEvent
+    const completedCall = dispatchEventSpy.mock.calls[2][0] as DesignRequestEvent
+    expect(newCall.type).toBe('Magicbook.designRequestUpdated')
+    expect(newCall['detail']['state']).toBe('new')
+    expect(designingCall.type).toBe('Magicbook.designRequestUpdated')
+    expect(designingCall['detail']['state']).toBe('designing')
+    expect(completedCall.type).toBe('Magicbook.designRequestUpdated')
+    expect(completedCall['detail']['state']).toBe('completed')
   })
 })
