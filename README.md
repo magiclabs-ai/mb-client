@@ -27,8 +27,8 @@ const designRequest = await client.createDesignRequest({
   occasion: 'travel',
   style: '1234',
   bookFormat: '8x8',
-  coverType: 'HC',
-  pageType: 'LF'
+  coverType: 'hc',
+  pageType: 'lf'
 })
 ```
 
@@ -40,16 +40,16 @@ designRequest.title = 'Australia 2023',
 designRequest.occasion = 'travel',
 designRequest.style = '1234',
 designRequest.bookFormat = '8x8',
-designRequest.coverType = 'HC',
-designRequest.pageType = 'LF'
+designRequest.coverType = 'hc',
+designRequest.pageType = 'lf'
 ```
 
 As images are getting ready to be handed over to Magicbook, for example when successfully uploaded, add them to the design request object.
 
 ```ts
-import {Image} from '@magiclabs.ai/magicbook-client'
+import {DesignRequestImage} from '@magiclabs.ai/magicbook-client'
 
-const image: Image = {...}
+const image: DesignRequestImage = {...}
 await designRequest.images.add(image)
 ```
 
@@ -57,7 +57,7 @@ This would typically be done in an event handler connected to the image manager.
 
 ```ts
 window.addEventListener('ImageManager.ImageUploaded', async (item) => {
-  const image: Image = {...}
+  const image: DesignRequestImage = {...}
   await designRequest.images.add(image)
 })
 ```
