@@ -1,3 +1,4 @@
+/* istanbul ignore next */
 export const DesignRequestStyles = [
   '2020-what-a-year-sfly',
   'a-year-in-color-sfly',

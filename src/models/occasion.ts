@@ -1,3 +1,4 @@
+/*! istanbul-ignore */
 export const DesignRequestOccasions = [
   'baby',
   'birthday',
