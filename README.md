@@ -47,9 +47,9 @@ designRequest.pageType = 'lf'
 As images are getting ready to be handed over to Magicbook, for example when successfully uploaded, add them to the design request object.
 
 ```ts
-import {DesignRequestImage} from '@magiclabs.ai/magicbook-client'
+import {Image} from '@magiclabs.ai/magicbook-client'
 
-const image: DesignRequestImage = {...}
+const image: Image = {...}
 await designRequest.images.add(image)
 ```
 

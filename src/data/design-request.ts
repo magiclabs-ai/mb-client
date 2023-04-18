@@ -1,5 +1,5 @@
-export const DesignRequestStates = ['new', 'designing', 'completed', 'canceled', 'error'] as const
-export const DesignRequestOccasions = [
+export const States = ['new', 'designing', 'completed', 'canceled', 'error'] as const
+export const Occasions = [
   'baby',
   'birthday',
   'default',
@@ -17,7 +17,7 @@ export const DesignRequestOccasions = [
   'wedding',
   'year-in-review'
 ] as const
-export const DesignRequestStyles = [
+export const Styles = [
   '2020-what-a-year-sfly',
   'a-year-in-color-sfly',
   'adventure-awaits-sfly',
@@ -179,10 +179,10 @@ export const DesignRequestStyles = [
   'winter-memories-by-sarah-hawkins-design-sfly',
   'world-travel-sfly'
 ] as const
-export const DesignRequestBookSizes = ['8x8', '10x10', '12x12', '8x11', '11x8', '11x14'] as const
-export const DesignRequestBookCoverTypes = ['sc', 'hc', 'pl'] as const
-export const DesignRequestBookPageTypes = ['sp', 'sl', 'dl'] as const
-export const DesignRequestBookImageDensities = ['low', 'medium', 'high'] as const
-export const DesignRequestBookImageFilterings = ['best', 'most', 'all'] as const
-export const DesignRequestBookEmbellishmentLevels = ['none', 'few', 'lots'] as const
-export const DesignRequestBookTextStickerLevels = ['none', 'few', 'lots'] as const
+export const BookSizes = ['8x8', '10x10', '12x12', '8x11', '11x8', '11x14'] as const
+export const CoverTypes = ['sc', 'hc', 'pl'] as const
+export const PageTypes = ['sp', 'sl', 'dl'] as const
+export const ImageDensities = ['low', 'medium', 'high'] as const
+export const ImageFilterings = ['best', 'most', 'all'] as const
+export const EmbellishmentLevels = ['none', 'few', 'lots'] as const
+export const TextStickerLevels = ['none', 'few', 'lots'] as const

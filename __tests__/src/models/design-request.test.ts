@@ -1,5 +1,5 @@
 import {DesignRequestEvent, DesignRequestProps} from '@/models/design-request'
-import {DesignRequestImage} from '@/models/design-request/image'
+import {Image} from '@/models/design-request/image'
 import {MagicBookClient} from '@/index'
 import {describe, expect, test, vi} from 'vitest'
 import {galleonJSON} from '@/data/galleon'
@@ -17,7 +17,7 @@ describe('Design Request', async () => {
   const designRequest = await client.createDesignRequest(designRequestProps)
 
   test('addImage', async () => {
-    const image: DesignRequestImage = {
+    const image: Image = {
       handle: 'imageId',
       url: 'imageURL',
       width: 500,

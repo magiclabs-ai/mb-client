@@ -1,65 +1,66 @@
 import {BookCreationRequest} from '../galleon'
 import {
-  DesignRequestBookCoverTypes,
-  DesignRequestBookEmbellishmentLevels,
-  DesignRequestBookImageDensities,
-  DesignRequestBookImageFilterings,
-  DesignRequestBookPageTypes,
-  DesignRequestBookSizes,
-  DesignRequestBookTextStickerLevels,
-  DesignRequestOccasions,
-  DesignRequestStates,
-  DesignRequestStyles
+  BookSizes,
+  CoverTypes,
+  EmbellishmentLevels,
+  ImageDensities,
+  ImageFilterings,
+  Occasions,
+  PageTypes,
+  States,
+  Styles,
+  TextStickerLevels
 } from '@/data/design-request'
-import {DesignRequestImages} from './image'
+import {Images} from './image'
 import {galleonJSON} from '@/data/galleon'
 
-export type DesignRequestOccasion = typeof DesignRequestOccasions[number]
-export type DesignRequestStyle = typeof DesignRequestStyles[number]
-export type DesignRequestBookSize = typeof DesignRequestBookSizes[number]
-export type DesignRequestBookCoverType = typeof DesignRequestBookCoverTypes[number]
-export type DesignRequestBookPageType = typeof DesignRequestBookPageTypes[number]
-export type DesignRequestBookImageDensity = typeof DesignRequestBookImageDensities[number]
-export type DesignRequestBookImageFiltering = typeof DesignRequestBookImageFilterings[number]
-export type DesignRequestBookEmbellishmentLevel = typeof DesignRequestBookEmbellishmentLevels[number]
-export type DesignRequestBookTextStickerLevel = typeof DesignRequestBookTextStickerLevels[number]
+export type Occasion = typeof Occasions[number]
+export type Style = typeof Styles[number]
+export type BookSize = typeof BookSizes[number]
+export type CoverType = typeof CoverTypes[number]
+export type PageType = typeof PageTypes[number]
+export type ImageDensity = typeof ImageDensities[number]
+export type ImageFiltering = typeof ImageFilterings[number]
+export type EmbellishmentLevel = typeof EmbellishmentLevels[number]
+export type TextStickerLevel = typeof TextStickerLevels[number]
+
 export type DesignRequestProps = {
   title?: string
-  occasion?: DesignRequestOccasion
-  style?: DesignRequestStyle
-  bookSize?: DesignRequestBookSize
-  coverType?: DesignRequestBookCoverType
-  pageType?: DesignRequestBookPageType
-  imageDensity?: DesignRequestBookImageDensity
-  imageFiltering?: DesignRequestBookImageFiltering
-  embellishmentLevel?: DesignRequestBookEmbellishmentLevel
-  textStickerLevel?: DesignRequestBookTextStickerLevel
+  occasion?: Occasion
+  style?: Style
+  bookSize?: BookSize
+  coverType?: CoverType
+  pageType?: PageType
+  imageDensity?: ImageDensity
+  imageFiltering?: ImageFiltering
+  embellishmentLevel?: EmbellishmentLevel
+  textStickerLevel?: TextStickerLevel
 }
 
-export type DesignRequestState = typeof DesignRequestStates[number]
+export type State = typeof States[number]
 export type DesignRequestEventDetail = {
-  state: typeof DesignRequestStates[number]
+  state: State
 }
 export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>
 
 export class DesignRequest {
   id: string
   title?: string
-  occasion?: DesignRequestOccasion
-  style?: DesignRequestStyle
-  bookSize?: DesignRequestBookSize
-  coverType?: DesignRequestBookCoverType
-  pageType?: DesignRequestBookPageType
-  imageDensity?: DesignRequestBookImageDensity
-  imageFiltering?: DesignRequestBookImageFiltering
-  embellishmentLevel?: DesignRequestBookEmbellishmentLevel
-  textStickerLevel?: DesignRequestBookTextStickerLevel
-  images: DesignRequestImages
+  occasion?: Occasion
+  style?: Style
+  bookSize?: BookSize
+  coverType?: CoverType
+  pageType?: PageType
+  imageDensity?: ImageDensity
+  imageFiltering?: ImageFiltering
+  embellishmentLevel?: EmbellishmentLevel
+  textStickerLevel?: TextStickerLevel
+  images: Images
 
   constructor(id: string, designRequestProps?: DesignRequestProps) {
     this.id = id
     designRequestProps && Object.assign(this, designRequestProps)
-    this.images = new DesignRequestImages()
+    this.images = new Images()
   }
 
   async submit(submitDesignRequest?: DesignRequestProps) {

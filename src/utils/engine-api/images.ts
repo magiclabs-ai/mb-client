@@ -1,8 +1,8 @@
-import {DesignRequestImage} from '../../models/design-request/image'
+import {Image} from '../../models/design-request/image'
 import {apiHost} from '../../config'
 import {get, post} from './axios'
 
-export async function addImageInBook(bookId: string, payload: DesignRequestImage) {
+export async function addImageInBook(bookId: string, payload: Image) {
   return await post({url: `${apiHost}/api/v1/images/book/${bookId}`, payload})
 }
 

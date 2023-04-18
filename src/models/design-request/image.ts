@@ -1,4 +1,4 @@
-export type DesignRequestImage = {
+export type Image = {
   handle: string
   url: string
   width: number
@@ -10,16 +10,16 @@ export type DesignRequestImage = {
   filename: string
 }
 
-export class DesignRequestImages {
-  private images: Array<DesignRequestImage>
+export class Images {
+  private images: Array<Image>
 
   constructor() {
     this.images = []
   }
 
-  async add(image: DesignRequestImage): Promise<DesignRequestImage> {
+  async add(image: Image): Promise<Image> {
     this.images.push(image)
-    return new Promise<DesignRequestImage>((resolve) => {
+    return new Promise<Image>((resolve) => {
       resolve(image)
     })
   }
