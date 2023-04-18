@@ -1,36 +1,60 @@
-import {BookCreationRequest} from './nautilus'
+import {BookCreationRequest} from '../galleon'
+import {
+  BookSizes,
+  CoverTypes,
+  EmbellishmentLevels,
+  ImageDensities,
+  ImageFilterings,
+  Occasions,
+  PageTypes,
+  States,
+  Styles,
+  TextStickerLevels
+} from '@/data/design-request'
 import {Images} from './image'
-import {nautilusJSON} from '../data/nautilus'
+import {galleonJSON} from '@/data/galleon'
+
+export type Occasion = typeof Occasions[number]
+export type Style = typeof Styles[number]
+export type BookSize = typeof BookSizes[number]
+export type CoverType = typeof CoverTypes[number]
+export type PageType = typeof PageTypes[number]
+export type ImageDensity = typeof ImageDensities[number]
+export type ImageFiltering = typeof ImageFilterings[number]
+export type EmbellishmentLevel = typeof EmbellishmentLevels[number]
+export type TextStickerLevel = typeof TextStickerLevels[number]
 
 export type DesignRequestProps = {
   title?: string
-  occasion?: string
-  style?: string
-  bookFormat?: string
-  coverType?: string
-  pageType?: string
-  imageDensity?: string
-  embellishmentLevel?: string
-  textStickerLevel?: string
+  occasion?: Occasion
+  style?: Style
+  bookSize?: BookSize
+  coverType?: CoverType
+  pageType?: PageType
+  imageDensity?: ImageDensity
+  imageFiltering?: ImageFiltering
+  embellishmentLevel?: EmbellishmentLevel
+  textStickerLevel?: TextStickerLevel
 }
 
+export type State = typeof States[number]
 export type DesignRequestEventDetail = {
-  state: 'new' | 'designing' | 'completed' | 'canceled' | 'error'
+  state: State
 }
-
 export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>
 
-export default class DesignRequest {
+export class DesignRequest {
   id: string
   title?: string
-  occasion?: string
-  style?: string
-  bookFormat?: string
-  coverType?: string
-  pageType?: string
-  imageDensity?: string
-  embellishmentLevel?: string
-  textStickerLevel?: string
+  occasion?: Occasion
+  style?: Style
+  bookSize?: BookSize
+  coverType?: CoverType
+  pageType?: PageType
+  imageDensity?: ImageDensity
+  imageFiltering?: ImageFiltering
+  embellishmentLevel?: EmbellishmentLevel
+  textStickerLevel?: TextStickerLevel
   images: Images
 
   constructor(id: string, designRequestProps?: DesignRequestProps) {
@@ -49,7 +73,7 @@ export default class DesignRequest {
 
   async getJSON() {
     return new Promise<BookCreationRequest>((resolve) => {
-      resolve(nautilusJSON)
+      resolve(galleonJSON)
     })
   }
 

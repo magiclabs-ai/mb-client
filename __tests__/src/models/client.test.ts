@@ -1,5 +1,5 @@
-import {DesignRequestProps} from '../../../src/models/design-request'
-import {MagicBookClient} from '../../../src/index'
+import {DesignRequestProps} from '@/models/design-request'
+import {MagicBookClient} from '@/index'
 import {describe, expect, test} from 'vitest'
 
 describe('Client', () => {
@@ -7,14 +7,15 @@ describe('Client', () => {
     const client = new MagicBookClient('123')
     const designRequestProps: DesignRequestProps = {
       title: 'My Book',
-      occasion: 'Birthday',
-      style: 'Cartoon',
-      bookFormat: 'Hardcover',
-      coverType: 'Matte',
-      pageType: 'Glossy'
+      occasion: 'baby',
+      style: '2020-what-a-year-sfly',
+      bookSize: '10x10',
+      coverType: 'hc',
+      pageType: 'dl'
     }
     const designRequest = await client.createDesignRequest(designRequestProps)
-    Object.keys(designRequestProps).forEach((key) => {
+    Object.keys(designRequestProps).forEach((k) => {
+      const key = k as keyof DesignRequestProps
       expect(designRequest[key]).toBe(designRequestProps[key])
     })
   })

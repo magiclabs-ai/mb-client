@@ -1,6 +1,6 @@
-import {BookCreationRequest} from '../models/nautilus'
+import {BookCreationRequest} from '../models/galleon'
 
-export const nautilusJSON: BookCreationRequest = {
+export const galleonJSON: BookCreationRequest = {
   'title': 'My Book',
   'coverSpecId': '11x14_bk_hard',
   'styleId': 5161,
