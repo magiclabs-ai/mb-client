@@ -1,4 +1,4 @@
-import {BookCreationRequest} from '../galleon'
+import {BookCreationRequest} from '@/models/galleon'
 import {
   BookSizes,
   CoverTypes,
@@ -15,6 +15,7 @@ import {DesignOptions} from './design-options'
 import {Images} from './image'
 import {designOptions} from '@/data/design-options'
 import {galleonJSON} from '@/data/galleon'
+import {retrieveBook, updateBook} from '@/utils/engine-api/books'
 
 export type Occasion = typeof Occasions[number]
 export type Style = typeof Styles[number]
@@ -46,43 +47,32 @@ export type DesignRequestEventDetail = {
 export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>
 
 export class DesignRequest {
-  id: string
-  title?: string
-  occasion?: Occasion
-  style?: Style
-  bookSize?: BookSize
-  coverType?: CoverType
-  pageType?: PageType
-  imageDensity?: ImageDensity
-  imageFiltering?: ImageFiltering
-  embellishmentLevel?: EmbellishmentLevel
-  textStickerLevel?: TextStickerLevel
+  parentId: string
+  title: string
+  occasion: Occasion
+  style: Style
+  bookSize: BookSize
+  coverType: CoverType
+  pageType: PageType
+  imageDensity: ImageDensity
+  imageFiltering: ImageFiltering
+  embellishmentLevel: EmbellishmentLevel
+  textStickerLevel: TextStickerLevel
   images: Images
-  protected book: Book
 
-  constructor(designRequestProps?: DesignRequestProps) {
-    const test = {
-      'state': 'new',
-      'title': '',
-      'design_request': {
-        'occasion': '',
-        'style': '',
-        'book_format': '',
-        'cover_type': '',
-        'page_type': '',
-        'image_density': '',
-        'embellishment_level': '',
-        'text_sticker_level': ''
-      },
-      'design_specs': {
-        'sbitems': [],
-        'image_sorting': 'datetime'
-      }
-    }
-    this.id = '123'
-    this.book = new Book(test)
-    designRequestProps && Object.assign(this, designRequestProps)
-    this.images = new Images()
+  constructor(parentId: string, designRequestProps?: DesignRequestProps) {
+    this.parentId = parentId
+    this.title = designRequestProps?.title || ''
+    this.occasion = designRequestProps?.occasion || Occasions[0]
+    this.style = designRequestProps?.style || Styles[0]
+    this.bookSize = designRequestProps?.bookSize || BookSizes[0]
+    this.coverType = designRequestProps?.coverType || CoverTypes[0]
+    this.pageType = designRequestProps?.pageType || PageTypes[0]
+    this.imageDensity = designRequestProps?.imageDensity || ImageDensities[0]
+    this.imageFiltering = designRequestProps?.imageFiltering || ImageFilterings[0]
+    this.embellishmentLevel = designRequestProps?.embellishmentLevel || EmbellishmentLevels[0]
+    this.textStickerLevel = designRequestProps?.textStickerLevel || TextStickerLevels[0]
+    this.images = new Images(parentId)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
@@ -107,33 +97,22 @@ export class DesignRequest {
     })
   }
 
-  startFakeProgress() {
-    setTimeout(() => {
-      const event = new CustomEvent<DesignRequestEventDetail>('Magicbook.designRequestUpdated', {
-        bubbles: true,
-        detail: {
-          state: 'new'
-        }
-      })
-      window.dispatchEvent(event)
-    }, 2000)
-    setTimeout(() => {
-      const event = new CustomEvent<DesignRequestEventDetail>('Magicbook.designRequestUpdated', {
-        bubbles: true,
-        detail: {
-          state: 'designing'
-        }
-      })
-      window.dispatchEvent(event)
-    }, 3000)
-    setTimeout(() => {
-      const event = new CustomEvent<DesignRequestEventDetail>('Magicbook.designRequestUpdated', {
-        bubbles: true,
-        detail: {
-          state: 'completed'
-        }
-      })
-      window.dispatchEvent(event)
-    }, 6000)
+  private async getProgress() {
+    let previousState = ''
+    const pullState = setInterval(async () => {
+      const state = (await retrieveBook(this.parentId)).state as State
+      if (previousState !== state) {
+        previousState = state
+        const event = new CustomEvent<DesignRequestEventDetail>('Magicbook.designRequestUpdated', {
+          detail: {
+            state: state
+          }
+        })
+        window.dispatchEvent(event)
+        if (['error', 'completed', 'canceled'].includes(state)) {
+          clearInterval(pullState)
+        } 
+      }
+    }, 100)
   }
 }

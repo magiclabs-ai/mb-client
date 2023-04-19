@@ -1,4 +1,9 @@
+#!/bin/bash
+flags=''
+while getopts ':w' opt; do
+  case ${opt} in
+    w ) flags+='--watch' ;;
+  esac
+done
 rm -rf ./dist
-tsc
-vite build
-sed 's/\.\//\.\//g; s/dist\///g' package.json > ./dist/package.json
+vite build ${flags}

@@ -1,4 +1,5 @@
 import {DesignRequest, DesignRequestProps} from './design-request'
+import {createBook} from '@/utils/engine-api/books'
 
 export class MagicBookClient {
   apiKey: string
@@ -9,8 +10,7 @@ export class MagicBookClient {
 
   async createDesignRequest(designRequestProps?: DesignRequestProps)
   : Promise<DesignRequest> {
-    return new Promise((resolve) => {
-      resolve(new DesignRequest(designRequestProps))
-    })
+    const book = await createBook()
+    return new DesignRequest(book.id, designRequestProps)
   }
 }

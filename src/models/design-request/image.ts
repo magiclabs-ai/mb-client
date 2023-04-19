@@ -1,3 +1,5 @@
+import {addImageInBook} from '@/utils/engine-api/images'
+
 export type Image = {
   handle: string
   url: string
@@ -11,17 +13,19 @@ export type Image = {
 }
 
 export class Images {
+  private parentId: string
   private images: Array<Image>
 
-  constructor() {
+  constructor(parentId: string) {
+    this.parentId = parentId
     this.images = []
   }
 
-  async add(image: Image): Promise<Image> {
+  async add(image: Image): Promise<number> {
     this.images.push(image)
-    return new Promise<Image>((resolve) => {
-      new ImageServer(image)
-      resolve(image)
+    await addImageInBook(this.parentId, new ImageServer(image))
+    return new Promise<number>((resolve) => {
+      resolve(this.images.length)
     })
   }
 }
