@@ -2,7 +2,6 @@ import {DesignRequestEvent, Image, MagicBookClient, State} from '@magiclabs.ai/m
 import {Layout} from './components/layout'
 import {faker} from '@faker-js/faker'
 import {useEffect, useState} from 'react'
-import React from 'react'
 
 function App() {
   const client = new MagicBookClient('YOUR_API_KEY')
@@ -43,8 +42,8 @@ function App() {
   async function createDesignRequest() {
     setIsCreatingDesignRequest(true)
     const designRequest = await client.createDesignRequest({
-      occasion: 'travel',
-      style: '2020-what-a-year-sfly',
+      occasion: 'default',
+      style: 'autumn-memories-sfly',
       bookSize: '10x10',
       coverType: 'hc',
       pageType: 'sp'

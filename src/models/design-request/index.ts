@@ -14,6 +14,8 @@ import {
 import {DesignOptions} from './design-options'
 import {Images} from './image'
 import {designOptions} from '@/data/design-options'
+import {designRequestRefreshInterval} from '@/config'
+import {designRequestToBook} from '@/utils/design-request-parser'
 import {galleonJSON} from '@/data/galleon'
 import {retrieveBook, updateBook} from '@/utils/engine-api/books'
 
@@ -113,6 +115,6 @@ export class DesignRequest {
           clearInterval(pullState)
         } 
       }
-    }, 5000)
+    }, designRequestRefreshInterval)
   }
 }
