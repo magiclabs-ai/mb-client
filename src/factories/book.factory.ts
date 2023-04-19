@@ -11,7 +11,7 @@ import {
   Styles,
   TextStickerLevels
 } from '../data/design-request'
-import {State} from '..'
+import {State} from '../models/design-request'
 import {faker} from '@faker-js/faker'
 
 export type BookFactoryProps = {

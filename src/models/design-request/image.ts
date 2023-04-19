@@ -28,10 +28,6 @@ export class Images {
       resolve(this.images.length)
     })
   }
-
-  get(index: number): Image {
-    return this.images[index]
-  }
 }
 export class ImageServer {
   handle: string

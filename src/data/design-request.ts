@@ -1,4 +1,16 @@
-export const States = ['new', 'designing', 'completed', 'canceled', 'error'] as const
+export const States = [
+  'new',
+  'ingesting',
+  'submitted',
+  'waiting for storyboard',
+  'storyboarding',
+  'waiting for initialize design',
+  'design initialized',
+  'waiting for design',
+  'designing',
+  'ready',
+  'error' 
+] as const
 export const Occasions = [
   'baby',
   'birthday',

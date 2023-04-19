@@ -103,7 +103,7 @@ export class DesignRequest {
       const state = (await retrieveBook(this.parentId)).state
       if (previousState !== state) {
         previousState = state
-        const event = new CustomEvent<DesignRequestEventDetail>('Magicbook.designRequestUpdated', {
+        const event = new CustomEvent<DesignRequestEventDetail>('MagicBook.designRequestUpdated', {
           detail: {
             state: state
           }

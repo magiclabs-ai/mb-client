@@ -1,4 +1,5 @@
 {
+  "root": true,
   "env": {
     "browser": true,
     "node": true,
@@ -8,7 +9,7 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended"
   ],
-  "ignorePatterns": ["dist", "types", "package-lock.json"],
+  "ignorePatterns": ["dist", "types", "package-lock.json", "react-example"],
   "overrides": [
     {
       "files": ["**/*.ts", "**/*.tsx"],

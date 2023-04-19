@@ -25,7 +25,6 @@ export default defineConfig({
   plugins: [dts()],
   test: {
     setupFiles: ['__tests__/mocks/setup.ts'],
-    globals: true,
     environment: 'jsdom',
     coverage: {
       all: true,
