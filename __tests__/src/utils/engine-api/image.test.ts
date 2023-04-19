@@ -1,7 +1,7 @@
 import {addImageInBook} from '../../../../src/utils/engine-api/images'
 import {axiosPost} from '../../../mocks/setup'
 import {describe, test, vi} from 'vitest'
-import {imageServerFactory} from '../../../factories/image.factory'
+import {imageServerFactory} from '../../../../src/factories/image.factory'
 
 vi.unmock('@/utils/engine-api/books')
 describe('Image APIs', () => {

@@ -6,6 +6,7 @@ import {
   ImageFiltering,
   Occasion,
   PageType,
+  State,
   Style,
   TextStickerLevel
 } from './design-request'
@@ -48,14 +49,14 @@ export class BookDesignRequest {
 
 export type BookProps = {
   id: string
-  state: string
+  state: State
   title: string
   design_request: BookDesignRequest
 }
 
 export class Book {
   id: string
-  state: string
+  state: State
   title: string
   design_request: BookDesignRequest
 

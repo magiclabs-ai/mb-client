@@ -1,4 +1,4 @@
-import {Book, BookDesignRequest} from '../../src/models/book'
+import {Book, BookDesignRequest} from '../models/book'
 import {
   BookSizes,
   CoverTypes,
@@ -10,12 +10,13 @@ import {
   States,
   Styles,
   TextStickerLevels
-} from '../../src/data/design-request'
+} from '../data/design-request'
+import {State} from '..'
 import {faker} from '@faker-js/faker'
 
 export type BookFactoryProps = {
   id?: string
-  state?: string
+  state?: State
   title?: string
   design_request?: BookDesignRequest
 }

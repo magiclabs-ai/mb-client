@@ -1,6 +1,6 @@
 import {Book} from '../../../../src/models/book'
 import {axiosGet, axiosPost, axiosPut} from '../../../mocks/setup'
-import {bookFactory} from '../../../factories/book.factory'
+import {bookFactory} from '../../../../src/factories/book.factory'
 import {createBook, retrieveBook, updateBook} from '../../../../src/utils/engine-api/books'
 import {describe, test, vi} from 'vitest'
 

@@ -1,16 +1,4 @@
-import {DesignRequestEvent, Image, MagicBookClient} from '@magiclabs.ai/magicbook-client'
-
-const image: Image = {
-  handle: 'imageId',
-  url: 'imageURL',
-  width: 500,
-  height: 500,
-  rotation: 0,
-  captureTime: '2021-01-01T00:00:00.000Z',
-  cameraMake: 'cameraMake',
-  cameraModel: 'cameraModel',
-  filename: 'filename'
-}
+import {DesignRequestEvent, MagicBookClient, imageFactory} from '@magiclabs.ai/magicbook-client'
 
 window.addEventListener('Magicbook.designRequestUpdated',
   ((designRequestEvent: DesignRequestEvent) => {

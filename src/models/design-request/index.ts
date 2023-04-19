@@ -100,7 +100,7 @@ export class DesignRequest {
   private async getProgress() {
     let previousState = ''
     const pullState = setInterval(async () => {
-      const state = (await retrieveBook(this.parentId)).state as State
+      const state = (await retrieveBook(this.parentId)).state
       if (previousState !== state) {
         previousState = state
         const event = new CustomEvent<DesignRequestEventDetail>('Magicbook.designRequestUpdated', {
@@ -113,6 +113,6 @@ export class DesignRequest {
           clearInterval(pullState)
         } 
       }
-    }, 100)
+    }, 5000)
   }
 }

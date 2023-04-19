@@ -1,10 +1,22 @@
-import {DesignRequestEvent, DesignRequestProps} from '@/models/design-request'
-import {Image} from '@/models/design-request/image'
-import {MagicBookClient} from '@/index'
-import {describe, expect, test, vi} from 'vitest'
-import {designOptions} from '@/data/design-options'
-import {faker} from '@faker-js/faker'
-import {galleonJSON} from '@/data/galleon'
+import {
+  BookSizes,
+  CoverTypes,
+  EmbellishmentLevels,
+  ImageDensities,
+  ImageFilterings,
+  Occasions,
+  PageTypes,
+  Styles,
+  TextStickerLevels
+} from '../../../src/data/design-request'
+import {DesignRequest, DesignRequestEvent, DesignRequestProps} from '../../../src/models/design-request'
+import {Image, Images} from '../../../src/models/design-request/image'
+import {MagicBookClient} from '../../../src'
+import {beforeEach, describe, expect, test, vi} from 'vitest'
+import {bookFactory} from '../../../src/factories/book.factory'
+import {galleonJSON} from '../../../src/data/galleon'
+import {mockCreateBook, mockRetrieveBook} from '../../mocks/setup'
+
 
 describe('Design Request', async () => {
   let designRequest: DesignRequest

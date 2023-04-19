@@ -1,4 +1,4 @@
-import {Image, ImageServer} from '../../src'
+import {Image, ImageServer} from '..'
 import {faker} from '@faker-js/faker'
 
 export type ImageFactoryProps = {
@@ -14,11 +14,13 @@ export type ImageFactoryProps = {
 }
 
 export function imageFactory(props?: ImageFactoryProps) {
+  const width = props?.width || faker.datatype.number({min: 200, max: 500})
+  const height = props?.height || faker.datatype.number({min: 200, max: 500})
   return {
     handle: props?.handle || faker.datatype.uuid(),
-    url: props?.url || faker.image.imageUrl(),
-    width: props?.width || '500',
-    height: props?.height || '500',
+    url: props?.url || faker.image.imageUrl(width, height),
+    width,
+    height,
     rotation: props?.rotation || '0',
     captureTime: props?.captureTime || faker.datatype.datetime(),
     cameraMake: props?.cameraMake,
