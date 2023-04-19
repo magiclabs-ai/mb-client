@@ -109,7 +109,7 @@ export class DesignRequest {
           }
         })
         window.dispatchEvent(event)
-        if (['error', 'completed', 'canceled'].includes(state)) {
+        if (['error', 'ready'].includes(state)) {
           clearInterval(pullState)
         } 
       }

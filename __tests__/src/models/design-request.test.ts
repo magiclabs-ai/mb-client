@@ -92,17 +92,17 @@ describe('Design Request', async () => {
     await vi.advanceTimersToNextTimerAsync()
     const newCall = dispatchEventSpy.mock.calls[0][0] as DesignRequestEvent
     expect(dispatchEventSpy.mock.calls.length).toBe(1)
-    expect(newCall.type).toBe('Magicbook.designRequestUpdated')
+    expect(newCall.type).toBe('MagicBook.designRequestUpdated')
     expect(newCall['detail']['state']).toBe('new')
     mockRetrieveBook.mockResolvedValue(bookFactory({state: 'designing'}))
     await vi.advanceTimersToNextTimerAsync()
     const designingCall = dispatchEventSpy.mock.calls[1][0] as DesignRequestEvent
-    expect(designingCall.type).toBe('Magicbook.designRequestUpdated')
+    expect(designingCall.type).toBe('MagicBook.designRequestUpdated')
     expect(designingCall['detail']['state']).toBe('designing')
     mockRetrieveBook.mockResolvedValue(bookFactory({state: 'ready'}))
     await vi.advanceTimersToNextTimerAsync()
     const ReadyCall = dispatchEventSpy.mock.calls[2][0] as DesignRequestEvent
-    expect(ReadyCall.type).toBe('Magicbook.designRequestUpdated')
+    expect(ReadyCall.type).toBe('MagicBook.designRequestUpdated')
     expect(ReadyCall['detail']['state']).toBe('ready')
     await vi.advanceTimersToNextTimerAsync()
     expect(dispatchEventSpy.mock.calls.length).toBe(3)
