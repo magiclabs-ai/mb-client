@@ -101,7 +101,7 @@ export class DesignRequest {
 
   private async getProgress() {
     let previousState = ''
-    const pullState = setInterval(async () => {
+    const pollingState = setInterval(async () => {
       const state = (await retrieveBook(this.parentId)).state
       if (previousState !== state) {
         previousState = state
@@ -112,7 +112,7 @@ export class DesignRequest {
         })
         window.dispatchEvent(event)
         if (['error', 'ready'].includes(state)) {
-          clearInterval(pullState)
+          clearInterval(pollingState)
         } 
       }
     }, designRequestRefreshInterval)
