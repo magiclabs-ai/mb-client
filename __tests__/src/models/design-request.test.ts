@@ -2,6 +2,8 @@ import {DesignRequestEvent, DesignRequestProps} from '@/models/design-request'
 import {Image} from '@/models/design-request/image'
 import {MagicBookClient} from '@/index'
 import {describe, expect, test, vi} from 'vitest'
+import {designOptions} from '@/data/design-options'
+import {faker} from '@faker-js/faker'
 import {galleonJSON} from '@/data/galleon'
 
 describe('Design Request', async () => {
@@ -33,7 +35,11 @@ describe('Design Request', async () => {
   test('getJSON', async () => {
     const nautilus = await designRequest.getJSON()
     expect(nautilus.title).toBe(designRequest.title)
-    expect(galleonJSON).toBe(galleonJSON)
+    expect(nautilus).toBe(galleonJSON)
+  })
+  test('getOptions', async () => {
+    const designRequestOptions = await designRequest.getOptions(faker.datatype.number({min: 1, max: 3}))
+    expect(designRequestOptions).toBe(designOptions)
   })
   test('submitDesignRequest', async () => {
     const submitDesignRequest = await designRequest.submit({
