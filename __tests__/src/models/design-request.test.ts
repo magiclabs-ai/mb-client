@@ -81,18 +81,15 @@ describe('Design Request', async () => {
     expect(designRequestOptions).toBe(snakeCaseObjectKeysToCamelCase(designOptions))
   })
   test('submitDesignRequest', async () => {
+    vi.useFakeTimers()
+    const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
+    mockRetrieveBook.mockResolvedValue(bookFactory({state: 'new'}))
     const submitDesignRequest = await designRequest.submit({
       imageDensity: 'high',
       embellishmentLevel: 'few',
       textStickerLevel: 'few'
     })
     expect(submitDesignRequest).toStrictEqual(designRequest)
-  })
-  test('Design Request Progression', async () => {
-    vi.useFakeTimers()
-    const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
-    mockRetrieveBook.mockResolvedValue(bookFactory({state: 'new'}))
-    await designRequest.submit()
     await vi.advanceTimersToNextTimerAsync()
     await vi.advanceTimersToNextTimerAsync()
     const newCall = dispatchEventSpy.mock.calls[0][0] as DesignRequestEvent
