@@ -1,6 +1,6 @@
 import {DesignRequestProps} from '../../../src/models/design-request'
 import {MagicBookClient} from '../../../src'
-import {bookFactory} from '../../../src/factories/book.factory'
+import {bookFactory} from '../../factories/book.factory'
 import {describe, expect, test} from 'vitest'
 import {mockCreateBook} from '../../mocks/setup'
 

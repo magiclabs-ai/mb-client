@@ -1,5 +1,6 @@
 import {Mock, vi} from 'vitest'
 import {createBook, retrieveBook, updateBook} from '../../src/utils/engine-api/books'
+import {getDesignOptions} from '../../src/utils/engine-api/design-options'
 import axios from 'axios'
 
 vi.mock('axios')
@@ -17,3 +18,9 @@ vi.mock('@/utils/engine-api/books', async () => ({
 export const mockCreateBook = createBook as Mock
 export const mockRetrieveBook = retrieveBook as Mock
 export const mockUpdateBook = updateBook as Mock
+
+vi.mock('@/utils/engine-api/design-options', async () => ({
+  getDesignOptions: vi.fn()
+}))
+
+export const mockGetDesignOptions = getDesignOptions as Mock

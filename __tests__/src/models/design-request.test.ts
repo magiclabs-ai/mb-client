@@ -13,11 +13,11 @@ import {DesignRequest, DesignRequestEvent, DesignRequestProps} from '../../../sr
 import {Image, Images} from '../../../src/models/design-request/image'
 import {MagicBookClient} from '../../../src'
 import {beforeEach, describe, expect, test, vi} from 'vitest'
-import {bookFactory} from '../../../src/factories/book.factory'
-import {designOptions} from '@/data/design-options'
+import {bookFactory} from '../../factories/book.factory'
+import {designOptionsFactory} from '../../factories/design-options.factory'
 import {faker} from '@faker-js/faker'
 import {galleonJSON} from '../../../src/data/galleon'
-import {mockCreateBook, mockRetrieveBook} from '../../mocks/setup'
+import {mockCreateBook, mockGetDesignOptions, mockRetrieveBook} from '../../mocks/setup'
 
 
 describe('Design Request', async () => {
@@ -74,7 +74,9 @@ describe('Design Request', async () => {
     expect(nautilus).toBe(galleonJSON)
   })
   test('getOptions', async () => {
-    const designRequestOptions = await designRequest.getOptions(faker.datatype.number({min: 1, max: 3}))
+    const designOptions = designOptionsFactory()
+    mockGetDesignOptions.mockResolvedValue(designOptions)
+    const designRequestOptions = await designRequest.getOptions(faker.datatype.number({min: 20, max: 200}))
     expect(designRequestOptions).toBe(designOptions)
   })
   test('submitDesignRequest', async () => {
@@ -88,8 +90,8 @@ describe('Design Request', async () => {
   test('Design Request Progression', async () => {
     vi.useFakeTimers()
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
-    await designRequest.submit()
     mockRetrieveBook.mockResolvedValue(bookFactory({state: 'new'}))
+    await designRequest.submit()
     await vi.advanceTimersToNextTimerAsync()
     await vi.advanceTimersToNextTimerAsync()
     const newCall = dispatchEventSpy.mock.calls[0][0] as DesignRequestEvent
