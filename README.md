@@ -60,7 +60,7 @@ window.addEventListener('ImageManager.ImageUploaded', async (item) => {
   await designRequest.images.add(image)
 })
 ```
-Once you know the number of images intended for the photo book, call this function to obtain image densities.
+Once you know the number of images intended for the photo book, call this function to obtain options such as image densities.
 
 ```ts
 const imageCount = 200
