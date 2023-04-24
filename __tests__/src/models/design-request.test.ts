@@ -14,10 +14,11 @@ import {Image, Images} from '../../../src/models/design-request/image'
 import {MagicBookClient} from '../../../src'
 import {beforeEach, describe, expect, test, vi} from 'vitest'
 import {bookFactory} from '../../factories/book.factory'
-import {designOptionsFactory} from '../../factories/design-options.factory'
+import {designOptionsServerFactory} from '../../factories/design-options.factory'
 import {faker} from '@faker-js/faker'
 import {galleonJSON} from '../../../src/data/galleon'
 import {mockCreateBook, mockGetDesignOptions, mockRetrieveBook} from '../../mocks/setup'
+import {snakeCaseObjectKeysToCamelCase} from '@/utils/toolbox'
 
 
 describe('Design Request', async () => {
@@ -74,10 +75,10 @@ describe('Design Request', async () => {
     expect(nautilus).toBe(galleonJSON)
   })
   test('getOptions', async () => {
-    const designOptions = designOptionsFactory()
+    const designOptions = designOptionsServerFactory()
     mockGetDesignOptions.mockResolvedValue(designOptions)
     const designRequestOptions = await designRequest.getOptions(faker.datatype.number({min: 20, max: 200}))
-    expect(designRequestOptions).toBe(designOptions)
+    expect(designRequestOptions).toBe(snakeCaseObjectKeysToCamelCase(designOptions))
   })
   test('submitDesignRequest', async () => {
     const submitDesignRequest = await designRequest.submit({

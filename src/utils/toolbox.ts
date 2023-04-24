@@ -32,3 +32,18 @@ export function camelCaseObjectKeysToSnakeCase(camelCaseObject: Record<string, u
   })
   return camelCaseObject
 }
+
+export function snakeCaseToCamelCase(str: string) {
+  return str.replace(/([-_][a-z])/g, $1 => $1.toUpperCase().replace('-', '').replace('_', ''))
+}
+
+export function snakeCaseObjectKeysToCamelCase(snakeCaseObject: Record<string, unknown>) {
+  Object.keys(snakeCaseObject).map(key => {
+    const camelCaseKey = snakeCaseToCamelCase(key)
+    if (camelCaseKey !== key) {
+      snakeCaseObject[camelCaseKey] = snakeCaseObject[key]
+      delete snakeCaseObject[key]
+    }
+  })
+  return snakeCaseObject
+}
