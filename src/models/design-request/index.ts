@@ -11,7 +11,9 @@ import {
   Styles,
   TextStickerLevels
 } from '@/data/design-request'
+import {DesignOptions} from './design-options'
 import {Images} from './image'
+import {designOptions} from '@/data/design-options'
 import {galleonJSON} from '@/data/galleon'
 
 export type Occasion = typeof Occasions[number]
@@ -61,6 +63,13 @@ export class DesignRequest {
     this.id = id
     designRequestProps && Object.assign(this, designRequestProps)
     this.images = new Images()
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  async getOptions(imageCount: number) {
+    return new Promise<DesignOptions>((resolve) => {
+      resolve(designOptions)
+    })
   }
 
   async submit(submitDesignRequest?: DesignRequestProps) {

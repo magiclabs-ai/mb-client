@@ -32,6 +32,7 @@ await (async () => {
   console.log('designRequest.images.add:', await designRequest.images.add(image))
   console.log('designRequest.images.add:', await designRequest.images.add(image))
   console.log('designRequest.images.add:', await designRequest.images.add(image))
+  console.log('designRequest.getOptions:', await designRequest.getOptions(3))
   console.log('designRequest.submit:', await designRequest.submit({
     imageDensity: 'high',
     embellishmentLevel: 'few',
