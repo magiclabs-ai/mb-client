@@ -11,12 +11,11 @@ import {
   Styles,
   TextStickerLevels
 } from '@/data/design-request'
-import {DesignOptions} from './design-options'
 import {Images} from './image'
-import {designOptions} from '@/data/design-options'
 import {designRequestRefreshInterval} from '@/config'
 import {designRequestToBook} from '@/utils/design-request-parser'
 import {galleonJSON} from '@/data/galleon'
+import {getDesignOptions} from '@/utils/engine-api/design-options'
 import {retrieveBook, updateBook} from '@/utils/engine-api/books'
 
 export type Occasion = typeof Occasions[number]
@@ -79,18 +78,14 @@ export class DesignRequest {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   async getOptions(imageCount: number) {
-    return new Promise<DesignOptions>((resolve) => {
-      resolve(designOptions)
-    })
+    return await getDesignOptions(this.bookSize, imageCount)
   }
 
-  async submit(submitDesignRequest?: DesignRequestProps) {
-    submitDesignRequest && Object.assign(this, submitDesignRequest)
-    this.startFakeProgress()
-    return new Promise<DesignRequest>((resolve) => {
-      camelCaseObjectKeysToSnakeCase(this as Record<string, unknown>)
-      resolve(this)
-    })
+  async submit(submitDesignRequestProps?: DesignRequestProps) {
+    submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
+    await updateBook(designRequestToBook(this))
+    this.getProgress()
+    return this
   }
 
   async getJSON() {

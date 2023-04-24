@@ -14,6 +14,8 @@ import {Image, Images} from '../../../src/models/design-request/image'
 import {MagicBookClient} from '../../../src'
 import {beforeEach, describe, expect, test, vi} from 'vitest'
 import {bookFactory} from '../../../src/factories/book.factory'
+import {designOptions} from '@/data/design-options'
+import {faker} from '@faker-js/faker'
 import {galleonJSON} from '../../../src/data/galleon'
 import {mockCreateBook, mockRetrieveBook} from '../../mocks/setup'
 
