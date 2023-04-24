@@ -26,7 +26,7 @@ const designRequest = await client.createDesignRequest({
   title: 'Australia 2023',
   occasion: 'travel',
   style: '1234',
-  bookFormat: '8x8',
+  bookSize: '8x8',
   coverType: 'hc',
   pageType: 'lf'
 })
@@ -39,11 +39,10 @@ const designRequest = await client.createDesignRequest()
 designRequest.title = 'Australia 2023',
 designRequest.occasion = 'travel',
 designRequest.style = '1234',
-designRequest.bookFormat = '8x8',
+designRequest.bookSize = '8x8',
 designRequest.coverType = 'hc',
 designRequest.pageType = 'lf'
 ```
-
 As images are getting ready to be handed over to Magicbook, for example when successfully uploaded, add them to the design request object.
 
 ```ts
@@ -60,6 +59,13 @@ window.addEventListener('ImageManager.ImageUploaded', async (item) => {
   const image: DesignRequestImage = {...}
   await designRequest.images.add(image)
 })
+```
+Once you know the number of images intended for the photo book, call this function to obtain image densities.
+
+```ts
+const imageCount = 200
+...
+const designOptions = designRequest.getOptions(imageCount)
 ```
 
 Before submitting the design request to Magicbook, register a callback to receive update events.
