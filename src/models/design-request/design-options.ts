@@ -7,9 +7,9 @@ export type ImageDensityOption = {
 }
 
 export type ImageDensityOptions = {
-  high: DensityOptions
-  medium: DensityOptions
-  low: DensityOptions
+  high: ImageDensityOption
+  medium: ImageDensityOption
+  low: ImageDensityOption
 }
 
 export type DesignOptions = {
