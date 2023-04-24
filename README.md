@@ -60,12 +60,13 @@ window.addEventListener('ImageManager.ImageUploaded', async (item) => {
   await designRequest.images.add(image)
 })
 ```
-Once you know the number of images intended for the photo book, call this function to obtain options such as image densities.
+
+Optionally, you can retrieve design options for the design request by calling the `getOptions` method, providing the total number of images selected by the user. The returned object contains the image densities (i.e. page count and image per page estimations)
 
 ```ts
-const imageCount = 200
+const selectedImageCount = 200
 ...
-const designOptions = designRequest.getOptions(imageCount)
+const designOptions = designRequest.getOptions(selectedImageCount)
 ```
 
 Before submitting the design request to Magicbook, register a callback to receive update events.

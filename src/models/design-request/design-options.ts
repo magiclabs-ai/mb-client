@@ -1,4 +1,4 @@
-export type DensityOptions = {
+export type ImageDensityOption = {
   maxPageCount: number
   minPageCount: number
   maxImageCount: number
@@ -6,12 +6,12 @@ export type DensityOptions = {
   minImageCount: number
 }
 
-export type DesignOptionsDensities = {
+export type ImageDensityOptions = {
   high: DensityOptions
   medium: DensityOptions
   low: DensityOptions
 }
 
 export type DesignOptions = {
-  densities: DesignOptionsDensities
+  densities: ImageDensityOptions
 }
