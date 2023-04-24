@@ -28,7 +28,7 @@ const designRequest = await client.createDesignRequest({
   style: '1234',
   bookSize: '8x8',
   coverType: 'hc',
-  pageType: 'lf'
+  pageType: 'sp'
 })
 ```
 
@@ -41,7 +41,7 @@ designRequest.occasion = 'travel',
 designRequest.style = '1234',
 designRequest.bookSize = '8x8',
 designRequest.coverType = 'hc',
-designRequest.pageType = 'lf'
+designRequest.pageType = 'sp'
 ```
 As images are getting ready to be handed over to Magicbook, for example when successfully uploaded, add them to the design request object.
 
@@ -81,6 +81,7 @@ Submit the design request. Again, the argument object can receive additional or 
 ```ts
 designRequest.submit({
   imageDensity: 'high',
+  imageFiltering: 'best',
   embellishmentLevel: 'few',
   textStickerLevel: 'none'
 })
