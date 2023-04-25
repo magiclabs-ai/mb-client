@@ -70,9 +70,9 @@ describe('Design Request', async () => {
     expect(await designRequest.images.add(image)).toStrictEqual(1)
   })
   test('getJSON', async () => {
-    const nautilus = await designRequest.getJSON()
-    expect(nautilus.title).toBe(designRequest.title)
-    expect(nautilus).toBe(galleonJSON)
+    const designRequestJSON = await designRequest.getJSON()
+    expect(designRequestJSON.title).toBe(designRequest.title)
+    expect(designRequestJSON).toBe(galleonJSON)
   })
   test('getOptions', async () => {
     const designOptions = designOptionsServerFactory()

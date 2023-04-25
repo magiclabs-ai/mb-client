@@ -76,7 +76,6 @@ export class DesignRequest {
     this.images = new Images(parentId)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   async getOptions(imageCount: number) {
     return await getDesignOptions(this.bookSize, imageCount)
   }
@@ -98,9 +97,7 @@ export class DesignRequest {
     let previousState = ''
     const pollingState = setInterval(async () => {
       const state = (await retrieveBook(this.parentId)).state
-      console.log('state', state)
       if (previousState !== state) {
-        console.log('inside', state)
         previousState = state
         const event = new CustomEvent<DesignRequestEventDetail>('MagicBook.designRequestUpdated', {
           detail: {
