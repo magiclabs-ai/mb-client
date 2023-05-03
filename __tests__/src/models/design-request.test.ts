@@ -1,19 +1,19 @@
-import {
-  BookSizes,
-  CoverTypes,
-  EmbellishmentLevels,
-  ImageDensities,
-  ImageFilterings,
-  Occasions,
-  PageTypes,
-  Styles,
-  TextStickerLevels
-} from '../../../src/data/design-request'
 import {DesignRequest, DesignRequestEvent, DesignRequestProps} from '../../../src/models/design-request'
 import {Image, Images} from '../../../src/models/design-request/image'
 import {MagicBookClient} from '../../../src'
 import {beforeEach, describe, expect, test, vi} from 'vitest'
 import {bookFactory} from '../../factories/book.factory'
+import {
+  bookSizes,
+  coverTypes,
+  embellishmentLevels,
+  imageDensities,
+  imageFilterings,
+  occasions,
+  pageTypes,
+  styles,
+  textStickerLevels
+} from '../../../src/data/design-request'
 import {designOptionsServerFactory} from '../../factories/design-options.factory'
 import {faker} from '@faker-js/faker'
 import {galleonFactory} from '../../factories/galleon.factory'
@@ -43,15 +43,15 @@ describe('Design Request', async () => {
     expect(JSON.stringify(new DesignRequest(parentId))).toStrictEqual(JSON.stringify({
       parentId,
       title: '',
-      occasion: Occasions[0],
-      style: Styles[0],
-      bookSize: BookSizes[0],
-      coverType: CoverTypes[0],
-      pageType: PageTypes[0],
-      imageDensity: ImageDensities[0],
-      imageFiltering: ImageFilterings[0],
-      embellishmentLevel: EmbellishmentLevels[0],
-      textStickerLevel: TextStickerLevels[0],
+      occasion: occasions[0],
+      style: parseInt(Object.keys(styles)[0]),
+      bookSize: bookSizes[0],
+      coverType: coverTypes[0],
+      pageType: pageTypes[0],
+      imageDensity: imageDensities[0],
+      imageFiltering: imageFilterings[0],
+      embellishmentLevel: embellishmentLevels[0],
+      textStickerLevel: textStickerLevels[0],
       images: new Images(parentId)
     }))
   })

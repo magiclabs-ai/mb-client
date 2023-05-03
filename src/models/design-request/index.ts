@@ -1,30 +1,31 @@
-import {
-  BookSizes,
-  CoverTypes,
-  EmbellishmentLevels,
-  ImageDensities,
-  ImageFilterings,
-  Occasions,
-  PageTypes,
-  States,
-  Styles,
-  TextStickerLevels
-} from '@/data/design-request'
 import {Images} from './image'
+import {
+  bookSizes,
+  coverTypes,
+  embellishmentLevels,
+  imageDensities,
+  imageFilterings,
+  occasions,
+  pageTypes,
+  states,
+  styles,
+  textStickerLevels
+} from '@/data/design-request'
 import {designRequestRefreshInterval} from '@/config'
 import {designRequestToBook} from '@/utils/design-request-parser'
 import {getDesignOptions} from '@/utils/engine-api/design-options'
 import {retrieveBook, retrieveGalleon, updateBook} from '@/utils/engine-api/books'
 
-export type Occasion = typeof Occasions[number]
-export type Style = typeof Styles[number]
-export type BookSize = typeof BookSizes[number]
-export type CoverType = typeof CoverTypes[number]
-export type PageType = typeof PageTypes[number]
-export type ImageDensity = typeof ImageDensities[number]
-export type ImageFiltering = typeof ImageFilterings[number]
-export type EmbellishmentLevel = typeof EmbellishmentLevels[number]
-export type TextStickerLevel = typeof TextStickerLevels[number]
+const styleIds = Object.keys(styles).map(key => parseInt(key))
+export type Occasion = typeof occasions[number]
+export type Style = typeof styleIds[number]
+export type BookSize = typeof bookSizes[number]
+export type CoverType = typeof coverTypes[number]
+export type PageType = typeof pageTypes[number]
+export type ImageDensity = typeof imageDensities[number]
+export type ImageFiltering = typeof imageFilterings[number]
+export type EmbellishmentLevel = typeof embellishmentLevels[number]
+export type TextStickerLevel = typeof textStickerLevels[number]
 
 export type DesignRequestProps = {
   title?: string
@@ -39,7 +40,7 @@ export type DesignRequestProps = {
   textStickerLevel?: TextStickerLevel
 }
 
-export type State = typeof States[number]
+export type State = typeof states[number]
 export type DesignRequestEventDetail = {
   state: State
 }
@@ -62,15 +63,15 @@ export class DesignRequest {
   constructor(parentId: string, designRequestProps?: DesignRequestProps) {
     this.parentId = parentId
     this.title = designRequestProps?.title || ''
-    this.occasion = designRequestProps?.occasion || Occasions[0]
-    this.style = designRequestProps?.style || Styles[0]
-    this.bookSize = designRequestProps?.bookSize || BookSizes[0]
-    this.coverType = designRequestProps?.coverType || CoverTypes[0]
-    this.pageType = designRequestProps?.pageType || PageTypes[0]
-    this.imageDensity = designRequestProps?.imageDensity || ImageDensities[0]
-    this.imageFiltering = designRequestProps?.imageFiltering || ImageFilterings[0]
-    this.embellishmentLevel = designRequestProps?.embellishmentLevel || EmbellishmentLevels[0]
-    this.textStickerLevel = designRequestProps?.textStickerLevel || TextStickerLevels[0]
+    this.occasion = designRequestProps?.occasion || occasions[0]
+    this.style = designRequestProps?.style || parseInt(Object.keys(styles)[0])
+    this.bookSize = designRequestProps?.bookSize || bookSizes[0]
+    this.coverType = designRequestProps?.coverType || coverTypes[0]
+    this.pageType = designRequestProps?.pageType || pageTypes[0]
+    this.imageDensity = designRequestProps?.imageDensity || imageDensities[0]
+    this.imageFiltering = designRequestProps?.imageFiltering || imageFilterings[0]
+    this.embellishmentLevel = designRequestProps?.embellishmentLevel || embellishmentLevels[0]
+    this.textStickerLevel = designRequestProps?.textStickerLevel || textStickerLevels[0]
     this.images = new Images(parentId)
   }
 

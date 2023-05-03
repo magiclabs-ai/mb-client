@@ -1,10 +1,10 @@
 import {Book, BookDesignRequestProps} from '@/models/book'
 import {DesignRequest} from '..'
 import {camelCaseObjectKeysToSnakeCase} from './toolbox'
-import {sflyMbStyleMap} from '@/data/design-request'
+import {styles} from '@/data/design-request'
 
 export function designRequestToBook(designRequest: DesignRequest) {
-  const styleSlug = sflyMbStyleMap[designRequest.style]
+  const styleSlug = styles[designRequest.style].slug
   const snakeCasedDesignRequest = 
     camelCaseObjectKeysToSnakeCase({...designRequest} as Record<string, unknown>) as BookDesignRequestProps
   snakeCasedDesignRequest.style = styleSlug
