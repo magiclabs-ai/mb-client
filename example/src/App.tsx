@@ -1,4 +1,4 @@
-import {DesignRequestEvent, Image, MagicBookClient, State} from '@magiclabs.ai/magicbook-client'
+import {DesignRequest, DesignRequestEvent, Image, MagicBookClient, State} from '@magiclabs.ai/magicbook-client'
 import {Layout} from './components/layout'
 import {faker} from '@faker-js/faker'
 import {useEffect, useState} from 'react'
@@ -6,10 +6,12 @@ import {useEffect, useState} from 'react'
 function App() {
   const client = new MagicBookClient('YOUR_API_KEY')
   const [isCreatingDesignRequest, setIsCreatingDesignRequest] = useState<boolean>(false) 
-  const [designRequestState, setDesignRequestState] = useState<State | null>() 
+  const [designRequestState, setDesignRequestState] = useState<State | null>()
+  const [currentDesignRequest, setDesignRequest] = useState<DesignRequest | null>()
   
   function handleDesignRequestUpdated(designRequestEvent: DesignRequestEvent) {
     console.log('MagicBook.designRequestUpdated', designRequestEvent.detail)
+    designRequestEvent.detail.state === 'ready' && 
     setDesignRequestState(designRequestEvent.detail.state)
   }
 
@@ -22,6 +24,11 @@ function App() {
   }
 
   useEffect(() => {
+    if (designRequestState === 'ready' && currentDesignRequest) {
+      currentDesignRequest.getJSON().then((res) => {
+        console.log('designRequest.getJSON:', res)
+      })
+    }
     return () => {
       removeMagicBookEventListener()
     }  
@@ -73,7 +80,7 @@ function App() {
       embellishmentLevel: 'few',
       textStickerLevel: 'none'
     }))
-    console.log('designRequest.getJSON:', await designRequest.getJSON())
+    setDesignRequest(designRequest)
   }
 
   function stopDesignRequestFlow() {
