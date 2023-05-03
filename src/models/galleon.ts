@@ -1,3 +1,4 @@
+//SFLY INTERFACES FOR GALLEON
 export interface BookCreationRequest {
   title: string
   coverSpecId: string

@@ -1,4 +1,3 @@
-import {BookCreationRequest} from '@/models/galleon'
 import {
   BookSizes,
   CoverTypes,
@@ -14,9 +13,8 @@ import {
 import {Images} from './image'
 import {designRequestRefreshInterval} from '@/config'
 import {designRequestToBook} from '@/utils/design-request-parser'
-import {galleonJSON} from '@/data/galleon'
 import {getDesignOptions} from '@/utils/engine-api/design-options'
-import {retrieveBook, updateBook} from '@/utils/engine-api/books'
+import {retrieveBook, retrieveGalleon, updateBook} from '@/utils/engine-api/books'
 
 export type Occasion = typeof Occasions[number]
 export type Style = typeof Styles[number]
@@ -88,9 +86,7 @@ export class DesignRequest {
   }
 
   async getJSON() {
-    return new Promise<BookCreationRequest>((resolve) => {
-      resolve(galleonJSON)
-    })
+    return await retrieveGalleon(this.parentId)
   }
 
   private async getProgress() {

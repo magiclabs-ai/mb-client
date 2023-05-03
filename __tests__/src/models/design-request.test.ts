@@ -16,8 +16,8 @@ import {beforeEach, describe, expect, test, vi} from 'vitest'
 import {bookFactory} from '../../factories/book.factory'
 import {designOptionsServerFactory} from '../../factories/design-options.factory'
 import {faker} from '@faker-js/faker'
-import {galleonJSON} from '../../../src/data/galleon'
-import {mockCreateBook, mockGetDesignOptions, mockRetrieveBook} from '../../mocks/setup'
+import {galleonFactory} from '../../factories/galleon.factory'
+import {mockCreateBook, mockGetDesignOptions, mockRetrieveBook, mockRetrieveGalleon} from '../../mocks/setup'
 import {snakeCaseObjectKeysToCamelCase} from '@/utils/toolbox'
 
 
@@ -70,9 +70,10 @@ describe('Design Request', async () => {
     expect(await designRequest.images.add(image)).toStrictEqual(1)
   })
   test('getJSON', async () => {
+    const galleon = galleonFactory({title: designRequest.title})
+    mockRetrieveGalleon.mockResolvedValue(galleon)
     const designRequestJSON = await designRequest.getJSON()
     expect(designRequestJSON.title).toBe(designRequest.title)
-    expect(designRequestJSON).toBe(galleonJSON)
   })
   test('getOptions', async () => {
     const designOptions = designOptionsServerFactory()

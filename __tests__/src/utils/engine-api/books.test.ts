@@ -1,8 +1,8 @@
-import {Book} from '../../../../src/models/book'
 import {axiosGet, axiosPost, axiosPut} from '../../../mocks/setup'
 import {bookFactory} from '../../../factories/book.factory'
-import {createBook, retrieveBook, updateBook} from '../../../../src/utils/engine-api/books'
+import {createBook, retrieveBook, retrieveGalleon, updateBook} from '../../../../src/utils/engine-api/books'
 import {describe, expect, test, vi} from 'vitest'
+import {galleonFactory} from '../../../factories/galleon.factory'
 
 vi.unmock('@/utils/engine-api/books')
 describe('Book APIs', () => {
@@ -19,8 +19,14 @@ describe('Book APIs', () => {
   })
   test('updateBook function', async () => {
     axiosPut.mockResolvedValue({data: book})
-    const res = await updateBook({} as Book)
+    const res = await updateBook(book)
     expect(JSON.stringify(res)).toBe(JSON.stringify(book))
+  })
+  test('retrieveGalleon function', async () => {
+    const galleon = galleonFactory({title: book.title})
+    axiosGet.mockResolvedValue({data: galleon})
+    const res = await retrieveGalleon(book.id)
+    expect(JSON.stringify(res)).toBe(JSON.stringify(galleon))
   })
 })
 
