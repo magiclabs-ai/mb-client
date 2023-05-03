@@ -11,7 +11,6 @@ function App() {
   
   function handleDesignRequestUpdated(designRequestEvent: DesignRequestEvent) {
     console.log('MagicBook.designRequestUpdated', designRequestEvent.detail)
-    designRequestEvent.detail.state === 'ready' && 
     setDesignRequestState(designRequestEvent.detail.state)
   }
 
@@ -58,7 +57,7 @@ function App() {
     designRequest.title = 'My Book'
     console.log('designRequest:', designRequest)
     const imagesLength = 25
-    for (let i = 0; i < imagesLength; i++) {
+    await Promise.all(Array.from(Array(imagesLength).keys()).map(async () => {
       const width = 1000
       const height = faker.datatype.number({min: 200, max: 500})
       const image: Image = {
@@ -74,7 +73,7 @@ function App() {
       }
       await designRequest.images.add(image)
       console.log('designRequest.images.add:', image)
-    }
+    }))
     console.log('designRequest.submit:', await designRequest.submit({
       imageDensity: 'high',
       embellishmentLevel: 'few',

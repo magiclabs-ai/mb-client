@@ -16,9 +16,8 @@ import {designRequestToBook} from '@/utils/design-request-parser'
 import {getDesignOptions} from '@/utils/engine-api/design-options'
 import {retrieveBook, retrieveGalleon, updateBook} from '@/utils/engine-api/books'
 
-const styleIds = Object.keys(styles).map(key => parseInt(key))
 export type Occasion = typeof occasions[number]
-export type Style = typeof styleIds[number]
+export type Style = keyof typeof styles
 export type BookSize = typeof bookSizes[number]
 export type CoverType = typeof coverTypes[number]
 export type PageType = typeof pageTypes[number]
@@ -64,7 +63,7 @@ export class DesignRequest {
     this.parentId = parentId
     this.title = designRequestProps?.title || ''
     this.occasion = designRequestProps?.occasion || occasions[0]
-    this.style = designRequestProps?.style || parseInt(Object.keys(styles)[0])
+    this.style = designRequestProps?.style || parseInt(Object.keys(styles)[0]) as Style
     this.bookSize = designRequestProps?.bookSize || bookSizes[0]
     this.coverType = designRequestProps?.coverType || coverTypes[0]
     this.pageType = designRequestProps?.pageType || pageTypes[0]

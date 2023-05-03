@@ -28,7 +28,7 @@ export const occasions = [
   'wedding',
   'year-in-review'
 ] as const
-export const styles: Record<number, Record<string, string>> = {
+export const styles = {
   1005: {slug: 'modern-black-sfly'},
   1101: {slug: 'bon-voyage-sfly'},
   1103: {slug: 'fun-in-the-sun-sfly'},
