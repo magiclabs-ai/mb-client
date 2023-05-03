@@ -6,7 +6,7 @@
   "type": "module",
   "main": "./dist/magicbook-client.umd.cjs",
   "module": "./dist/magicbook-client.js",
-  "types": "./index.d.ts",
+  "types": "./src/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/56kcloud/mb-client.git"
@@ -18,7 +18,7 @@
     }
   },
   "scripts": {
-    "watch": "vite build --watch",
+    "watch": "./scripts/build.sh -w",
     "build": "./scripts/build.sh",
     "deploy": "./scripts/deploy-npm.sh",
     "lint": "eslint . --ext js,jsx,ts,tsx --config .eslintrc.json --no-eslintrc",
@@ -26,21 +26,22 @@
     "coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "@types/node": "^18.15.11",
-    "@typescript-eslint/eslint-plugin": "^5.58.0",
-    "@typescript-eslint/parser": "^5.58.0",
+    "@types/node": "^18.16.3",
+    "@typescript-eslint/eslint-plugin": "^5.59.2",
+    "@typescript-eslint/parser": "^5.59.2",
     "@vitest/coverage-c8": "^0.30.1",
     "@vitest/coverage-istanbul": "^0.30.1",
     "@vitest/ui": "^0.30.1",
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
-    "jsdom": "^21.1.1",
+    "jsdom": "^22.0.0",
+    "rollup-plugin-execute": "^1.1.1",
     "typescript": "^5.0.4",
-    "vite": "^4.2.1",
+    "vite": "^4.3.4",
     "vite-plugin-dts": "^2.3.0",
     "vitest": "^0.30.1"
   },
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
-    "axios": "^1.3.5"
+    "axios": "^1.4.0"
   }
 }

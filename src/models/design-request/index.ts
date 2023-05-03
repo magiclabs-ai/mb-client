@@ -1,30 +1,30 @@
-import {BookCreationRequest} from '../galleon'
-import {
-  BookSizes,
-  CoverTypes,
-  EmbellishmentLevels,
-  ImageDensities,
-  ImageFilterings,
-  Occasions,
-  PageTypes,
-  States,
-  Styles,
-  TextStickerLevels
-} from '@/data/design-request'
-import {DesignOptions} from './design-options'
 import {Images} from './image'
-import {designOptions} from '@/data/design-options'
-import {galleonJSON} from '@/data/galleon'
+import {
+  bookSizes,
+  coverTypes,
+  embellishmentLevels,
+  imageDensities,
+  imageFilterings,
+  occasions,
+  pageTypes,
+  states,
+  styles,
+  textStickerLevels
+} from '@/data/design-request'
+import {designRequestRefreshInterval} from '@/config'
+import {designRequestToBook} from '@/utils/design-request-parser'
+import {getDesignOptions} from '@/utils/engine-api/design-options'
+import {retrieveBook, retrieveGalleon, updateBook} from '@/utils/engine-api/books'
 
-export type Occasion = typeof Occasions[number]
-export type Style = typeof Styles[number]
-export type BookSize = typeof BookSizes[number]
-export type CoverType = typeof CoverTypes[number]
-export type PageType = typeof PageTypes[number]
-export type ImageDensity = typeof ImageDensities[number]
-export type ImageFiltering = typeof ImageFilterings[number]
-export type EmbellishmentLevel = typeof EmbellishmentLevels[number]
-export type TextStickerLevel = typeof TextStickerLevels[number]
+export type Occasion = typeof occasions[number]
+export type Style = keyof typeof styles
+export type BookSize = typeof bookSizes[number]
+export type CoverType = typeof coverTypes[number]
+export type PageType = typeof pageTypes[number]
+export type ImageDensity = typeof imageDensities[number]
+export type ImageFiltering = typeof imageFilterings[number]
+export type EmbellishmentLevel = typeof embellishmentLevels[number]
+export type TextStickerLevel = typeof textStickerLevels[number]
 
 export type DesignRequestProps = {
   title?: string
@@ -39,80 +39,72 @@ export type DesignRequestProps = {
   textStickerLevel?: TextStickerLevel
 }
 
-export type State = typeof States[number]
+export type State = typeof states[number]
 export type DesignRequestEventDetail = {
   state: State
 }
 export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>
 
 export class DesignRequest {
-  id: string
-  title?: string
-  occasion?: Occasion
-  style?: Style
-  bookSize?: BookSize
-  coverType?: CoverType
-  pageType?: PageType
-  imageDensity?: ImageDensity
-  imageFiltering?: ImageFiltering
-  embellishmentLevel?: EmbellishmentLevel
-  textStickerLevel?: TextStickerLevel
+  parentId: string
+  title: string
+  occasion: Occasion
+  style: Style
+  bookSize: BookSize
+  coverType: CoverType
+  pageType: PageType
+  imageDensity: ImageDensity
+  imageFiltering: ImageFiltering
+  embellishmentLevel: EmbellishmentLevel
+  textStickerLevel: TextStickerLevel
   images: Images
 
-  constructor(id: string, designRequestProps?: DesignRequestProps) {
-    this.id = id
-    designRequestProps && Object.assign(this, designRequestProps)
-    this.images = new Images()
+  constructor(parentId: string, designRequestProps?: DesignRequestProps) {
+    this.parentId = parentId
+    this.title = designRequestProps?.title || ''
+    this.occasion = designRequestProps?.occasion || occasions[0]
+    this.style = designRequestProps?.style || parseInt(Object.keys(styles)[0]) as Style
+    this.bookSize = designRequestProps?.bookSize || bookSizes[0]
+    this.coverType = designRequestProps?.coverType || coverTypes[0]
+    this.pageType = designRequestProps?.pageType || pageTypes[0]
+    this.imageDensity = designRequestProps?.imageDensity || imageDensities[0]
+    this.imageFiltering = designRequestProps?.imageFiltering || imageFilterings[0]
+    this.embellishmentLevel = designRequestProps?.embellishmentLevel || embellishmentLevels[0]
+    this.textStickerLevel = designRequestProps?.textStickerLevel || textStickerLevels[0]
+    this.images = new Images(parentId)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   async getOptions(imageCount: number) {
-    return new Promise<DesignOptions>((resolve) => {
-      resolve(designOptions)
-    })
+    return await getDesignOptions(this.bookSize, imageCount)
   }
 
-  async submit(submitDesignRequest?: DesignRequestProps) {
-    submitDesignRequest && Object.assign(this, submitDesignRequest)
-    this.startFakeProgress()
-    return new Promise<DesignRequest>((resolve) => {
-      resolve(this)
-    })
+  async submit(submitDesignRequestProps?: DesignRequestProps) {
+    submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
+    await updateBook(designRequestToBook(this))
+    this.getProgress()
+    return this
   }
 
   async getJSON() {
-    return new Promise<BookCreationRequest>((resolve) => {
-      resolve(galleonJSON)
-    })
+    return await retrieveGalleon(this.parentId)
   }
 
-  startFakeProgress() {
-    setTimeout(() => {
-      const event = new CustomEvent<DesignRequestEventDetail>('Magicbook.designRequestUpdated', {
-        bubbles: true,
-        detail: {
-          state: 'new'
-        }
-      })
-      window.dispatchEvent(event)
-    }, 2000)
-    setTimeout(() => {
-      const event = new CustomEvent<DesignRequestEventDetail>('Magicbook.designRequestUpdated', {
-        bubbles: true,
-        detail: {
-          state: 'designing'
-        }
-      })
-      window.dispatchEvent(event)
-    }, 3000)
-    setTimeout(() => {
-      const event = new CustomEvent<DesignRequestEventDetail>('Magicbook.designRequestUpdated', {
-        bubbles: true,
-        detail: {
-          state: 'completed'
-        }
-      })
-      window.dispatchEvent(event)
-    }, 6000)
+  private async getProgress() {
+    let previousState = ''
+    const pollingState = setInterval(async () => {
+      const state = (await retrieveBook(this.parentId)).state
+      if (previousState !== state) {
+        previousState = state
+        const event = new CustomEvent<DesignRequestEventDetail>('MagicBook.designRequestUpdated', {
+          detail: {
+            state: state
+          }
+        })
+        window.dispatchEvent(event)
+        if (['error', 'ready'].includes(state)) {
+          clearInterval(pollingState)
+        } 
+      }
+    }, designRequestRefreshInterval)
   }
 }

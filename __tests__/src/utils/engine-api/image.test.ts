@@ -1,15 +1,15 @@
-import {Image} from '@/index'
-import {addImageInBook, listImagesInBook} from '@/utils/engine-api/images'
-import {describe, test, vi} from 'vitest'
+import {addImageInBook} from '../../../../src/utils/engine-api/images'
+import {axiosPost} from '../../../mocks/setup'
+import {describe, expect, test, vi} from 'vitest'
+import {imageServerFactory} from '../../../factories/image.factory'
 
-vi.mock('axios')
-
-describe('Axios', () => {
-  test('addImageInBook function', () => {
-    addImageInBook('bookId', {} as Image)
-  })
-  test('listImagesInBook function', () => {
-    listImagesInBook('bookId')
+vi.unmock('@/utils/engine-api/images')
+describe('Image APIs', () => {
+  test('addImageInBook function', async () => {
+    const imagesLength = 1
+    axiosPost.mockResolvedValue({data: imagesLength})
+    const res = await addImageInBook('bookId', imageServerFactory())
+    expect(res.data).toBe(imagesLength)
   })
 })
 
