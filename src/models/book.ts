@@ -7,13 +7,12 @@ import {
   Occasion,
   PageType,
   State,
-  Style,
   TextStickerLevel
 } from './design-request'
 
 export type BookDesignRequestProps = {
   occasion: Occasion
-  style: Style
+  style: string
   book_size: BookSize
   cover_type: CoverType
   page_type: PageType
@@ -25,7 +24,7 @@ export type BookDesignRequestProps = {
 
 export class BookDesignRequest {
   occasion: Occasion
-  style: Style
+  style: string
   book_size: BookSize
   cover_type: CoverType
   page_type: PageType
@@ -51,7 +50,7 @@ export type BookProps = {
   id: string
   state: State
   title: string
-  design_request: BookDesignRequest
+  design_request: BookDesignRequestProps
 }
 
 export class Book {

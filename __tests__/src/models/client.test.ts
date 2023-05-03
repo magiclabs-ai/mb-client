@@ -10,7 +10,7 @@ describe('Client', () => {
     const designRequestProps: DesignRequestProps = {
       title: 'My Book',
       occasion: 'baby',
-      style: '2020-what-a-year-sfly',
+      style: 1005,
       bookSize: '10x10',
       coverType: 'hc',
       pageType: 'dl'

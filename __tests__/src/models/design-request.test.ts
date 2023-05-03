@@ -28,7 +28,7 @@ describe('Design Request', async () => {
     const client = new MagicBookClient('123')
     const designRequestProps: DesignRequestProps = {
       occasion: 'birthday',
-      style: '2020-what-a-year-sfly',
+      style: 5274,
       bookSize: '10x10',
       coverType: 'hc',
       pageType: 'dl',
@@ -59,7 +59,7 @@ describe('Design Request', async () => {
     const image: Image = {
       handle: 'imageId',
       url: 'imageURL',
-      width: 500,
+      width: 1000,
       height: 500,
       rotation: 0,
       captureTime: '2021-01-01T00:00:00.000Z',

@@ -43,7 +43,7 @@ function App() {
     setIsCreatingDesignRequest(true)
     const designRequest = await client.createDesignRequest({
       occasion: 'default',
-      style: 'autumn-memories-sfly',
+      style: 1005,
       bookSize: '10x10',
       coverType: 'hc',
       pageType: 'sp'
@@ -52,18 +52,18 @@ function App() {
     console.log('designRequest:', designRequest)
     const imagesLength = 25
     for (let i = 0; i < imagesLength; i++) {
-      const width = parseInt(faker.datatype.number({min: 200, max: 500}))
-      const height = parseInt(faker.datatype.number({min: 200, max: 500}))
+      const width = 1000
+      const height = faker.datatype.number({min: 200, max: 500})
       const image: Image = {
         handle: faker.datatype.uuid(),
         url: faker.image.imageUrl(width, height),
         width,
         height,
         rotation: 0,
-        captureTime: faker.datatype.datetime(),
+        captureTime: faker.datatype.datetime().toISOString(),
         cameraMake: '',
         cameraModel: 'Sony A7R IV',
-        filename: faker.system.commonFileName('.jpg')
+        filename: faker.system.commonFileName('jpg')
       }
       await designRequest.images.add(image)
       console.log('designRequest.images.add:', image)

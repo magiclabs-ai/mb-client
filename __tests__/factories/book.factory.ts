@@ -1,4 +1,4 @@
-import {Book, BookDesignRequest} from '../../src/models/book'
+import {Book, BookDesignRequestProps} from '../../src/models/book'
 import {
   BookSizes,
   CoverTypes,
@@ -9,7 +9,8 @@ import {
   PageTypes,
   States,
   Styles,
-  TextStickerLevels
+  TextStickerLevels,
+  sflyMbStyleMap
 } from '../../src/data/design-request'
 import {State} from '../../src/models/design-request'
 import {faker} from '@faker-js/faker'
@@ -18,7 +19,7 @@ export type BookFactoryProps = {
   id?: string
   state?: State
   title?: string
-  design_request?: BookDesignRequest
+  design_request?: BookDesignRequestProps
 }
 
 export function bookFactory(props?: BookFactoryProps) {
@@ -28,7 +29,7 @@ export function bookFactory(props?: BookFactoryProps) {
     title: props?.title || faker.lorem.words(3),
     design_request: {
       occasion: props?.design_request?.occasion || faker.helpers.arrayElement(Occasions),
-      style: props?.design_request?.style || faker.helpers.arrayElement(Styles),
+      style: props?.design_request?.style || sflyMbStyleMap[faker.helpers.arrayElement(Styles)],
       book_size: props?.design_request?.book_size || faker.helpers.arrayElement(BookSizes),
       cover_type: props?.design_request?.cover_type || faker.helpers.arrayElement(CoverTypes),
       page_type: props?.design_request?.page_type || faker.helpers.arrayElement(PageTypes),
