@@ -1,7 +1,7 @@
 {
   "name": "@magiclabs.ai/magicbook-client",
   "private": false,
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "TypeScript package to create photo books with the Magicbook API.",
   "type": "module",
   "main": "./dist/magicbook-client.umd.cjs",
