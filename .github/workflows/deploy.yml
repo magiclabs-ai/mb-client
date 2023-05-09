@@ -1,13 +1,14 @@
 name: Publish Package to npmjs
 on:
   release:
-    types: [published]
-env:
-  VITE_DESIGN_REQUEST_REFRESH_INTERVAL: ${{secrets.VITE_DESIGN_REQUEST_REFRESH_INTERVAL}}
-  VITE_API_HOST: ${{secrets.VITE_API_HOST}}
+    types: [released, prereleased]
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: ${{github.event.release.prerelease && 'dev' || 'prod'}}
+    env:
+      VITE_DESIGN_REQUEST_REFRESH_INTERVAL: ${{secrets.VITE_DESIGN_REQUEST_REFRESH_INTERVAL}}
+      VITE_API_HOST: ${{secrets.VITE_API_HOST}}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -16,7 +17,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: npm i
       - run: npm run coverage
-      - run: chmod +x ./scripts/deploy-npm.sh && ./scripts/deploy-npm.sh
+      - run: chmod +x ./scripts/deploy-npm.sh && ./scripts/deploy-npm.sh ${{github.event.release.prerelease && '--dev' || ''}}
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
