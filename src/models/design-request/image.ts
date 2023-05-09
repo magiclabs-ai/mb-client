@@ -15,17 +15,21 @@ export type Image = {
 export class Images {
   private parentId: string
   private images: Array<Image>
+  length: number
 
   constructor(parentId: string) {
     this.parentId = parentId
     this.images = []
+    this.length = this.images.length
   }
 
   async add(image: Image): Promise<number> {
     this.images.push(image)
+    this.length = this.images.length
+    console.log(this.length)
     await addImageInBook(this.parentId, new ImageServer(image))
     return new Promise<number>((resolve) => {
-      resolve(this.images.length)
+      resolve(this.length)
     })
   }
 }

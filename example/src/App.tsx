@@ -74,6 +74,7 @@ function App() {
       await designRequest.images.add(image)
       console.log('designRequest.images.add:', image)
     }))
+    console.log('designRequest.images.length:', designRequest.images.length)
     console.log('designRequest.submit:', await designRequest.submit({
       imageDensity: 'high',
       embellishmentLevel: 'few',
