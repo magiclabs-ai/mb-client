@@ -29,6 +29,10 @@ export function camelCaseObjectKeysToSnakeCase(camelCaseObject: Record<string, u
       camelCaseObject[snakeCaseKey] = camelCaseObject[key]
       delete camelCaseObject[key]
     }
+    if (typeof camelCaseObject[snakeCaseKey] === 'object') {
+      camelCaseObject[snakeCaseKey] =
+      camelCaseObjectKeysToSnakeCase(camelCaseObject[snakeCaseKey] as Record<string, unknown>)
+    }
   })
   return camelCaseObject
 }
@@ -43,6 +47,10 @@ export function snakeCaseObjectKeysToCamelCase(snakeCaseObject: Record<string, u
     if (camelCaseKey !== key) {
       snakeCaseObject[camelCaseKey] = snakeCaseObject[key]
       delete snakeCaseObject[key]
+    }
+    if (typeof snakeCaseObject[camelCaseKey] === 'object') {
+      snakeCaseObject[camelCaseKey] =
+       snakeCaseObjectKeysToCamelCase(snakeCaseObject[camelCaseKey] as Record<string, unknown>)
     }
   })
   return snakeCaseObject
