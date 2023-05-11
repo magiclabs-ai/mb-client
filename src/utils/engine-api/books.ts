@@ -1,28 +1,37 @@
 import {APIHandler, get, post, put} from './axios'
-import {Book, BookProps} from '@/models/book'
-import {BookCreationRequest} from '@/models/galleon'
+import {Book, BookPropsSchema} from '@/models/book'
+import {BookCreationRequest, bookCreationRequestSchema} from '@/models/galleon'
 import {apiHost} from '../../config'
 
 export async function createBook(payload?: Book) {
-  return APIHandler(async () => 
-    new Book((await post({url: `${apiHost}/api/v1/books`, payload})).data as BookProps)
-  )
+  return APIHandler(async () => {
+    const res = (await post({url: `${apiHost}/api/v1/books`, payload})).data
+    BookPropsSchema.parse(res)
+    return new Book(res)
+  })
 }
 
 export async function retrieveBook(bookId: string) {
-  return APIHandler(async () => 
-    new Book((await get({url: `${apiHost}/api/v1/books/${bookId}`})).data as BookProps)
+  return APIHandler(async () => {
+    const res = (await get({url: `${apiHost}/api/v1/books/${bookId}`})).data
+    BookPropsSchema.parse(res)
+    return new Book(res)
+  }
   )
 }
 
 export async function updateBook(payload: Book) {
-  return APIHandler(async () => 
-    new Book((await put({url: `${apiHost}/api/v1/books/${payload.id}`, payload})).data as BookProps)
-  )
+  return APIHandler(async () => {
+    const res = (await put({url: `${apiHost}/api/v1/books/${payload.id}`, payload})).data
+    BookPropsSchema.parse(res)
+    return new Book(res)
+  })
 }
 
 export async function retrieveGalleon(bookId: string) {
-  return APIHandler(async () => 
-    (await get({url: `${apiHost}/api/v1/books/${bookId}/format/galleon`})).data as BookCreationRequest
-  )
+  return APIHandler(async () => {
+    const res = (await get({url: `${apiHost}/api/v1/books/${bookId}/format/galleon`})).data
+    bookCreationRequestSchema.parse(res)
+    return res as BookCreationRequest
+  })
 }
