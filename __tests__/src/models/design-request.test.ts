@@ -1,6 +1,7 @@
 import {DesignRequest, DesignRequestEvent, DesignRequestProps} from '../../../src/models/design-request'
-import {Image, Images} from '../../../src/models/design-request/image'
+import {Image, ImageServer, Images} from '../../../src/models/design-request/image'
 import {MagicBookClient} from '../../../src'
+import {axiosPost, mockCreateBook, mockGetDesignOptions, mockRetrieveBook, mockRetrieveGalleon} from '../../mocks/setup'
 import {beforeEach, describe, expect, test, vi} from 'vitest'
 import {bookFactory} from '../../factories/book.factory'
 import {
@@ -17,7 +18,6 @@ import {
 import {designOptionsServerFactory} from '../../factories/design-options.factory'
 import {faker} from '@faker-js/faker'
 import {galleonFactory} from '../../factories/galleon.factory'
-import {mockCreateBook, mockGetDesignOptions, mockRetrieveBook, mockRetrieveGalleon} from '../../mocks/setup'
 import {snakeCaseObjectKeysToCamelCase} from '@/utils/toolbox'
 
 
@@ -67,6 +67,7 @@ describe('Design Request', async () => {
       cameraModel: 'cameraModel',
       filename: 'filename'
     }
+    axiosPost.mockResolvedValue({data: new ImageServer(image)})
     expect(await designRequest.images.add(image)).toStrictEqual(1)
   })
   test('getJSON', async () => {
@@ -79,6 +80,8 @@ describe('Design Request', async () => {
     const designOptions = designOptionsServerFactory()
     mockGetDesignOptions.mockResolvedValue(designOptions)
     const designRequestOptions = await designRequest.getOptions(faker.datatype.number({min: 20, max: 200}))
+    // OR
+    await designRequest.getOptions()
     expect(designRequestOptions).toBe(snakeCaseObjectKeysToCamelCase(designOptions))
   })
   test('submitDesignRequest', async () => {

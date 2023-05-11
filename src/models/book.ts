@@ -9,6 +9,18 @@ import {
   State,
   TextStickerLevel
 } from './design-request'
+import {
+  bookSizes,
+  coverTypes,
+  embellishmentLevels,
+  imageDensities,
+  imageFilterings,
+  occasions,
+  pageTypes,
+  states,
+  textStickerLevels
+} from '@/data/design-request'
+import {z} from 'zod'
 
 export type BookDesignRequestProps = {
   occasion: Occasion
@@ -46,12 +58,28 @@ export class BookDesignRequest {
   }
 }
 
-export type BookProps = {
-  id: string
-  state: State
-  title: string
-  design_request: BookDesignRequestProps
-}
+export const bookDesignRequestSchema = z.object({
+  occasion: z.enum(occasions),
+  style: z.string(),
+  book_size: z.enum(bookSizes),
+  cover_type: z.enum(coverTypes),
+  page_type: z.enum(pageTypes),
+  image_density: z.enum(imageDensities),
+  image_filtering: z.enum(imageFilterings),
+  embellishment_level: z.enum(embellishmentLevels),
+  text_sticker_level: z.enum(textStickerLevels)
+})
+
+
+export const BookPropsSchema = z.object({
+  id: z.string(),
+  state: z.enum(states),
+  title: z.string(),
+  design_request: bookDesignRequestSchema
+})
+export type BookProps = z.infer<typeof BookPropsSchema>
+
+
 
 export class Book {
   id: string

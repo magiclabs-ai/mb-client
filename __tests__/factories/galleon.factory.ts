@@ -1,3 +1,4 @@
+import {BookCreationRequest} from '@/models/galleon'
 import {faker} from '@faker-js/faker'
 
 export type galleonFactoryProps = {
@@ -1168,5 +1169,5 @@ export function galleonFactory(props?: galleonFactoryProps) {
         }
       ]
     }
-  }
+  } as BookCreationRequest
 }

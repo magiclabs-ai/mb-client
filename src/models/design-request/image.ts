@@ -1,4 +1,5 @@
 import {addImageInBook} from '@/utils/engine-api/images'
+import {z} from 'zod'
 
 export type Image = {
   handle: string
@@ -26,13 +27,26 @@ export class Images {
   async add(image: Image): Promise<number> {
     this.images.push(image)
     this.length = this.images.length
-    console.log(this.length)
     await addImageInBook(this.parentId, new ImageServer(image))
     return new Promise<number>((resolve) => {
       resolve(this.length)
     })
   }
 }
+
+
+export const imageServerSchema = z.object({
+  handle: z.string(),
+  url: z.string(),
+  width: z.number(),
+  height: z.number(),
+  orientation: z.number(),
+  taken_at: z.string(),
+  camera_make: z.string().optional(),
+  camera: z.string().optional(),
+  filename: z.string()
+})
+
 export class ImageServer {
   handle: string
   url: string

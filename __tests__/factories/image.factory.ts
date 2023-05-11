@@ -21,8 +21,8 @@ export function imageFactory(props?: ImageFactoryProps) {
     url: props?.url || faker.image.imageUrl(width, height),
     width,
     height,
-    rotation: props?.rotation || '0',
-    captureTime: props?.captureTime || faker.datatype.datetime(),
+    rotation: props?.rotation || 0,
+    captureTime: props?.captureTime || faker.datatype.datetime().toISOString(),
     cameraMake: props?.cameraMake,
     cameraModel: props?.cameraModel,
     filename: props?.filename || faker.system.commonFileName('.jpg')
