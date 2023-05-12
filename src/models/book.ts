@@ -70,7 +70,6 @@ export const bookDesignRequestSchema = z.object({
   text_sticker_level: z.enum(textStickerLevels)
 })
 
-
 export const BookPropsSchema = z.object({
   id: z.string(),
   state: z.enum(states),
@@ -78,8 +77,6 @@ export const BookPropsSchema = z.object({
   design_request: bookDesignRequestSchema
 })
 export type BookProps = z.infer<typeof BookPropsSchema>
-
-
 
 export class Book {
   id: string

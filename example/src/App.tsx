@@ -49,7 +49,7 @@ function App() {
     setIsCreatingDesignRequest(true)
     const designRequest = await client.createDesignRequest({
       occasion: 'default',
-      style: 1005,
+      style: 5144,
       bookSize: '10x10',
       coverType: 'hc',
       pageType: 'sp'
@@ -75,6 +75,7 @@ function App() {
       console.log('designRequest.images.add:', image)
     }))
     console.log('designRequest.images.length:', designRequest.images.length)
+    console.log('designRequest.getOptions:', await designRequest.getOptions())
     console.log('designRequest.submit:', await designRequest.submit({
       imageDensity: 'high',
       embellishmentLevel: 'few',

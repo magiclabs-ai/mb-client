@@ -6,7 +6,7 @@ import {apiHost} from '../../config'
 export async function createBook(payload?: Book) {
   return APIHandler(async () => {
     const res = (await post({url: `${apiHost}/api/v1/books`, payload})).data
-    BookPropsSchema.parse(res)
+    BookPropsSchema.safeParse(res)
     return new Book(res)
   })
 }
@@ -14,7 +14,7 @@ export async function createBook(payload?: Book) {
 export async function retrieveBook(bookId: string) {
   return APIHandler(async () => {
     const res = (await get({url: `${apiHost}/api/v1/books/${bookId}`})).data
-    BookPropsSchema.parse(res)
+    BookPropsSchema.safeParse(res)
     return new Book(res)
   }
   )
@@ -23,7 +23,7 @@ export async function retrieveBook(bookId: string) {
 export async function updateBook(payload: Book) {
   return APIHandler(async () => {
     const res = (await put({url: `${apiHost}/api/v1/books/${payload.id}`, payload})).data
-    BookPropsSchema.parse(res)
+    BookPropsSchema.safeParse(res)
     return new Book(res)
   })
 }
