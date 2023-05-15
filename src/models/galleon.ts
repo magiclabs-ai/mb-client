@@ -1,7 +1,7 @@
 import {z} from 'zod'
 
 export const imageAssignmentSchema = z.object({
-  photoRefId: z.number(),
+  photoRefId: z.string(),
   finalCrop: z.array(z.number())
 })
 export type ImageAssignment = z.infer<typeof imageAssignmentSchema>
@@ -21,7 +21,7 @@ export const photoMetadataSchema = z.object({
   lly: z.number(),
   urx: z.number(),
   ury: z.number(),
-  data: z.string(),
+  data: z.string().nullable(),
   title: z.string(),
   width: z.number(),
   effect: z.string(),
@@ -46,7 +46,7 @@ export const assetSchema = z.object({
   z: z.number(),
   id: z.string().optional(),
   horizJustification: z.string().optional(),
-  vertJustification: z.string().optional(),
+  vertJustification: z.string().optional().nullable(),
   text: z.string().optional(),
   fontId: z.string().optional(),
   fontSize: z.number().optional(),
@@ -58,7 +58,8 @@ export type Asset = z.infer<typeof assetSchema>
 export const photoStripSchema = z.object({
   url: z.string(),
   encryptId: z.string(),
-  photoRefId: z.number(),
+  photoRefId: z.string(),
+  photoId: z.string(),
   photoMetadata: photoMetadataSchema
 })
 export type PhotoStrip = z.infer<typeof photoStripSchema>
@@ -69,7 +70,7 @@ export const reportingDataSchema = z.object({
 export type ReportingData = z.infer<typeof reportingDataSchema>
 
 export const canvasSchema = z.object({
-  backgroundId: z.string().optional(),
+  backgroundId: z.string().nullable(),
   assets: z.array(assetSchema)
 })
 export type Canvas = z.infer<typeof canvasSchema>
