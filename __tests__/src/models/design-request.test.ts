@@ -23,6 +23,7 @@ import {galleonFactory} from '../../factories/galleon.factory'
 import {mockCreateBook, mockRetrieveBook, mockRetrieveGalleon} from '../../mocks/books'
 import {mockGetDesignOptions} from '../../mocks/design-options'
 import {snakeCaseObjectKeysToCamelCase} from '@/utils/toolbox'
+import {webSocketHost} from '@/config'
 
 
 describe('Design Request', async () => {
@@ -92,20 +93,20 @@ describe('Design Request', async () => {
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
     const ws = vi.spyOn(window, 'WebSocket').mockImplementation((value) => (new WebSocketMock(value) as WebSocket))
     const wsClose = vi.spyOn(WebSocketMock.prototype, 'close')
-    mockRetrieveBook.mockResolvedValue(bookFactory({state: 'new'}))
+    mockRetrieveBook.mockResolvedValue(bookFactory({state: 'submitted'}))
     const submitDesignRequest = await designRequest.submit({
       imageDensity: 'high',
       embellishmentLevel: 'few',
       textStickerLevel: 'few'
     })
-    expect(ws).toHaveBeenCalledWith(`${import.meta.env.VITE_WEBSOCKET_HOST}/?book_id=${designRequest.parentId}`)
+    expect(ws).toHaveBeenCalledWith(`${webSocketHost}/?book_id=${designRequest.parentId}`)
     expect(submitDesignRequest).toStrictEqual(designRequest)
-    ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'new'})})
-    expect(dispatchEventSpy.mock.calls.length).toBe(0)
     ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'submitted'})})
-    const submittedEvent = dispatchEventSpy.mock.calls[0][0] as DesignRequestEvent
-    expect(submittedEvent.type).toBe('MagicBook.designRequestUpdated')
-    expect(submittedEvent['detail']['state']).toBe('submitted')
+    expect(dispatchEventSpy.mock.calls.length).toBe(0)
+    ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'embellishing'})})
+    const embellishingEvent = dispatchEventSpy.mock.calls[0][0] as DesignRequestEvent
+    expect(embellishingEvent.type).toBe('MagicBook.designRequestUpdated')
+    expect(embellishingEvent['detail']['state']).toBe('embellishing')
     expect(dispatchEventSpy.mock.calls.length).toBe(1)
     expect(wsClose).not.toHaveBeenCalled()
     ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'error'})})

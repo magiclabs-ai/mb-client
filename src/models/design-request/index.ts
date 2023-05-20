@@ -14,6 +14,7 @@ import {
 import {designRequestToBook} from '@/utils/design-request-parser'
 import {getDesignOptions} from '@/utils/engine-api/design-options'
 import {retrieveGalleon, updateBook} from '@/utils/engine-api/books'
+import {webSocketHost} from '@/config'
 
 export type Occasion = typeof occasions[number]
 export type Style = keyof typeof styles
@@ -89,8 +90,8 @@ export class DesignRequest {
   }
 
   private async getProgress() {
-    let previousState = 'new'
-    const webSocket = new WebSocket(`${import.meta.env.VITE_WEBSOCKET_HOST}/?book_id=${this.parentId}`)
+    let previousState = 'submitted'
+    const webSocket = new WebSocket(`${webSocketHost}/?book_id=${this.parentId}`)
     webSocket.onmessage = (event) => {
       const detail = JSON.parse(event.data) as DesignRequestEventDetail
       if (previousState !== detail.state) {
