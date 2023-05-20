@@ -89,7 +89,7 @@ export class DesignRequest {
   }
 
   private async getProgress() {
-    let previousState = ''
+    let previousState = 'new'
     const webSocket = new WebSocket(`${import.meta.env.VITE_WEBSOCKET_HOST}/?book_id=${this.parentId}`)
     webSocket.onmessage = (event) => {
       const detail = JSON.parse(event.data) as DesignRequestEventDetail
