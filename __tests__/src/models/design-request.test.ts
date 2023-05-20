@@ -1,7 +1,6 @@
 import {DesignRequest, DesignRequestEvent, DesignRequestProps} from '../../../src/models/design-request'
 import {Image, ImageServer, Images} from '../../../src/models/design-request/image'
 import {MagicBookClient} from '../../../src'
-
 import {WebSocketMock} from '../../mocks/websocket'
 import {axiosPost} from '../../mocks/axios'
 import {beforeEach, describe, expect, test, vi} from 'vitest'
@@ -20,7 +19,7 @@ import {
 import {designOptionsServerFactory} from '../../factories/design-options.factory'
 import {faker} from '@faker-js/faker'
 import {galleonFactory} from '../../factories/galleon.factory'
-import {mockCreateBook, mockRetrieveBook, mockRetrieveGalleon} from '../../mocks/books'
+import {mockCreateBook, mockRetrieveBook, mockRetrieveGalleon, mockUpdateBook} from '../../mocks/books'
 import {mockGetDesignOptions} from '../../mocks/design-options'
 import {snakeCaseObjectKeysToCamelCase} from '@/utils/toolbox'
 import {webSocketHost} from '@/config'
@@ -88,6 +87,15 @@ describe('Design Request', async () => {
     // OR
     await designRequest.getOptions()
     expect(designRequestOptions).toBe(snakeCaseObjectKeysToCamelCase(designOptions))
+  })
+  test('setGuid', async () => {
+    mockUpdateBook.mockResolvedValue({data: bookFactory()})
+    const submitDesignRequest = await designRequest.setGuid(faker.datatype.uuid())
+    expect(submitDesignRequest).toStrictEqual(designRequest)
+  })
+  test.fails('setGuid', async () => {
+    const submitDesignRequest = await designRequest.setGuid('faker.datatype.uuid()')
+    expect(submitDesignRequest).toThrowError()
   })
   test('submitDesignRequest', async () => {
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')

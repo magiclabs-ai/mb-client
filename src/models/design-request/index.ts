@@ -14,6 +14,7 @@ import {
 import {designRequestTimeout, webSocketHost} from '@/config'
 import {designRequestToBook} from '@/utils/design-request-parser'
 import {getDesignOptions} from '@/utils/engine-api/design-options'
+import {isGuid} from '@/utils/toolbox'
 import {retrieveGalleon, updateBook} from '@/utils/engine-api/books'
 
 export type Occasion = typeof occasions[number]
@@ -58,7 +59,7 @@ export class DesignRequest {
   embellishmentLevel: EmbellishmentLevel
   textStickerLevel: TextStickerLevel
   images: Images
-  GUID?: string
+  guid?: string
 
   constructor(parentId: string, designRequestProps?: DesignRequestProps) {
     this.parentId = parentId
@@ -86,10 +87,14 @@ export class DesignRequest {
     return this
   }
 
-  async setGUID(GUID: string) {
-    this.GUID = GUID
-    await updateBook(designRequestToBook(this))
-    return this
+  async setGuid(guid: string) {
+    if (isGuid(guid)) {
+      this.guid = guid
+      await updateBook(designRequestToBook(this))
+      return this
+    } else {
+      throw new Error('guid is not valid')
+    }
   }
 
   async getJSON() {
