@@ -1,14 +1,9 @@
 import {DesignRequest, DesignRequestEvent, DesignRequestProps} from '../../../src/models/design-request'
 import {Image, ImageServer, Images} from '../../../src/models/design-request/image'
 import {MagicBookClient} from '../../../src'
-import {
-  WebSocketMock,
-  axiosPost,
-  mockCreateBook,
-  mockGetDesignOptions,
-  mockRetrieveBook,
-  mockRetrieveGalleon
-} from '../../mocks/setup'
+
+import {WebSocketMock} from '../../mocks/websocket'
+import {axiosPost} from '../../mocks/axios'
 import {beforeEach, describe, expect, test, vi} from 'vitest'
 import {bookFactory} from '../../factories/book.factory'
 import {
@@ -25,6 +20,8 @@ import {
 import {designOptionsServerFactory} from '../../factories/design-options.factory'
 import {faker} from '@faker-js/faker'
 import {galleonFactory} from '../../factories/galleon.factory'
+import {mockCreateBook, mockRetrieveBook, mockRetrieveGalleon} from '../../mocks/books'
+import {mockGetDesignOptions} from '../../mocks/design-options'
 import {snakeCaseObjectKeysToCamelCase} from '@/utils/toolbox'
 
 

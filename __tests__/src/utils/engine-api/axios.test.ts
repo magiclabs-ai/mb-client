@@ -1,5 +1,5 @@
 import {APIHandler, get, post, put, remove} from '../../../../src/utils/engine-api/axios'
-import {axiosDelete, axiosGet, axiosPost, axiosPut} from '../../../mocks/setup'
+import {axiosDelete, axiosGet, axiosPost, axiosPut} from '../../../mocks/axios'
 import {describe, expect, test, vi} from 'vitest'
 import {faker} from '@faker-js/faker'
 

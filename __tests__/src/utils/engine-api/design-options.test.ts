@@ -1,4 +1,4 @@
-import {axiosGet} from '../../../mocks/setup'
+import {axiosGet} from '../../../mocks/axios'
 import {describe, expect, test, vi} from 'vitest'
 import {designOptionsFactory} from '../../../factories/design-options.factory'
 import {getDesignOptions} from '@/utils/engine-api/design-options'
