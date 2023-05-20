@@ -58,6 +58,7 @@ export class DesignRequest {
   embellishmentLevel: EmbellishmentLevel
   textStickerLevel: TextStickerLevel
   images: Images
+  GUID?: string
 
   constructor(parentId: string, designRequestProps?: DesignRequestProps) {
     this.parentId = parentId
@@ -81,6 +82,12 @@ export class DesignRequest {
   async submit(submitDesignRequestProps?: DesignRequestProps) {
     submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
     this.getProgress()
+    await updateBook(designRequestToBook(this))
+    return this
+  }
+
+  async setGUID(GUID: string) {
+    this.GUID = GUID
     await updateBook(designRequestToBook(this))
     return this
   }
