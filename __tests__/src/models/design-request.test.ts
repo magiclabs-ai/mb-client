@@ -84,7 +84,7 @@ describe('Design Request', async () => {
   test('getOptions', async () => {
     const designOptions = designOptionsServerFactory()
     mockGetDesignOptions.mockResolvedValue(designOptions)
-    const designRequestOptions = await designRequest.getOptions(faker.datatype.number({min: 20, max: 200}))
+    const designRequestOptions = await designRequest.getOptions(faker.number.int({min: 20, max: 200}))
     // OR
     await designRequest.getOptions()
     expect(designRequestOptions).toBe(snakeCaseObjectKeysToCamelCase(designOptions))

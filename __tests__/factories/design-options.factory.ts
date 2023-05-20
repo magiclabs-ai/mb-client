@@ -24,25 +24,25 @@ export function designOptionsServerFactory(): DesignOptionsServer {
   return {
     densities: {
       high: {
-        max_page_count: faker.datatype.number({max}),
-        min_page_count: faker.datatype.number({max}),
-        max_image_count: faker.datatype.number({max}),
-        avg_image_count: faker.datatype.number({max}),
-        min_image_count: faker.datatype.number({max})
+        max_page_count: faker.number.int({max}),
+        min_page_count: faker.number.int({max}),
+        max_image_count: faker.number.int({max}),
+        avg_image_count: faker.number.int({max}),
+        min_image_count: faker.number.int({max})
       },
       medium: {
-        max_page_count: faker.datatype.number({max}),
-        min_page_count: faker.datatype.number({max}),
-        max_image_count: faker.datatype.number({max}),
-        avg_image_count: faker.datatype.number({max}),
-        min_image_count: faker.datatype.number({max})
+        max_page_count: faker.number.int({max}),
+        min_page_count: faker.number.int({max}),
+        max_image_count: faker.number.int({max}),
+        avg_image_count: faker.number.int({max}),
+        min_image_count: faker.number.int({max})
       },
       low: {
-        max_page_count: faker.datatype.number({max}),
-        min_page_count: faker.datatype.number({max}),
-        max_image_count: faker.datatype.number({max}),
-        avg_image_count: faker.datatype.number({max}),
-        min_image_count: faker.datatype.number({max})
+        max_page_count: faker.number.int({max}),
+        min_page_count: faker.number.int({max}),
+        max_image_count: faker.number.int({max}),
+        avg_image_count: faker.number.int({max}),
+        min_image_count: faker.number.int({max})
       }
     }
   }
@@ -53,25 +53,25 @@ export function designOptionsFactory(): DesignOptions {
   return {
     densities: {
       high: {
-        maxPageCount: faker.datatype.number({max}),
-        minPageCount: faker.datatype.number({max}),
-        maxImageCount: faker.datatype.number({max}),
-        avgImageCount: faker.datatype.number({max}),
-        minImageCount: faker.datatype.number({max})
+        maxPageCount: faker.number.int({max}),
+        minPageCount: faker.number.int({max}),
+        maxImageCount: faker.number.int({max}),
+        avgImageCount: faker.number.int({max}),
+        minImageCount: faker.number.int({max})
       },
       medium: {
-        maxPageCount: faker.datatype.number({max}),
-        minPageCount: faker.datatype.number({max}),
-        maxImageCount: faker.datatype.number({max}),
-        avgImageCount: faker.datatype.number({max}),
-        minImageCount: faker.datatype.number({max})
+        maxPageCount: faker.number.int({max}),
+        minPageCount: faker.number.int({max}),
+        maxImageCount: faker.number.int({max}),
+        avgImageCount: faker.number.int({max}),
+        minImageCount: faker.number.int({max})
       },
       low: {
-        maxPageCount: faker.datatype.number({max}),
-        minPageCount: faker.datatype.number({max}),
-        maxImageCount: faker.datatype.number({max}),
-        avgImageCount: faker.datatype.number({max}),
-        minImageCount: faker.datatype.number({max})
+        maxPageCount: faker.number.int({max}),
+        minPageCount: faker.number.int({max}),
+        maxImageCount: faker.number.int({max}),
+        avgImageCount: faker.number.int({max}),
+        minImageCount: faker.number.int({max})
       }
     }
   }

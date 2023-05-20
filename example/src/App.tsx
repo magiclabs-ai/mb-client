@@ -59,14 +59,14 @@ function App() {
     const imagesLength = 25
     await Promise.all(Array.from(Array(imagesLength).keys()).map(async () => {
       const width = 1000
-      const height = faker.datatype.number({min: 200, max: 500})
+      const height = faker.number.int({min: 200, max: 500})
       const image: Image = {
-        handle: faker.datatype.uuid(),
-        url: faker.image.imageUrl(width, height),
+        handle: faker.string.uuid(),
+        url: faker.image.url({width, height}),
         width,
         height,
         rotation: 0,
-        captureTime: faker.datatype.datetime().toISOString(),
+        captureTime: faker.date.past().toISOString(),
         cameraMake: '',
         cameraModel: 'Sony A7R IV',
         filename: faker.system.commonFileName('jpg')
