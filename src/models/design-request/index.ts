@@ -80,8 +80,8 @@ export class DesignRequest {
 
   async submit(submitDesignRequestProps?: DesignRequestProps) {
     submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
-    await updateBook(designRequestToBook(this))
     this.getProgress()
+    await updateBook(designRequestToBook(this))
     return this
   }
 
@@ -90,7 +90,7 @@ export class DesignRequest {
   }
 
   private async getProgress() {
-    let previousState = 'submitted'
+    let previousState = 'new'
     const webSocket = new WebSocket(`${webSocketHost}/?book_id=${this.parentId}`)
     const timeout = setTimeout(() => {
       webSocket.close()
