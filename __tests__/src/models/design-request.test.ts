@@ -116,4 +116,16 @@ describe('Design Request', async () => {
     expect(errorEvent['detail']['state']).toBe('error')
     expect(dispatchEventSpy.mock.calls.length).toBe(2)
   })
+  test.fails('submitDesignRequest with error', async () => {
+    vi.useFakeTimers()
+    mockRetrieveBook.mockResolvedValue(bookFactory({state: 'submitted'}))
+    const submitDesignRequest = await designRequest.submit({
+      imageDensity: 'high',
+      embellishmentLevel: 'few',
+      textStickerLevel: 'few'
+    })
+    expect(submitDesignRequest).toStrictEqual(designRequest)
+    vi.advanceTimersToNextTimer()
+    expect(submitDesignRequest).toThrowError('Something went wrong. Please try again.')
+  })
 })

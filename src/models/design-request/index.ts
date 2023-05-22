@@ -11,10 +11,10 @@ import {
   styles,
   textStickerLevels
 } from '@/data/design-request'
+import {designRequestTimeout, webSocketHost} from '@/config'
 import {designRequestToBook} from '@/utils/design-request-parser'
 import {getDesignOptions} from '@/utils/engine-api/design-options'
 import {retrieveGalleon, updateBook} from '@/utils/engine-api/books'
-import {webSocketHost} from '@/config'
 
 export type Occasion = typeof occasions[number]
 export type Style = keyof typeof styles
@@ -92,6 +92,10 @@ export class DesignRequest {
   private async getProgress() {
     let previousState = 'submitted'
     const webSocket = new WebSocket(`${webSocketHost}/?book_id=${this.parentId}`)
+    const timeout = setTimeout(() => {
+      webSocket.close()
+      throw new Error('Something went wrong. Please try again.')
+    }, designRequestTimeout)
     webSocket.onmessage = (event) => {
       const detail = JSON.parse(event.data) as DesignRequestEventDetail
       if (previousState !== detail.state) {
@@ -100,6 +104,7 @@ export class DesignRequest {
         window.dispatchEvent(customEvent)
         if (['error', 'ready'].includes(detail.state)) {
           webSocket.close()
+          clearTimeout(timeout)
         } 
       }
     }
