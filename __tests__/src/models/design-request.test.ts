@@ -102,19 +102,23 @@ describe('Design Request', async () => {
     expect(ws).toHaveBeenCalledWith(`${webSocketHost}/?book_id=${designRequest.parentId}`)
     expect(submitDesignRequest).toStrictEqual(designRequest)
     ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'submitted'})})
-    expect(dispatchEventSpy.mock.calls.length).toBe(0)
+    expect(dispatchEventSpy.mock.calls.length).toBe(1)
+    expect(ws).toHaveBeenCalledWith(`${webSocketHost}/?book_id=${designRequest.parentId}`)
+    expect(submitDesignRequest).toStrictEqual(designRequest)
+    ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'submitted'})})
+    expect(dispatchEventSpy.mock.calls.length).toBe(1)
     ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'embellishing'})})
-    const embellishingEvent = dispatchEventSpy.mock.calls[0][0] as DesignRequestEvent
+    const embellishingEvent = dispatchEventSpy.mock.calls[1][0] as DesignRequestEvent
     expect(embellishingEvent.type).toBe('MagicBook.designRequestUpdated')
     expect(embellishingEvent['detail']['state']).toBe('embellishing')
-    expect(dispatchEventSpy.mock.calls.length).toBe(1)
+    expect(dispatchEventSpy.mock.calls.length).toBe(2)
     expect(wsClose).not.toHaveBeenCalled()
     ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'error'})})
     expect(wsClose).toHaveBeenCalled()
-    const errorEvent = dispatchEventSpy.mock.calls[1][0] as DesignRequestEvent
+    const errorEvent = dispatchEventSpy.mock.calls[2][0] as DesignRequestEvent
     expect(errorEvent.type).toBe('MagicBook.designRequestUpdated')
     expect(errorEvent['detail']['state']).toBe('error')
-    expect(dispatchEventSpy.mock.calls.length).toBe(2)
+    expect(dispatchEventSpy.mock.calls.length).toBe(3)
   })
   test.fails('submitDesignRequest with error', async () => {
     vi.useFakeTimers()
