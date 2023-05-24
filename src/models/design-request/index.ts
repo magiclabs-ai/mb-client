@@ -11,10 +11,10 @@ import {
   styles,
   textStickerLevels
 } from '@/data/design-request'
-import {designRequestRefreshInterval} from '@/config'
+import {designRequestTimeout, webSocketHost} from '@/config'
 import {designRequestToBook} from '@/utils/design-request-parser'
 import {getDesignOptions} from '@/utils/engine-api/design-options'
-import {retrieveBook, retrieveGalleon, updateBook} from '@/utils/engine-api/books'
+import {retrieveGalleon, updateBook} from '@/utils/engine-api/books'
 
 export type Occasion = typeof occasions[number]
 export type Style = keyof typeof styles
@@ -80,8 +80,8 @@ export class DesignRequest {
 
   async submit(submitDesignRequestProps?: DesignRequestProps) {
     submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
-    await updateBook(designRequestToBook(this))
     this.getProgress()
+    await updateBook(designRequestToBook(this))
     return this
   }
 
@@ -90,21 +90,23 @@ export class DesignRequest {
   }
 
   private async getProgress() {
-    let previousState = ''
-    const pollingState = setInterval(async () => {
-      const state = (await retrieveBook(this.parentId)).state
-      if (previousState !== state) {
-        previousState = state
-        const event = new CustomEvent<DesignRequestEventDetail>('MagicBook.designRequestUpdated', {
-          detail: {
-            state: state
-          }
-        })
-        window.dispatchEvent(event)
-        if (['error', 'ready'].includes(state)) {
-          clearInterval(pollingState)
+    let previousState = 'new'
+    const webSocket = new WebSocket(`${webSocketHost}/?book_id=${this.parentId}`)
+    const timeout = setTimeout(() => {
+      webSocket.close()
+      throw new Error('Something went wrong. Please try again.')
+    }, designRequestTimeout)
+    webSocket.onmessage = (event) => {
+      const detail = JSON.parse(event.data) as DesignRequestEventDetail
+      if (previousState !== detail.state) {
+        previousState = detail.state
+        const customEvent = new CustomEvent<DesignRequestEventDetail>('MagicBook.designRequestUpdated', {detail})
+        window.dispatchEvent(customEvent)
+        if (['error', 'ready'].includes(detail.state)) {
+          webSocket.close()
+          clearTimeout(timeout)
         } 
       }
-    }, designRequestRefreshInterval)
+    }
   }
 }

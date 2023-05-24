@@ -23,7 +23,7 @@ export type BookFactoryProps = {
 
 export function bookFactory(props?: BookFactoryProps) {
   return new Book({
-    id: props?.id || faker.datatype.uuid(),
+    id: props?.id || faker.string.uuid(),
     state: props?.state || faker.helpers.arrayElement(states),
     title: props?.title || faker.lorem.words(3),
     design_request: {

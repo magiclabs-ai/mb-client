@@ -1,7 +1,9 @@
 import {DesignRequest, DesignRequestEvent, DesignRequestProps} from '../../../src/models/design-request'
 import {Image, ImageServer, Images} from '../../../src/models/design-request/image'
 import {MagicBookClient} from '../../../src'
-import {axiosPost, mockCreateBook, mockGetDesignOptions, mockRetrieveBook, mockRetrieveGalleon} from '../../mocks/setup'
+
+import {WebSocketMock} from '../../mocks/websocket'
+import {axiosPost} from '../../mocks/axios'
 import {beforeEach, describe, expect, test, vi} from 'vitest'
 import {bookFactory} from '../../factories/book.factory'
 import {
@@ -18,7 +20,10 @@ import {
 import {designOptionsServerFactory} from '../../factories/design-options.factory'
 import {faker} from '@faker-js/faker'
 import {galleonFactory} from '../../factories/galleon.factory'
+import {mockCreateBook, mockRetrieveBook, mockRetrieveGalleon} from '../../mocks/books'
+import {mockGetDesignOptions} from '../../mocks/design-options'
 import {snakeCaseObjectKeysToCamelCase} from '@/utils/toolbox'
+import {webSocketHost} from '@/config'
 
 
 describe('Design Request', async () => {
@@ -79,38 +84,52 @@ describe('Design Request', async () => {
   test('getOptions', async () => {
     const designOptions = designOptionsServerFactory()
     mockGetDesignOptions.mockResolvedValue(designOptions)
-    const designRequestOptions = await designRequest.getOptions(faker.datatype.number({min: 20, max: 200}))
+    const designRequestOptions = await designRequest.getOptions(faker.number.int({min: 20, max: 200}))
     // OR
     await designRequest.getOptions()
     expect(designRequestOptions).toBe(snakeCaseObjectKeysToCamelCase(designOptions))
   })
   test('submitDesignRequest', async () => {
-    vi.useFakeTimers()
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
-    mockRetrieveBook.mockResolvedValue(bookFactory({state: 'new'}))
+    const ws = vi.spyOn(window, 'WebSocket').mockImplementation((value) => (new WebSocketMock(value) as WebSocket))
+    const wsClose = vi.spyOn(WebSocketMock.prototype, 'close')
+    mockRetrieveBook.mockResolvedValue(bookFactory({state: 'submitted'}))
+    const submitDesignRequest = await designRequest.submit({
+      imageDensity: 'high',
+      embellishmentLevel: 'few',
+      textStickerLevel: 'few'
+    })
+    expect(ws).toHaveBeenCalledWith(`${webSocketHost}/?book_id=${designRequest.parentId}`)
+    expect(submitDesignRequest).toStrictEqual(designRequest)
+    ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'submitted'})})
+    expect(dispatchEventSpy.mock.calls.length).toBe(1)
+    expect(ws).toHaveBeenCalledWith(`${webSocketHost}/?book_id=${designRequest.parentId}`)
+    expect(submitDesignRequest).toStrictEqual(designRequest)
+    ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'submitted'})})
+    expect(dispatchEventSpy.mock.calls.length).toBe(1)
+    ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'embellishing'})})
+    const embellishingEvent = dispatchEventSpy.mock.calls[1][0] as DesignRequestEvent
+    expect(embellishingEvent.type).toBe('MagicBook.designRequestUpdated')
+    expect(embellishingEvent['detail']['state']).toBe('embellishing')
+    expect(dispatchEventSpy.mock.calls.length).toBe(2)
+    expect(wsClose).not.toHaveBeenCalled()
+    ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'error'})})
+    expect(wsClose).toHaveBeenCalled()
+    const errorEvent = dispatchEventSpy.mock.calls[2][0] as DesignRequestEvent
+    expect(errorEvent.type).toBe('MagicBook.designRequestUpdated')
+    expect(errorEvent['detail']['state']).toBe('error')
+    expect(dispatchEventSpy.mock.calls.length).toBe(3)
+  })
+  test.fails('submitDesignRequest with error', async () => {
+    vi.useFakeTimers()
+    mockRetrieveBook.mockResolvedValue(bookFactory({state: 'submitted'}))
     const submitDesignRequest = await designRequest.submit({
       imageDensity: 'high',
       embellishmentLevel: 'few',
       textStickerLevel: 'few'
     })
     expect(submitDesignRequest).toStrictEqual(designRequest)
-    await vi.advanceTimersToNextTimerAsync()
-    await vi.advanceTimersToNextTimerAsync()
-    const newCall = dispatchEventSpy.mock.calls[0][0] as DesignRequestEvent
-    expect(dispatchEventSpy.mock.calls.length).toBe(1)
-    expect(newCall.type).toBe('MagicBook.designRequestUpdated')
-    expect(newCall['detail']['state']).toBe('new')
-    mockRetrieveBook.mockResolvedValue(bookFactory({state: 'designing'}))
-    await vi.advanceTimersToNextTimerAsync()
-    const designingCall = dispatchEventSpy.mock.calls[1][0] as DesignRequestEvent
-    expect(designingCall.type).toBe('MagicBook.designRequestUpdated')
-    expect(designingCall['detail']['state']).toBe('designing')
-    mockRetrieveBook.mockResolvedValue(bookFactory({state: 'ready'}))
-    await vi.advanceTimersToNextTimerAsync()
-    const ReadyCall = dispatchEventSpy.mock.calls[2][0] as DesignRequestEvent
-    expect(ReadyCall.type).toBe('MagicBook.designRequestUpdated')
-    expect(ReadyCall['detail']['state']).toBe('ready')
-    await vi.advanceTimersToNextTimerAsync()
-    expect(dispatchEventSpy.mock.calls.length).toBe(3)
+    vi.advanceTimersToNextTimer()
+    expect(submitDesignRequest).toThrowError('Something went wrong. Please try again.')
   })
 })

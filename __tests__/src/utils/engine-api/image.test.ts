@@ -1,5 +1,5 @@
 import {addImageInBook} from '../../../../src/utils/engine-api/images'
-import {axiosPost} from '../../../mocks/setup'
+import {axiosPost} from '../../../mocks/axios'
 import {describe, expect, test, vi} from 'vitest'
 import {imageServerFactory} from '../../../factories/image.factory'
 

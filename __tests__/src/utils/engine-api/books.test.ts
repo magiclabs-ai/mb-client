@@ -1,4 +1,4 @@
-import {axiosGet, axiosPost, axiosPut} from '../../../mocks/setup'
+import {axiosGet, axiosPost, axiosPut} from '../../../mocks/axios'
 import {bookFactory} from '../../../factories/book.factory'
 import {createBook, retrieveBook, retrieveGalleon, updateBook} from '../../../../src/utils/engine-api/books'
 import {describe, expect, test, vi} from 'vitest'
