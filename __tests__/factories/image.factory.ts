@@ -13,7 +13,7 @@ export type ImageFactoryProps = {
   filename?: string
 }
 
-export function imageFactory(props?: ImageFactoryProps) {
+export function imageFactory(props?: ImageFactoryProps): Image {
   const width = props?.width || faker.number.int({min: 200, max: 500})
   const height = props?.height || faker.number.int({min: 200, max: 500})
   return {
@@ -26,7 +26,7 @@ export function imageFactory(props?: ImageFactoryProps) {
     cameraMake: props?.cameraMake,
     cameraModel: props?.cameraModel,
     filename: props?.filename || faker.system.commonFileName('.jpg')
-  } as Image
+  }
 }
 
 export function imageServerFactory(props?: ImageFactoryProps) {
