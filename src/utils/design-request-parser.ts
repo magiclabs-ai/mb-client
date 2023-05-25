@@ -10,7 +10,7 @@ export function designRequestToBook(designRequest: DesignRequest) {
   snakeCasedDesignRequest.style = styleSlug
   return new Book({
     id: designRequest.parentId,
-    state: 'new',
+    guid: designRequest.guid,
     title: designRequest.title,
     design_request: snakeCasedDesignRequest
   })

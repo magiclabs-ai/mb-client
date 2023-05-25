@@ -83,14 +83,14 @@ export class DesignRequest {
   async submit(submitDesignRequestProps?: DesignRequestProps) {
     submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
     this.getProgress()
-    await updateBook(designRequestToBook(this))
+    await updateBook(this.parentId, designRequestToBook(this))
     return this
   }
 
   async setGuid(guid: string) {
     if (isGuid(guid)) {
+      await updateBook(this.parentId, {guid})
       this.guid = guid
-      await updateBook(designRequestToBook(this))
       return this
     } else {
       throw new Error('guid is not valid')
