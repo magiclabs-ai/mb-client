@@ -5,7 +5,7 @@ import {
   coverTypes,
   embellishmentLevels,
   imageDensities,
-  imageFilterings,
+  imageFilteringLevels,
   occasions,
   pageTypes,
   states,
@@ -36,7 +36,8 @@ export function bookFactory(props?: BookFactoryProps) {
       cover_type: props?.design_request?.cover_type || faker.helpers.arrayElement(coverTypes),
       page_type: props?.design_request?.page_type || faker.helpers.arrayElement(pageTypes),
       image_density: props?.design_request?.image_density || faker.helpers.arrayElement(imageDensities),
-      image_filtering: props?.design_request?.image_filtering || faker.helpers.arrayElement(imageFilterings),
+      image_filtering_level: props?.design_request?.image_filtering_level 
+      || faker.helpers.arrayElement(imageFilteringLevels),
       embellishment_level: props?.design_request?.embellishment_level 
       || faker.helpers.arrayElement(embellishmentLevels),
       text_sticker_level: props?.design_request?.text_sticker_level || faker.helpers.arrayElement(textStickerLevels)

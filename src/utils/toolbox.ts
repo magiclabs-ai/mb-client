@@ -1,8 +1,3 @@
-export function isGuid(Guid: string): boolean {
-  const guidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
-  return guidRegex.test(Guid)
-}
-
 export function assign(obj: Record<string, any>, fields: Array<string>, value: unknown) {
   const lastKey = fields.pop() || ''
   const lastObj = fields.reduce((obj, key) => 

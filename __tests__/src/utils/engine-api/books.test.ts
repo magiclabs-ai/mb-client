@@ -19,7 +19,7 @@ describe('Book APIs', () => {
   })
   test('updateBook function', async () => {
     axiosPut.mockResolvedValue({data: book})
-    const res = await updateBook(book.id, book)
+    const res = await updateBook(book)
     expect(JSON.stringify(res)).toBe(JSON.stringify(book))
   })
   test('retrieveGalleon function', async () => {

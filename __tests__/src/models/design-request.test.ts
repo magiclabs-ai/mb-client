@@ -10,7 +10,7 @@ import {
   coverTypes,
   embellishmentLevels,
   imageDensities,
-  imageFilterings,
+  imageFilteringLevels,
   occasions,
   pageTypes,
   styles,
@@ -53,7 +53,7 @@ describe('Design Request', async () => {
       coverType: coverTypes[0],
       pageType: pageTypes[0],
       imageDensity: imageDensities[0],
-      imageFiltering: imageFilterings[0],
+      imageFiltering: imageFilteringLevels[0],
       embellishmentLevel: embellishmentLevels[0],
       textStickerLevel: textStickerLevels[0],
       images: new Images(parentId)

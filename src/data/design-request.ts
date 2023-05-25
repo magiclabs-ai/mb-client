@@ -198,6 +198,6 @@ export const bookSizes = ['8x8', '10x10', '12x12', '8x11', '11x8', '11x14'] as c
 export const coverTypes = ['sc', 'hc', 'pl'] as const
 export const pageTypes = ['sp', 'sl', 'dl'] as const
 export const imageDensities = ['low', 'medium', 'high'] as const
-export const imageFilterings = ['best', 'most', 'all'] as const
+export const imageFilteringLevels = ['best', 'most', 'all'] as const
 export const embellishmentLevels = ['none', 'few', 'lots'] as const
 export const textStickerLevels = ['none', 'few', 'lots'] as const
