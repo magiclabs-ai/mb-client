@@ -3,7 +3,7 @@ import axios, {AxiosRequestConfig} from 'axios'
 
 type baseRequest = {
   url: string
-  needsToken?: boolean
+  apiKey: string
   options?: AxiosRequestConfig<any>
 }
 
@@ -12,31 +12,31 @@ type payloadRequest = baseRequest & {
 }
 
 type createAxiosConfigProps = {
-  needsToken?: boolean
+  apiKey: string
   options?: AxiosRequestConfig<any>
 }
 
-function createAxiosConfig({needsToken = true ,options}: createAxiosConfigProps): AxiosRequestConfig<any> {
+function createAxiosConfig({apiKey, options}: createAxiosConfigProps): AxiosRequestConfig<any> {
   let config = {}
-  needsToken && assign(config, ['headers', 'Authorization'] , 'Bearer TOKEN')
+  apiKey && assign(config, ['headers', 'Authorization'] , `API-Key ${apiKey}`)
   options && (config = mergeNestedObject(config, options))
   return config
 }
 
-export async function get ({url, needsToken, options}: baseRequest) {
-  return await axios.get(url, createAxiosConfig({needsToken, options}))
+export async function get ({url, apiKey, options}: baseRequest) {
+  return await axios.get(url, createAxiosConfig({apiKey, options}))
 }
 
-export async function remove ({url, needsToken, options}: baseRequest) {
-  return await axios.delete(url, createAxiosConfig({needsToken, options}))
+export async function remove ({url, apiKey, options}: baseRequest) {
+  return await axios.delete(url, createAxiosConfig({apiKey, options}))
 }
 
-export async function post ({url, needsToken, options, payload = {}}: payloadRequest) {
-  return await axios.post(url, payload, createAxiosConfig({needsToken, options}))
+export async function post ({url, apiKey, options, payload = {}}: payloadRequest) {
+  return await axios.post(url, payload, createAxiosConfig({apiKey, options}))
 }
 
-export async function put ({url, needsToken, options, payload}: payloadRequest) {
-  return await axios.put(url, payload, createAxiosConfig({needsToken, options}))
+export async function put ({url, apiKey, options, payload}: payloadRequest) {
+  return await axios.put(url, payload, createAxiosConfig({apiKey, options}))
 }
 
 export async function APIHandler<T>(fn: () => Promise<T>) {

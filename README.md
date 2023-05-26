@@ -80,12 +80,18 @@ window.addEventListener('Magicbook.designRequestUpdated', async ((designRequestE
 Submit the design request. Again, the argument object can receive additional or updated design parameters.
 
 ```ts
-designRequest.submit({
+await designRequest.submit({
   imageDensity: 'high',
-  imageFiltering: 'best',
+  imageFilteringLevel: 'best',
   embellishmentLevel: 'few',
   textStickerLevel: 'none'
 })
+```
+
+After submitting you can set a GUID to the design request.
+
+```ts
+await designRequest.setGuid('a9ccb406-015a-47df-bb59-ea171b8617ca')
 ```
 
 Finally, once the design request is complete, retrieve it in JSON format.

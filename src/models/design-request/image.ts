@@ -14,11 +14,13 @@ export type Image = {
 }
 
 export class Images {
+  private apiKey: string
   private parentId: string
   private images: Array<Image>
   length: number
 
-  constructor(parentId: string) {
+  constructor(parentId: string, apiKey: string) {
+    this.apiKey = apiKey
     this.parentId = parentId
     this.images = []
     this.length = this.images.length
@@ -27,7 +29,7 @@ export class Images {
   async add(image: Image): Promise<number> {
     this.images.push(image)
     this.length = this.images.length
-    await addImageInBook(this.parentId, new ImageServer(image))
+    await addImageInBook(this.apiKey, this.parentId, new ImageServer(image))
     return new Promise<number>((resolve) => {
       resolve(this.length)
     })
