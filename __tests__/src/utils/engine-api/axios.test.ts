@@ -4,10 +4,13 @@ import {describe, expect, test, vi} from 'vitest'
 import {faker} from '@faker-js/faker'
 
 describe('Axios', () => {
+  const apiKey = faker.string.uuid()
+  const url = faker.internet.url()
+
   test('get function', async () => {
     const data = faker.lorem.sentence()
     axiosGet.mockResolvedValue({data})
-    const res = await get({url: faker.internet.url(), options: {method: 'GET'}})
+    const res = await get({url, apiKey, options: {method: 'GET'}})
     expect(res.data).toBe(data)
   })
   test('get error function', async () => {
@@ -21,17 +24,17 @@ describe('Axios', () => {
   })
   test('remove function', async () => {
     axiosDelete.mockResolvedValue({data: 'deleted'})
-    const res = await remove({url: faker.internet.url()})
+    const res = await remove({url, apiKey})
     expect(res.data).toBe('deleted')
   })
   test('post function', async () => {
     axiosPost.mockResolvedValue({data: {status: 'created'}})
-    const res = await post({url: faker.internet.url()})
+    const res = await post({url, apiKey})
     expect(res.data.status).toBe('created')
   })
   test('put function', async () => {
     axiosPut.mockResolvedValue({data: {status: 'updated'}})
-    const res = await put({url: faker.internet.url()})
+    const res = await put({url, apiKey})
     expect(res.data.status).toBe('updated')
   })
 })

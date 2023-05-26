@@ -43,8 +43,10 @@ describe('Design Request', async () => {
   })
 
   test('Design Request default values', async () => {
-    const parentId = 'id'
-    expect(JSON.stringify(new DesignRequest(parentId))).toStrictEqual(JSON.stringify({
+    const apiKey = faker.string.uuid()
+    const parentId = faker.string.uuid()
+    expect(JSON.stringify(new DesignRequest(parentId, apiKey))).toStrictEqual(JSON.stringify({
+      apiKey,
       parentId,
       title: '',
       occasion: occasions[0],
@@ -56,7 +58,7 @@ describe('Design Request', async () => {
       imageFilteringLevel: imageFilteringLevels[0],
       embellishmentLevel: embellishmentLevels[0],
       textStickerLevel: textStickerLevels[0],
-      images: new Images(parentId)
+      images: new Images(parentId, apiKey)
     }))
   })
   test('addImage', async () => {

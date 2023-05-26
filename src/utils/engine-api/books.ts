@@ -3,34 +3,34 @@ import {Book, BookPropsSchema} from '@/models/book'
 import {BookCreationRequest, bookCreationRequestSchema} from '@/models/galleon'
 import {apiHost} from '../../config'
 
-export async function createBook(payload?: Book) {
+export async function createBook(apiKey: string, payload?: Book) {
   return APIHandler(async () => {
-    const res = (await post({url: `${apiHost}/api/v1/books`, payload})).data
+    const res = (await post({url: `${apiHost}/api/v1/books`, apiKey, payload})).data
     BookPropsSchema.safeParse(res)
     return new Book(res)
   })
 }
 
-export async function retrieveBook(bookId: string) {
+export async function retrieveBook(apiKey: string, bookId: string) {
   return APIHandler(async () => {
-    const res = (await get({url: `${apiHost}/api/v1/books/${bookId}`})).data
+    const res = (await get({url: `${apiHost}/api/v1/books/${bookId}`, apiKey})).data
     BookPropsSchema.safeParse(res)
     return new Book(res)
   }
   )
 }
 
-export async function updateBook(payload: Partial<Book>) {
+export async function updateBook(apiKey: string, payload: Partial<Book>) {
   return APIHandler(async () => {
-    const res = (await put({url: `${apiHost}/api/v1/books/${payload.id}`, payload})).data
+    const res = (await put({url: `${apiHost}/api/v1/books/${payload.id}`, apiKey, payload})).data
     BookPropsSchema.safeParse(res)
     return new Book(res)
   })
 }
 
-export async function retrieveGalleon(bookId: string) {
+export async function retrieveGalleon(apiKey: string, bookId: string) {
   return APIHandler(async () => {
-    const res = (await get({url: `${apiHost}/api/v1/books/${bookId}/format/galleon`})).data
+    const res = (await get({url: `${apiHost}/api/v1/books/${bookId}/format/galleon`, apiKey})).data
     bookCreationRequestSchema.parse(res)
     return res as BookCreationRequest
   })

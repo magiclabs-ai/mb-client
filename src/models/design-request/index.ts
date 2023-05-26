@@ -46,6 +46,7 @@ export type DesignRequestEventDetail = {
 export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>
 
 export class DesignRequest {
+  private apiKey: string
   parentId: string
   title: string
   occasion: Occasion
@@ -60,7 +61,8 @@ export class DesignRequest {
   images: Images
   guid?: string
 
-  constructor(parentId: string, designRequestProps?: DesignRequestProps) {
+  constructor(parentId: string, apiKey: string, designRequestProps?: DesignRequestProps) {
+    this.apiKey = apiKey
     this.parentId = parentId
     this.title = designRequestProps?.title || ''
     this.occasion = designRequestProps?.occasion || occasions[0]
@@ -72,17 +74,17 @@ export class DesignRequest {
     this.imageFilteringLevel = designRequestProps?.imageFilteringLevel || imageFilteringLevels[0]
     this.embellishmentLevel = designRequestProps?.embellishmentLevel || embellishmentLevels[0]
     this.textStickerLevel = designRequestProps?.textStickerLevel || textStickerLevels[0]
-    this.images = new Images(parentId)
+    this.images = new Images(this.parentId, this.apiKey)
   }
 
   async getOptions(imageCount?: number) {
-    return await getDesignOptions(this.bookSize, imageCount || this.images.length)
+    return await getDesignOptions(this.apiKey, this.bookSize, imageCount || this.images.length)
   }
 
   async submit(submitDesignRequestProps?: DesignRequestProps) {
     submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
     this.getProgress()
-    await updateBook(designRequestToBook(this))
+    await updateBook(this.apiKey, designRequestToBook(this))
     return this
   }
 
@@ -93,7 +95,7 @@ export class DesignRequest {
   }
 
   async getJSON() {
-    return await retrieveGalleon(this.parentId)
+    return await retrieveGalleon(this.apiKey, this.parentId)
   }
 
   private async getProgress() {
