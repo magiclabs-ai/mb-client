@@ -1,7 +1,6 @@
 import {DesignRequest, DesignRequestEvent, DesignRequestProps} from '../../../src/models/design-request'
 import {Image, ImageServer, Images} from '../../../src/models/design-request/image'
 import {MagicBookClient} from '../../../src'
-
 import {WebSocketMock} from '../../mocks/websocket'
 import {axiosPost} from '../../mocks/axios'
 import {beforeEach, describe, expect, test, vi} from 'vitest'
@@ -11,7 +10,7 @@ import {
   coverTypes,
   embellishmentLevels,
   imageDensities,
-  imageFilterings,
+  imageFilteringLevels,
   occasions,
   pageTypes,
   styles,
@@ -20,7 +19,7 @@ import {
 import {designOptionsServerFactory} from '../../factories/design-options.factory'
 import {faker} from '@faker-js/faker'
 import {galleonFactory} from '../../factories/galleon.factory'
-import {mockCreateBook, mockRetrieveBook, mockRetrieveGalleon} from '../../mocks/books'
+import {mockCreateBook, mockRetrieveBook, mockRetrieveGalleon, mockUpdateBook} from '../../mocks/books'
 import {mockGetDesignOptions} from '../../mocks/design-options'
 import {snakeCaseObjectKeysToCamelCase} from '@/utils/toolbox'
 import {webSocketHost} from '@/config'
@@ -54,7 +53,7 @@ describe('Design Request', async () => {
       coverType: coverTypes[0],
       pageType: pageTypes[0],
       imageDensity: imageDensities[0],
-      imageFiltering: imageFilterings[0],
+      imageFilteringLevel: imageFilteringLevels[0],
       embellishmentLevel: embellishmentLevels[0],
       textStickerLevel: textStickerLevels[0],
       images: new Images(parentId)
@@ -88,6 +87,10 @@ describe('Design Request', async () => {
     // OR
     await designRequest.getOptions()
     expect(designRequestOptions).toBe(snakeCaseObjectKeysToCamelCase(designOptions))
+  })
+  test('setGuid', async () => {
+    mockUpdateBook.mockResolvedValue({data: bookFactory()})
+    expect(await designRequest.setGuid(faker.string.uuid())).toStrictEqual(designRequest.guid)
   })
   test('submitDesignRequest', async () => {
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')

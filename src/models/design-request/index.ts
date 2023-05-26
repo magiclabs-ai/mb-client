@@ -4,7 +4,7 @@ import {
   coverTypes,
   embellishmentLevels,
   imageDensities,
-  imageFilterings,
+  imageFilteringLevels,
   occasions,
   pageTypes,
   states,
@@ -22,7 +22,7 @@ export type BookSize = typeof bookSizes[number]
 export type CoverType = typeof coverTypes[number]
 export type PageType = typeof pageTypes[number]
 export type ImageDensity = typeof imageDensities[number]
-export type ImageFiltering = typeof imageFilterings[number]
+export type ImageFilteringLevel = typeof imageFilteringLevels[number]
 export type EmbellishmentLevel = typeof embellishmentLevels[number]
 export type TextStickerLevel = typeof textStickerLevels[number]
 
@@ -34,7 +34,7 @@ export type DesignRequestProps = {
   coverType?: CoverType
   pageType?: PageType
   imageDensity?: ImageDensity
-  imageFiltering?: ImageFiltering
+  imageFilteringLevel?: ImageFilteringLevel
   embellishmentLevel?: EmbellishmentLevel
   textStickerLevel?: TextStickerLevel
 }
@@ -54,10 +54,11 @@ export class DesignRequest {
   coverType: CoverType
   pageType: PageType
   imageDensity: ImageDensity
-  imageFiltering: ImageFiltering
+  imageFilteringLevel: ImageFilteringLevel
   embellishmentLevel: EmbellishmentLevel
   textStickerLevel: TextStickerLevel
   images: Images
+  guid?: string
 
   constructor(parentId: string, designRequestProps?: DesignRequestProps) {
     this.parentId = parentId
@@ -68,7 +69,7 @@ export class DesignRequest {
     this.coverType = designRequestProps?.coverType || coverTypes[0]
     this.pageType = designRequestProps?.pageType || pageTypes[0]
     this.imageDensity = designRequestProps?.imageDensity || imageDensities[0]
-    this.imageFiltering = designRequestProps?.imageFiltering || imageFilterings[0]
+    this.imageFilteringLevel = designRequestProps?.imageFilteringLevel || imageFilteringLevels[0]
     this.embellishmentLevel = designRequestProps?.embellishmentLevel || embellishmentLevels[0]
     this.textStickerLevel = designRequestProps?.textStickerLevel || textStickerLevels[0]
     this.images = new Images(parentId)
@@ -83,6 +84,12 @@ export class DesignRequest {
     this.getProgress()
     await updateBook(designRequestToBook(this))
     return this
+  }
+
+  async setGuid(guid: string) {
+    this.guid = guid
+    await updateBook(designRequestToBook(this))
+    return this.guid
   }
 
   async getJSON() {

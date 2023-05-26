@@ -81,6 +81,7 @@ function App() {
       embellishmentLevel: 'few',
       textStickerLevel: 'none'
     }))
+    console.log('designRequest.setGuid:', await designRequest.setGuid(faker.string.uuid()))
     setDesignRequest(designRequest)
   }
 

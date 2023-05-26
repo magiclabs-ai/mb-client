@@ -20,7 +20,7 @@ export async function retrieveBook(bookId: string) {
   )
 }
 
-export async function updateBook(payload: Book) {
+export async function updateBook(payload: Partial<Book>) {
   return APIHandler(async () => {
     const res = (await put({url: `${apiHost}/api/v1/books/${payload.id}`, payload})).data
     BookPropsSchema.safeParse(res)

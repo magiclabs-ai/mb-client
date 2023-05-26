@@ -14,7 +14,7 @@ describe('Book APIs', () => {
   })
   test('retrieveBook function', async () => {
     axiosGet.mockResolvedValue({data: book})
-    const res = await retrieveBook('bookId')
+    const res = await retrieveBook(book.id  )
     expect(JSON.stringify(res)).toBe(JSON.stringify(book))
   })
   test('updateBook function', async () => {

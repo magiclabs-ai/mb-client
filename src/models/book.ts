@@ -3,7 +3,7 @@ import {
   CoverType,
   EmbellishmentLevel,
   ImageDensity,
-  ImageFiltering,
+  ImageFilteringLevel,
   Occasion,
   PageType,
   State,
@@ -14,7 +14,7 @@ import {
   coverTypes,
   embellishmentLevels,
   imageDensities,
-  imageFilterings,
+  imageFilteringLevels,
   occasions,
   pageTypes,
   states,
@@ -29,7 +29,7 @@ export type BookDesignRequestProps = {
   cover_type: CoverType
   page_type: PageType
   image_density: ImageDensity
-  image_filtering: ImageFiltering
+  image_filtering_level: ImageFilteringLevel
   embellishment_level: EmbellishmentLevel
   text_sticker_level: TextStickerLevel
 }
@@ -41,7 +41,7 @@ export class BookDesignRequest {
   cover_type: CoverType
   page_type: PageType
   image_density: ImageDensity
-  image_filtering: ImageFiltering
+  image_filtering_level: ImageFilteringLevel
   embellishment_level: EmbellishmentLevel
   text_sticker_level: TextStickerLevel
 
@@ -52,7 +52,7 @@ export class BookDesignRequest {
     this.cover_type = props.cover_type
     this.page_type = props.page_type
     this.image_density = props.image_density
-    this.image_filtering = props.image_filtering
+    this.image_filtering_level = props.image_filtering_level
     this.embellishment_level = props.embellishment_level
     this.text_sticker_level = props.text_sticker_level
   }
@@ -65,29 +65,32 @@ export const bookDesignRequestSchema = z.object({
   cover_type: z.enum(coverTypes),
   page_type: z.enum(pageTypes),
   image_density: z.enum(imageDensities),
-  image_filtering: z.enum(imageFilterings),
+  image_filtering_level: z.enum(imageFilteringLevels),
   embellishment_level: z.enum(embellishmentLevels),
   text_sticker_level: z.enum(textStickerLevels)
 })
 
 export const BookPropsSchema = z.object({
   id: z.string(),
-  state: z.enum(states),
   title: z.string(),
-  design_request: bookDesignRequestSchema
+  design_request: bookDesignRequestSchema,
+  state: z.enum(states).optional(),
+  guid: z.string().optional()
 })
 export type BookProps = z.infer<typeof BookPropsSchema>
 
 export class Book {
   id: string
-  state: State
   title: string
   design_request: BookDesignRequest
+  state?: State
+  guid?: string
 
   constructor(props: BookProps) {
     this.id = props.id
-    this.state = props.state
     this.title = props.title
     this.design_request = new BookDesignRequest(props.design_request)
+    this.state = props.state
+    this.guid = props.guid
   }
 }
