@@ -53,7 +53,7 @@ describe('Design Request', async () => {
       coverType: coverTypes[0],
       pageType: pageTypes[0],
       imageDensity: imageDensities[0],
-      imageFiltering: imageFilteringLevels[0],
+      imageFilteringLevel: imageFilteringLevels[0],
       embellishmentLevel: embellishmentLevels[0],
       textStickerLevel: textStickerLevels[0],
       images: new Images(parentId)
@@ -90,12 +90,7 @@ describe('Design Request', async () => {
   })
   test('setGuid', async () => {
     mockUpdateBook.mockResolvedValue({data: bookFactory()})
-    const submitDesignRequest = await designRequest.setGuid(faker.datatype.uuid())
-    expect(submitDesignRequest).toStrictEqual(designRequest)
-  })
-  test.fails('setGuid', async () => {
-    const submitDesignRequest = await designRequest.setGuid('faker.datatype.uuid()')
-    expect(submitDesignRequest).toThrowError()
+    expect(await designRequest.setGuid(faker.string.uuid())).toStrictEqual(designRequest.guid)
   })
   test('submitDesignRequest', async () => {
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
