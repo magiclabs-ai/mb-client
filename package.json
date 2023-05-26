@@ -9,7 +9,7 @@
   "types": "./src/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/56kcloud/mb-client.git"
+    "url": "https://github.com/magiclabs-ai/mb-client"
   },
   "exports": {
     ".": {
