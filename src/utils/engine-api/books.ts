@@ -1,7 +1,7 @@
 import {APIHandler, get, post, put} from './axios'
 import {Book, BookPropsSchema} from '@/models/book'
-import {BookCreationRequest, bookCreationRequestSchema} from '@/models/galleon'
 import {apiHost} from '../../config'
+import {bookCreationRequestSchema} from '@/models/galleon'
 
 export async function createBook(apiKey: string, payload?: Book) {
   return APIHandler(async () => {
@@ -31,7 +31,6 @@ export async function updateBook(apiKey: string, payload: Partial<Book>) {
 export async function retrieveGalleon(apiKey: string, bookId: string) {
   return APIHandler(async () => {
     const res = (await get({url: `${apiHost}/api/v1/books/${bookId}/format/galleon`, apiKey})).data
-    bookCreationRequestSchema.parse(res)
-    return res as BookCreationRequest
+    return bookCreationRequestSchema.parse(res)
   })
 }

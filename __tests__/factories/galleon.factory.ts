@@ -5,12 +5,11 @@ export type galleonFactoryProps = {
   title?: string
 }
 
-export function galleonFactory(props?: galleonFactoryProps) {
+export function galleonFactory(props?: galleonFactoryProps): BookCreationRequest {
   return {
     'title': props?.title || faker.lorem.words(3),
     'coverSpecId': '11x14_bk_hard',
     'styleId': 5161,
-    'binding': 'sp',
     'userId': '01H0D0SNQ05H00ERKG9NRV1GQT',
     'magicShopBook': {
       'pages': [
@@ -1916,5 +1915,5 @@ export function galleonFactory(props?: galleonFactoryProps) {
         }
       ]
     }
-  } as BookCreationRequest
+  }
 }

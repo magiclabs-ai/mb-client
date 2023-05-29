@@ -17,7 +17,6 @@ export function mergeNestedObject(obj: Record<string, any>, objToMerge: Record<s
   return obj
 }
 
-
 export function camelCaseToSnakeCase(str: string) {
   return str.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase()
 }

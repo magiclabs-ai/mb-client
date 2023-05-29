@@ -24,7 +24,6 @@ import {mockGetDesignOptions} from '../../mocks/design-options'
 import {snakeCaseObjectKeysToCamelCase} from '@/utils/toolbox'
 import {webSocketHost} from '@/config'
 
-
 describe('Design Request', async () => {
   let designRequest: DesignRequest
 
