@@ -110,11 +110,11 @@ export class DesignRequest {
       if (previousState !== detail.state) {
         previousState = detail.state
         const customEvent = new CustomEvent<DesignRequestEventDetail>('MagicBook.designRequestUpdated', {detail})
-        window.dispatchEvent(customEvent)
         if (['error', 'ready'].includes(detail.state)) {
           webSocket.close()
           clearTimeout(timeout)
-        } 
+        }
+        window.dispatchEvent(customEvent)
       }
     }
   }
