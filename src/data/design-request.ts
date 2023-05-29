@@ -3,15 +3,12 @@ export const states = [
   'ingesting',
   'submitted',
   'storyboarding',
-  'storyboarding succeeded',
+  'deduplication',
+  'image selection',
   'designing',
-  'designing succeeded',
   'layouting',
-  'layouting succeeded',
   'embellishing',
-  'embellishing succeeded',
   'polishing',
-  'polishing succeeded',
   'ready',
   'error' 
 ] as const
