@@ -4,7 +4,7 @@ import {faker} from '@faker-js/faker'
 import {useEffect, useState} from 'react'
 
 function App() {
-  const client = new MagicBookClient('YOUR_API_KEY')
+  const client = new MagicBookClient('862d2288-8dcb-451a-80c4-7cc66795d24e')
   const [isCreatingDesignRequest, setIsCreatingDesignRequest] = useState<boolean>(false) 
   const [designRequestState, setDesignRequestState] = useState<State | null>()
   const [currentDesignRequest, setDesignRequest] = useState<DesignRequest | null>()

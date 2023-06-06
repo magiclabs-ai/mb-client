@@ -1,4 +1,5 @@
 import {Images} from './image'
+import {MagicBookClient} from '../client'
 import {
   bookSizes,
   coverTypes,
@@ -11,7 +12,7 @@ import {
   styles,
   textStickerLevels
 } from '@/data/design-request'
-import {designRequestTimeout, webSocketHost} from '@/config'
+import {designRequestTimeout} from '@/config'
 import {designRequestToBook} from '@/utils/design-request-parser'
 import {getDesignOptions} from '@/utils/engine-api/design-options'
 import {retrieveGalleon, updateBook} from '@/utils/engine-api/books'
@@ -46,7 +47,7 @@ export type DesignRequestEventDetail = {
 export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>
 
 export class DesignRequest {
-  private apiKey: string
+  client: MagicBookClient 
   parentId: string
   title: string
   occasion: Occasion
@@ -61,8 +62,8 @@ export class DesignRequest {
   images: Images
   guid?: string
 
-  constructor(parentId: string, apiKey: string, designRequestProps?: DesignRequestProps) {
-    this.apiKey = apiKey
+  constructor(parentId: string, client: MagicBookClient, designRequestProps?: DesignRequestProps) {
+    this.client = client
     this.parentId = parentId
     this.title = designRequestProps?.title || ''
     this.occasion = designRequestProps?.occasion || occasions[0]
@@ -74,33 +75,34 @@ export class DesignRequest {
     this.imageFilteringLevel = designRequestProps?.imageFilteringLevel || imageFilteringLevels[0]
     this.embellishmentLevel = designRequestProps?.embellishmentLevel || embellishmentLevels[0]
     this.textStickerLevel = designRequestProps?.textStickerLevel || textStickerLevels[0]
-    this.images = new Images(this.parentId, this.apiKey)
+    this.images = new Images(this.client, this.parentId)
   }
 
   async getOptions(imageCount?: number) {
-    return await getDesignOptions(this.apiKey, this.bookSize, imageCount || this.images.length)
+    return await getDesignOptions(this.client, this.bookSize, imageCount || this.images.length)
   }
 
   async submit(submitDesignRequestProps?: DesignRequestProps) {
+    console.log(this.client)
     submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
     this.getProgress()
-    await updateBook(this.apiKey, designRequestToBook(this))
+    await updateBook(this.client, designRequestToBook(this))
     return this
   }
 
   async setGuid(guid: string) {
     this.guid = guid
-    await updateBook(this.apiKey, designRequestToBook(this))
+    await updateBook(this.client, designRequestToBook(this))
     return this.guid
   }
 
   async getJSON() {
-    return await retrieveGalleon(this.apiKey, this.parentId)
+    return await retrieveGalleon(this.client, this.parentId)
   }
 
   private async getProgress() {
     let previousState = 'new'
-    const webSocket = new WebSocket(`${webSocketHost}/?book_id=${this.parentId}`)
+    const webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
     const timeout = setTimeout(() => {
       webSocket.close()
       throw new Error('Something went wrong. Please try again.')
