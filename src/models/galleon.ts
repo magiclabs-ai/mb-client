@@ -71,7 +71,7 @@ export type ReportingData = z.infer<typeof reportingDataSchema>
 
 export const canvasSchema = z.object({
   backgroundId: z.string().nullable(),
-  assets: z.array(assetSchema)
+  assets: z.array(assetSchema).optional()
 })
 export type Canvas = z.infer<typeof canvasSchema>
 

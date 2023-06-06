@@ -11,7 +11,7 @@ describe('Axios', () => {
     const data = faker.lorem.sentence()
     axiosGet.mockResolvedValue({data})
     const res = await get({url, apiKey, options: {method: 'GET'}})
-    expect(res.data).toBe(data)
+    expect(res.data).toStrictEqual(data)
   })
   test('get error function', async () => {
     const errorMessage = faker.lorem.sentence()
@@ -19,22 +19,22 @@ describe('Axios', () => {
       const asyncMock = vi.fn().mockRejectedValue(new Error(errorMessage))
       await APIHandler(async () => asyncMock())
     } catch (error: any) {
-      expect(error.message).toBe(errorMessage)
+      expect(error.message).toStrictEqual(errorMessage)
     }
   })
   test('remove function', async () => {
     axiosDelete.mockResolvedValue({data: 'deleted'})
     const res = await remove({url, apiKey})
-    expect(res.data).toBe('deleted')
+    expect(res.data).toStrictEqual('deleted')
   })
   test('post function', async () => {
     axiosPost.mockResolvedValue({data: {status: 'created'}})
     const res = await post({url, apiKey})
-    expect(res.data.status).toBe('created')
+    expect(res.data.status).toStrictEqual('created')
   })
   test('put function', async () => {
     axiosPut.mockResolvedValue({data: {status: 'updated'}})
     const res = await put({url, apiKey})
-    expect(res.data.status).toBe('updated')
+    expect(res.data.status).toStrictEqual('updated')
   })
 })

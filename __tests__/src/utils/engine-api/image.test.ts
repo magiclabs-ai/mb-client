@@ -11,7 +11,7 @@ describe('Image APIs', () => {
     const image = imageServerFactory()
     axiosPost.mockResolvedValue({data: image})
     const res = await addImageInBook(apiKey, 'bookId', image)
-    expect(res).toBe(image)
+    expect(JSON.stringify(res)).toStrictEqual(JSON.stringify(image))
   })
 })
 

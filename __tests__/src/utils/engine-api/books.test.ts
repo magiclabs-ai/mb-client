@@ -12,23 +12,23 @@ describe('Book APIs', () => {
   test('createBook function', async () => {
     axiosPost.mockResolvedValue({data: book})
     const res = await createBook(apiKey)
-    expect(JSON.stringify(res)).toBe(JSON.stringify(book))
+    expect(JSON.stringify(res)).toStrictEqual(JSON.stringify(book))
   })
   test('retrieveBook function', async () => {
     axiosGet.mockResolvedValue({data: book})
     const res = await retrieveBook(apiKey, book.id)
-    expect(JSON.stringify(res)).toBe(JSON.stringify(book))
+    expect(JSON.stringify(res)).toStrictEqual(JSON.stringify(book))
   })
   test('updateBook function', async () => {
     axiosPut.mockResolvedValue({data: book})
     const res = await updateBook(apiKey, book)
-    expect(JSON.stringify(res)).toBe(JSON.stringify(book))
+    expect(JSON.stringify(res)).toStrictEqual(JSON.stringify(book))
   })
   test('retrieveGalleon function', async () => {
     const galleon = galleonFactory({title: book.title})
     axiosGet.mockResolvedValue({data: galleon})
     const res = await retrieveGalleon(apiKey, book.id)
-    expect(JSON.stringify(res)).toBe(JSON.stringify(galleon))
+    expect(res).toStrictEqual(galleon)
   })
 })
 
