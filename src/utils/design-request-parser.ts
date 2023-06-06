@@ -6,7 +6,8 @@ import {styles} from '@/data/design-request'
 export function designRequestToBook(designRequest: DesignRequest) {
   const styleSlug = styles[designRequest.style].slug
   const snakeCasedDesignRequest = 
-    camelCaseObjectKeysToSnakeCase({...designRequest} as Record<string, unknown>) as BookDesignRequestProps
+    camelCaseObjectKeysToSnakeCase(JSON.parse(JSON.stringify(designRequest)) as Record<string, unknown>) as
+     BookDesignRequestProps
   snakeCasedDesignRequest.style = styleSlug
   return new Book({
     id: designRequest.parentId,
