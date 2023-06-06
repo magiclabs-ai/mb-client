@@ -4,9 +4,7 @@ import {faker} from '@faker-js/faker'
 import {useEffect, useState} from 'react'
 
 function App() {
-  const client = new MagicBookClient('862d2288-8dcb-451a-80c4-7cc66795d24e',
-    'http://localhost:3000',
-    'ws://localhost:3000')
+  const client = new MagicBookClient('862d2288-8dcb-451a-80c4-7cc66795d24e')
   const [isCreatingDesignRequest, setIsCreatingDesignRequest] = useState<boolean>(false) 
   const [designRequestState, setDesignRequestState] = useState<State | null>()
   const [currentDesignRequest, setDesignRequest] = useState<DesignRequest | null>()
@@ -51,10 +49,10 @@ function App() {
     setIsCreatingDesignRequest(true)
     const designRequest = await client.createDesignRequest({
       occasion: 'default',
-      style: 5144,
-      bookSize: '10x10',
+      style: 6005,
+      bookSize: '8x11',
       coverType: 'hc',
-      pageType: 'sp'
+      pageType: 'sl'
     })
     designRequest.title = 'My Book'
     console.log('designRequest:', designRequest)
