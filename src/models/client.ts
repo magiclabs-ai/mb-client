@@ -1,16 +1,16 @@
 import {DesignRequest, DesignRequestProps} from './design-request'
-import {apiHost, webSocketHost} from '@/config'
 import {createBook} from '@/utils/engine-api/books'
+import {defaultApiHost, defaultWebSocketHost} from '@/config'
 
 export class MagicBookClient {
   apiKey: string
   apiHost: string
   webSocketHost: string
 
-  public constructor(apiKey: string, customApiHost=apiHost, customWebSocketHost=webSocketHost) {
+  public constructor(apiKey: string, apiHost=defaultApiHost, webSocketHost=defaultWebSocketHost) {
     this.apiKey = apiKey
-    this.apiHost = customApiHost
-    this.webSocketHost = customWebSocketHost
+    this.apiHost = apiHost
+    this.webSocketHost = webSocketHost
   }
 
   async createDesignRequest(designRequestProps?: DesignRequestProps)
