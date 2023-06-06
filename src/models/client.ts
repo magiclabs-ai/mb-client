@@ -8,7 +8,6 @@ export class MagicBookClient {
   webSocketHost: string
 
   public constructor(apiKey: string, customApiHost=apiHost, customWebSocketHost=webSocketHost) {
-    console.log('customWebSocketHost', customWebSocketHost)
     this.apiKey = apiKey
     this.apiHost = customApiHost
     this.webSocketHost = customWebSocketHost
@@ -17,8 +16,6 @@ export class MagicBookClient {
   async createDesignRequest(designRequestProps?: DesignRequestProps)
   : Promise<DesignRequest> {
     const book = await createBook(this)
-    console.log('book.id', book)
-    console.log(this.webSocketHost)
     return new DesignRequest(book.id, this, designRequestProps)
   }
 }

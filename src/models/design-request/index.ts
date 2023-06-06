@@ -83,7 +83,6 @@ export class DesignRequest {
   }
 
   async submit(submitDesignRequestProps?: DesignRequestProps) {
-    console.log(this.client)
     submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
     this.getProgress()
     await updateBook(this.client, designRequestToBook(this))

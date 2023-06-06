@@ -88,10 +88,6 @@ describe('Design Request', async () => {
     await designRequest.getOptions()
     expect(designRequestOptions).toStrictEqual(snakeCaseObjectKeysToCamelCase(designOptions))
   })
-  test('setGuid', async () => {
-    mockUpdateBook.mockResolvedValue({data: bookFactory()})
-    expect(await designRequest.setGuid(faker.string.uuid())).toStrictEqual(designRequest.guid)
-  })
   test('submitDesignRequest', async () => {
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
     const ws = vi.spyOn(window, 'WebSocket').mockImplementation((value) => (new WebSocketMock(value) as WebSocket))
@@ -134,5 +130,9 @@ describe('Design Request', async () => {
     expect(submitDesignRequest).toStrictEqual(designRequest)
     vi.advanceTimersToNextTimer()
     expect(submitDesignRequest).toThrowError('Something went wrong. Please try again.')
+  })
+  test('setGuid', async () => {
+    mockUpdateBook.mockResolvedValue({data: bookFactory()})
+    expect(await designRequest.setGuid(faker.string.uuid())).toStrictEqual(designRequest.guid)
   })
 })
