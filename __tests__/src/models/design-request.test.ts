@@ -22,13 +22,13 @@ import {galleonFactory} from '../../factories/galleon.factory'
 import {mockCreateBook, mockRetrieveBook, mockRetrieveGalleon, mockUpdateBook} from '../../mocks/books'
 import {mockGetDesignOptions} from '../../mocks/design-options'
 import {snakeCaseObjectKeysToCamelCase} from '@/utils/toolbox'
-import {webSocketHost} from '@/config'
 
 describe('Design Request', async () => {
   let designRequest: DesignRequest
+  const webSocketHost = 'wss://api.magicbook.mock'
+  const client = new MagicBookClient('123', 'https://api.magicbook.mock', webSocketHost)
 
   beforeEach(async () => {
-    const client = new MagicBookClient('123')
     const designRequestProps: DesignRequestProps = {
       occasion: 'birthday',
       style: 5274,
@@ -37,15 +37,14 @@ describe('Design Request', async () => {
       pageType: 'dl',
       title: 'My Book'
     }
-    mockCreateBook.mockResolvedValue({data: bookFactory()})
+    mockCreateBook.mockResolvedValue(bookFactory())
     designRequest = await client.createDesignRequest(designRequestProps)
   })
 
   test('Design Request default values', async () => {
-    const apiKey = faker.string.uuid()
     const parentId = faker.string.uuid()
-    expect(JSON.stringify(new DesignRequest(parentId, apiKey))).toStrictEqual(JSON.stringify({
-      apiKey,
+    expect(JSON.stringify(new DesignRequest(parentId, client))).toStrictEqual(JSON.stringify({
+      client,
       parentId,
       title: '',
       occasion: occasions[0],
@@ -57,7 +56,7 @@ describe('Design Request', async () => {
       imageFilteringLevel: imageFilteringLevels[0],
       embellishmentLevel: embellishmentLevels[0],
       textStickerLevel: textStickerLevels[0],
-      images: new Images(parentId, apiKey)
+      images: new Images(client, parentId)
     }))
   })
   test('addImage', async () => {
@@ -79,7 +78,7 @@ describe('Design Request', async () => {
     const galleon = galleonFactory({title: designRequest.title})
     mockRetrieveGalleon.mockResolvedValue(galleon)
     const designRequestJSON = await designRequest.getJSON()
-    expect(designRequestJSON.title).toBe(designRequest.title)
+    expect(designRequestJSON.title).toStrictEqual(designRequest.title)
   })
   test('getOptions', async () => {
     const designOptions = designOptionsServerFactory()
@@ -87,17 +86,13 @@ describe('Design Request', async () => {
     const designRequestOptions = await designRequest.getOptions(faker.number.int({min: 20, max: 200}))
     // OR
     await designRequest.getOptions()
-    expect(designRequestOptions).toBe(snakeCaseObjectKeysToCamelCase(designOptions))
-  })
-  test('setGuid', async () => {
-    mockUpdateBook.mockResolvedValue({data: bookFactory()})
-    expect(await designRequest.setGuid(faker.string.uuid())).toStrictEqual(designRequest.guid)
+    expect(designRequestOptions).toStrictEqual(snakeCaseObjectKeysToCamelCase(designOptions))
   })
   test('submitDesignRequest', async () => {
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
     const ws = vi.spyOn(window, 'WebSocket').mockImplementation((value) => (new WebSocketMock(value) as WebSocket))
     const wsClose = vi.spyOn(WebSocketMock.prototype, 'close')
-    mockRetrieveBook.mockResolvedValue(bookFactory({state: 'submitted'}))
+    mockUpdateBook.mockResolvedValue(bookFactory())
     const submitDesignRequest = await designRequest.submit({
       imageDensity: 'high',
       embellishmentLevel: 'few',
@@ -106,23 +101,23 @@ describe('Design Request', async () => {
     expect(ws).toHaveBeenCalledWith(`${webSocketHost}/?book_id=${designRequest.parentId}`)
     expect(submitDesignRequest).toStrictEqual(designRequest)
     ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'submitted'})})
-    expect(dispatchEventSpy.mock.calls.length).toBe(1)
+    expect(dispatchEventSpy.mock.calls.length).toStrictEqual(1)
     expect(ws).toHaveBeenCalledWith(`${webSocketHost}/?book_id=${designRequest.parentId}`)
     expect(submitDesignRequest).toStrictEqual(designRequest)
     ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'submitted'})})
-    expect(dispatchEventSpy.mock.calls.length).toBe(1)
+    expect(dispatchEventSpy.mock.calls.length).toStrictEqual(1)
     ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'embellishing'})})
     const embellishingEvent = dispatchEventSpy.mock.calls[1][0] as DesignRequestEvent
-    expect(embellishingEvent.type).toBe('MagicBook.designRequestUpdated')
-    expect(embellishingEvent['detail']['state']).toBe('embellishing')
-    expect(dispatchEventSpy.mock.calls.length).toBe(2)
+    expect(embellishingEvent.type).toStrictEqual('MagicBook.designRequestUpdated')
+    expect(embellishingEvent['detail']['state']).toStrictEqual('embellishing')
+    expect(dispatchEventSpy.mock.calls.length).toStrictEqual(2)
     expect(wsClose).not.toHaveBeenCalled()
     ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'error'})})
     expect(wsClose).toHaveBeenCalled()
     const errorEvent = dispatchEventSpy.mock.calls[2][0] as DesignRequestEvent
-    expect(errorEvent.type).toBe('MagicBook.designRequestUpdated')
-    expect(errorEvent['detail']['state']).toBe('error')
-    expect(dispatchEventSpy.mock.calls.length).toBe(3)
+    expect(errorEvent.type).toStrictEqual('MagicBook.designRequestUpdated')
+    expect(errorEvent['detail']['state']).toStrictEqual('error')
+    expect(dispatchEventSpy.mock.calls.length).toStrictEqual(3)
   })
   test.fails('submitDesignRequest with error', async () => {
     vi.useFakeTimers()
@@ -135,5 +130,9 @@ describe('Design Request', async () => {
     expect(submitDesignRequest).toStrictEqual(designRequest)
     vi.advanceTimersToNextTimer()
     expect(submitDesignRequest).toThrowError('Something went wrong. Please try again.')
+  })
+  test('setGuid', async () => {
+    mockUpdateBook.mockResolvedValue({data: bookFactory()})
+    expect(await designRequest.setGuid(faker.string.uuid())).toStrictEqual(designRequest.guid)
   })
 })
