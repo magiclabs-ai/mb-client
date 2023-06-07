@@ -8,6 +8,7 @@ export type galleonFactoryProps = {
 export function galleonFactory(props?: galleonFactoryProps): BookCreationRequest {
   return {
     'title': props?.title || faker.lorem.words(3),
+    'binding': 'sl',
     'coverSpecId': '11x14_bk_hard',
     'styleId': 5161,
     'userId': '01H0D0SNQ05H00ERKG9NRV1GQT',

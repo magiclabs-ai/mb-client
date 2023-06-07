@@ -90,6 +90,7 @@ export type MagicShopBook = z.infer<typeof magicShopBookSchema>
 
 export const bookCreationRequestSchema = z.object({
   title: z.string(),
+  binding: z.string(),
   coverSpecId: z.string(),
   styleId: z.number(),
   userId: z.string(),
