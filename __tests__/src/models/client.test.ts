@@ -19,7 +19,7 @@ describe('Client', () => {
     const designRequest = await client.createDesignRequest(designRequestProps)
     Object.keys(designRequestProps).forEach((k) => {
       const key = k as keyof DesignRequestProps
-      expect(designRequest[key]).toBe(designRequestProps[key])
+      expect(designRequest[key]).toStrictEqual(designRequestProps[key])
     })
   })
 })
