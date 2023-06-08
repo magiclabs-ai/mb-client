@@ -55,6 +55,12 @@ export const assetSchema = z.object({
 })
 export type Asset = z.infer<typeof assetSchema>
 
+export const layoutSchema = z.object({
+  layoutId: z.string(),
+  photos: z.array()
+})
+export type Layout = z.infer<typeof layoutSchema>
+
 export const photoStripSchema = z.object({
   url: z.string(),
   encryptId: z.string(),
@@ -71,7 +77,8 @@ export type ReportingData = z.infer<typeof reportingDataSchema>
 
 export const canvasSchema = z.object({
   backgroundId: z.string().nullable(),
-  assets: z.array(assetSchema).optional()
+  assets: z.array(assetSchema).optional(),
+  layout: layoutSchema.optional()
 })
 export type Canvas = z.infer<typeof canvasSchema>
 
