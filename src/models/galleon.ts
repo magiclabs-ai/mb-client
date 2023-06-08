@@ -34,7 +34,7 @@ export type PhotoMetadata = z.infer<typeof photoMetadataSchema>
 
 export const propertySchema = z.object({
   key: z.string(),
-  value: z.union([z.string(), z.number(), z.boolean()]).nullable()
+  value: z.any()
 })
 export type Property = z.infer<typeof propertySchema>
 
