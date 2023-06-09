@@ -105,7 +105,7 @@ ___
 
 ## Example
 
-To see the Magicbook client in action, run the following commands (make sure you created a `.env` file before building.):
+To see the Magicbook client in action, run the following commands (make sure you created a `.env` file before building):
 
 ```bash
 npm run build
