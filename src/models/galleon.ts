@@ -57,7 +57,7 @@ export type Asset = z.infer<typeof assetSchema>
 
 export const layoutSchema = z.object({
   layoutId: z.string(),
-  photos: z.array()
+  photos: z.array(z.unknown())
 })
 export type Layout = z.infer<typeof layoutSchema>
 
