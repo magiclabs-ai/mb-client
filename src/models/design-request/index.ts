@@ -47,7 +47,7 @@ export type DesignRequestEventDetail = {
 export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>
 
 export class DesignRequest {
-  client: MagicBookClient 
+  private client: MagicBookClient 
   parentId: string
   title: string
   occasion: Occasion
