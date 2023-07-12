@@ -79,7 +79,8 @@ export class DesignRequest {
   }
 
   async getOptions(imageCount?: number) {
-    return await getDesignOptions(this.client, this.bookSize, imageCount || this.images.length)
+    return await getDesignOptions(this.client, this.bookSize, imageCount || this.images.length,
+      this.imageFilteringLevel)
   }
 
   async submit(submitDesignRequestProps?: DesignRequestProps) {

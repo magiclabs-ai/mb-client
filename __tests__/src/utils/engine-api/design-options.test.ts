@@ -11,7 +11,7 @@ describe('Design Options APIs', () => {
   test('getDesignOptions function', async () => {
     const designOptions = designOptionsFactory()
     axiosGet.mockResolvedValue({data: designOptions})
-    const res = await getDesignOptions(client, '8x8', 200)
+    const res = await getDesignOptions(client, '8x8', 200, 'best')
     expect(JSON.stringify(res)).toStrictEqual(JSON.stringify(snakeCaseObjectKeysToCamelCase(designOptions)))
   })
 })
