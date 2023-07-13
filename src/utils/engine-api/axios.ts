@@ -23,20 +23,24 @@ function createAxiosConfig({apiKey, options}: createAxiosConfigProps): AxiosRequ
   return config
 }
 
+function cleanUrl(url: string) {
+  return url.replaceAll(' ', '').trim()
+}
+
 export async function get ({url, apiKey, options}: baseRequest) {
-  return await axios.get(url, createAxiosConfig({apiKey, options}))
+  return await axios.get(cleanUrl(url), createAxiosConfig({apiKey, options}))
 }
 
 export async function remove ({url, apiKey, options}: baseRequest) {
-  return await axios.delete(url, createAxiosConfig({apiKey, options}))
+  return await axios.delete(cleanUrl(url), createAxiosConfig({apiKey, options}))
 }
 
 export async function post ({url, apiKey, options, payload = {}}: payloadRequest) {
-  return await axios.post(url, payload, createAxiosConfig({apiKey, options}))
+  return await axios.post(cleanUrl(url), payload, createAxiosConfig({apiKey, options}))
 }
 
 export async function put ({url, apiKey, options, payload}: payloadRequest) {
-  return await axios.put(url, payload, createAxiosConfig({apiKey, options}))
+  return await axios.put(cleanUrl(url), payload, createAxiosConfig({apiKey, options}))
 }
 
 export async function APIHandler<T>(fn: () => Promise<T>) {
