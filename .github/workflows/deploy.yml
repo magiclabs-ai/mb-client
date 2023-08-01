@@ -16,8 +16,8 @@ jobs:
         with:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm i
-      - run: npm run coverage
+      - run: pnpm i
+      - run: pnpm run coverage
       - run: chmod +x ./scripts/deploy-npm.sh && ./scripts/deploy-npm.sh ${{github.event.release.prerelease && '--dev' || ''}}
         shell: bash
         env:
