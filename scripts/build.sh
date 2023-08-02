@@ -10,8 +10,10 @@ done
 rm -rf ./dist
 
 if [[ -z "${flags}" ]]; then
+  node ./scripts/create-tsconfig.js
   pnpm i -P
 else
+  node ./scripts/create-tsconfig.js --dev
   pnpm i
 fi
 
