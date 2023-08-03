@@ -2,7 +2,7 @@ import {mergeNestedObject} from '@/utils/toolbox'
 
 export type CallProps = {
   path: string
-  options?: any
+  options?: RequestInit
   apiKey?: string
 }
 
@@ -26,7 +26,6 @@ export class Fetcher {
     try {
       const baseOptions = {...this.options}
       const options = props.options ? mergeNestedObject(baseOptions, props.options) : baseOptions
-      options.body = JSON.stringify(options.body)
       const res = await fetch(this.cleanUrl((new URL(props.path, this.baseUrl)).href), options)
       return res.json()
     } catch (error) {

@@ -1,6 +1,6 @@
+import {Fetcher, baseOptions} from '@/models/fetcher.model'
 import {describe, expect, test} from 'vitest'
-import { Fetcher, baseOptions } from '@/models/fetcher.model'
-import { fetchMocker } from '../../mocks/fetch'
+import {fetchMocker} from '../../mocks/fetch'
 
 describe('Fetcher', () => {
   const fetcher = new Fetcher('https://api.fake-server.com')

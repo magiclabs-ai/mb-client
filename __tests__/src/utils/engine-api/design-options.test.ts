@@ -1,7 +1,7 @@
 import {MagicBookClient} from '@/index'
-import {fetchMocker} from '../../../mocks/fetch'
 import {describe, expect, test, vi} from 'vitest'
 import {designOptionsFactory} from '../../../factories/design-options.factory'
+import {fetchMocker} from '../../../mocks/fetch'
 import {getDesignOptions} from '@/utils/engine-api/design-options'
 import {snakeCaseObjectKeysToCamelCase} from '@/utils/toolbox'
 

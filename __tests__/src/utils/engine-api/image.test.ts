@@ -1,7 +1,7 @@
 import {MagicBookClient} from '@/index'
 import {addImageInBook} from '../../../../src/utils/engine-api/images'
-import {fetchMocker} from '../../../mocks/fetch'
 import {describe, expect, test, vi} from 'vitest'
+import {fetchMocker} from '../../../mocks/fetch'
 import {imageServerFactory} from '../../../factories/image.factory'
 
 vi.unmock('@/utils/engine-api/images')

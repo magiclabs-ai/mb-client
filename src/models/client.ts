@@ -1,7 +1,7 @@
 import {DesignRequest, DesignRequestProps} from './design-request'
+import {Fetcher} from './fetcher.model'
 import {createBook} from '@/utils/engine-api/books'
 import {defaultApiHost, defaultWebSocketHost} from '@/config'
-import { Fetcher } from './fetcher.model'
 
 export class MagicBookClient {
   apiKey: string

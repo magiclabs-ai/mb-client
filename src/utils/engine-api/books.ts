@@ -1,7 +1,7 @@
 import {Book, BookPropsSchema} from '@/models/book'
 import {MagicBookClient} from '@/models/client'
 import {bookCreationRequestSchema} from '@/models/galleon'
-import { handleAsyncFunction } from '../toolbox'
+import {handleAsyncFunction} from '../toolbox'
 
 export async function createBook({fetcher}: MagicBookClient, payload?: Book) {
   return handleAsyncFunction(async () => {
@@ -9,8 +9,8 @@ export async function createBook({fetcher}: MagicBookClient, payload?: Book) {
       path: '/v1/books',
       options: {
         method: 'POST',
-        body: payload
-      },
+        body: JSON.stringify(payload)
+      }
     })
     BookPropsSchema.safeParse(res)
     return new Book(res)
@@ -31,7 +31,7 @@ export async function updateBook({fetcher}: MagicBookClient, payload: Partial<Bo
       path: `/v1/books/${payload.id}`,
       options: {
         method: 'PUT',
-        body: payload
+        body: JSON.stringify(payload)
       }
     })
     BookPropsSchema.safeParse(res)
@@ -42,7 +42,7 @@ export async function updateBook({fetcher}: MagicBookClient, payload: Partial<Bo
 export async function retrieveGalleon({fetcher}: MagicBookClient, bookId: string) {
   return handleAsyncFunction(async () => {
     const res = await fetcher.call({
-      path: `/v1/books/${bookId}/format/galleon`,
+      path: `/v1/books/${bookId}/format/galleon`
     })
     return bookCreationRequestSchema.parse(res)
   })
