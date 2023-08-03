@@ -3,7 +3,6 @@ import {Image, ImageServer, Images} from '../../../src/models/design-request/ima
 import {MagicBookClient} from '../../../src'
 import {SpyInstance, beforeEach, describe, expect, test, vi} from 'vitest'
 import {WebSocketMock} from '../../mocks/websocket'
-import {beforeEach, describe, expect, test, vi} from 'vitest'
 import {bookFactory} from '../../factories/book.factory'
 import {
   bookSizes,
