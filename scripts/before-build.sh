@@ -16,14 +16,6 @@ rm -rf ./dist
 
 if [[ -z "${flags}" ]]; then
   node ./create-tsconfig.js
-  pnpm i -P
 else
   node ./create-tsconfig.js --dev
-  pnpm i
 fi
-
-cd $PACKAGE_DIR
-npx vite build ${flags}
-sed "s/\.\//\.\//g; s/dist\///g" ./package.json > ./dist/package.json
-cp ./README.md ./dist/README.md
-pnpm i

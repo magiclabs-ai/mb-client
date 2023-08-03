@@ -18,12 +18,12 @@
   "module": "./dist/magicbook-client.js",
   "types": "./src/index.d.ts",
   "scripts": {
-    "build": "../../scripts/build.sh",
+    "build": "../../scripts/before-build.sh && vite build && ../../scripts/after-build.sh",
     "coverage": "vitest run --coverage",
     "deploy": "./scripts/deploy-npm.sh",
     "lint": "eslint . --ext js,jsx,ts,tsx --config ../../.eslintrc.json --no-eslintrc",
     "test": "vitest --ui",
-    "watch": "../../scripts/build.sh -w"
+    "watch": "../../scripts/before-build.sh -w && vite build --watch"
   },
   "dependencies": {
     "rollup-plugin-execute": "^1.1.1"

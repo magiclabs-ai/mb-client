@@ -18,7 +18,7 @@ export default defineConfig({
       fileName: 'magicbook-client'
     }
   },
-  plugins: [dts()],
+  plugins: [dts({entryRoot: 'src',})],
   test: {
     setupFiles: [
       '__tests__/mocks/fetch.ts',
