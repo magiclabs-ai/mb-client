@@ -5,6 +5,7 @@ import axios, {AxiosRequestConfig} from 'axios'
 type baseRequest = {
   url: string
   apiKey: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   options?: AxiosRequestConfig<any>
 }
 
@@ -14,9 +15,11 @@ type payloadRequest = baseRequest & {
 
 type createAxiosConfigProps = {
   apiKey: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   options?: AxiosRequestConfig<any>
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function createAxiosConfig({apiKey, options}: createAxiosConfigProps): AxiosRequestConfig<any> {
   let config = {}
   apiKey && assign(config, ['headers', 'Authorization'] , `API-Key ${apiKey}`)
