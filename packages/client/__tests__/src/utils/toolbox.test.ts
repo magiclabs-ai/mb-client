@@ -2,7 +2,7 @@ import {assign, camelCaseObjectKeysToSnakeCase, camelCaseToSnakeCase,
   handleAsyncFunction,
   mergeNestedObject,
   snakeCaseObjectKeysToCamelCase,
-  snakeCaseToCamelCase} from '../../../src/utils/toolbox'
+  snakeCaseToCamelCase} from '@/utils/toolbox'
 import {describe, expect, test} from 'vitest'
 
 describe('Toolbox', () => {

@@ -1,4 +1,4 @@
-import {Image, ImageServer} from '../../src'
+import {Image, ImageServer} from '@/index'
 import {faker} from '@faker-js/faker'
 
 export type ImageFactoryProps = {

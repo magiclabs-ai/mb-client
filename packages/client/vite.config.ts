@@ -1,8 +1,10 @@
 /// <reference types="vitest" />
 import {defineConfig} from 'vite'
 import dts from 'vite-plugin-dts'
-import execute from 'rollup-plugin-execute'
 import path, {resolve} from 'path'
+
+
+console.log(resolve(__dirname, 'src'))
 
 export default defineConfig({
   resolve: {
@@ -15,11 +17,6 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'magicbook-client',
       fileName: 'magicbook-client'
-    },
-    rollupOptions: {
-      plugins: [
-        execute('./scripts/after-build.sh')
-      ]
     }
   },
   plugins: [dts()],
