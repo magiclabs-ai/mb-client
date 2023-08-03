@@ -25,7 +25,7 @@ export default defineConfig({
   plugins: [dts()],
   test: {
     setupFiles: [
-      '__tests__/mocks/axios.ts',
+      '__tests__/mocks/fetch.ts',
       '__tests__/mocks/books.ts',
       '__tests__/mocks/design-options.ts',
       '__tests__/mocks/websocket.ts'

@@ -3,7 +3,6 @@ import {Image, ImageServer, Images} from '../../../src/models/design-request/ima
 import {MagicBookClient} from '../../../src'
 import {SpyInstance, beforeEach, describe, expect, test, vi} from 'vitest'
 import {WebSocketMock} from '../../mocks/websocket'
-import {axiosPost} from '../../mocks/axios'
 import {bookFactory} from '../../factories/book.factory'
 import {
   bookSizes,
@@ -18,6 +17,7 @@ import {
 } from '../../../src/data/design-request'
 import {designOptionsServerFactory} from '../../factories/design-options.factory'
 import {faker} from '@faker-js/faker'
+import {fetchMocker} from '../../mocks/fetch'
 import {galleonFactory} from '../../factories/galleon.factory'
 import {mockCreateBook, mockRetrieveBook, mockRetrieveGalleon, mockUpdateBook} from '../../mocks/books'
 import {mockGetDesignOptions} from '../../mocks/design-options'
@@ -74,7 +74,7 @@ describe('Design Request', async () => {
       cameraModel: 'cameraModel',
       filename: 'filename'
     }
-    axiosPost.mockResolvedValue({data: new ImageServer(image)})
+    fetchMocker.mockResponse(JSON.stringify(new ImageServer(image)))
     expect(await designRequest.images.add(image)).toStrictEqual(1)
   })
   test('getJSON', async () => {
