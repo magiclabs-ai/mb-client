@@ -10,7 +10,7 @@ import {faker} from '@faker-js/faker'
 import {useEffect, useState} from 'react'
 
 function App() {
-  const client = new MagicBookClient('YOUR_API_KEY')
+  const client = new MagicBookClient(import.meta.env.VITE_MB_CLIENT_API_KEY as string)
   const [isCreatingDesignRequest, setIsCreatingDesignRequest] = useState<boolean>(false) 
   const [designRequestEventDetail, setDesignRequestEventDetail] = useState<DesignRequestEventDetail | null>()
   const [currentDesignRequest, setDesignRequest] = useState<DesignRequest | null>()
