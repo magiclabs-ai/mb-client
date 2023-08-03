@@ -1,4 +1,10 @@
-import {DesignRequest, DesignRequestEvent, Image, MagicBookClient, State} from '@magiclabs.ai/magicbook-client'
+import {
+  DesignRequest,
+  DesignRequestEvent,
+  DesignRequestEventDetail,
+  Image,
+  MagicBookClient
+} from '@magiclabs.ai/magicbook-client'
 import {Layout} from './components/layout'
 import {faker} from '@faker-js/faker'
 import {useEffect, useState} from 'react'
@@ -6,12 +12,12 @@ import {useEffect, useState} from 'react'
 function App() {
   const client = new MagicBookClient('YOUR_API_KEY')
   const [isCreatingDesignRequest, setIsCreatingDesignRequest] = useState<boolean>(false) 
-  const [designRequestState, setDesignRequestState] = useState<State | null>()
+  const [designRequestEventDetail, setDesignRequestEventDetail] = useState<DesignRequestEventDetail | null>()
   const [currentDesignRequest, setDesignRequest] = useState<DesignRequest | null>()
   
   function handleDesignRequestUpdated(designRequestEvent: DesignRequestEvent) {
     console.log('MagicBook.designRequestUpdated', designRequestEvent.detail)
-    setDesignRequestState(designRequestEvent.detail.state)
+    setDesignRequestEventDetail(designRequestEvent.detail)
   }
 
   function addMagicBookEventListener() {
@@ -23,7 +29,7 @@ function App() {
   }
 
   useEffect(() => {
-    if (designRequestState === 'ready' && currentDesignRequest) {
+    if (designRequestEventDetail?.slug === 'ready' && currentDesignRequest) {
       currentDesignRequest.getJSON().then((res) => {
         console.log('designRequest.getJSON:', res)
       })
@@ -31,13 +37,13 @@ function App() {
     return () => {
       removeMagicBookEventListener()
     }  
-  }, [designRequestState])
+  }, [designRequestEventDetail])
   
   useEffect(() => {
     if (isCreatingDesignRequest) {
       addMagicBookEventListener()
     } else {
-      setDesignRequestState(null)
+      setDesignRequestEventDetail(null)
       removeMagicBookEventListener()
     }
     return () => {
@@ -92,15 +98,15 @@ function App() {
   return (
     <Layout>
       <div className='flex justify-center h-8 mb-8'>
-        {designRequestState &&
+        {designRequestEventDetail &&
           <div className='relative w-auto px-3 py-1 text-sm leading-6 text-gray-600 rounded-full ring-1 \
           ring-gray-900/10 hover:ring-gray-900/20'>
             <span className='flex items-center justify-center space-x-2'>
               <span className='font-semibold'>Design request</span>
               <div className="w-px h-5 bg-gray-900/10" aria-hidden />
-              <span className='capitalize'>{designRequestState}</span>
+              <span className='capitalize'>{designRequestEventDetail.message}</span>
             </span>
-            {designRequestState !== 'ready' &&
+            {designRequestEventDetail.slug !== 'ready' &&
               <span className='absolute -right-1 -top-1'>
                 <span className='relative flex w-3 h-3'>
                   <span className='absolute inline-flex w-full h-full bg-indigo-400 rounded-full opacity-75 \

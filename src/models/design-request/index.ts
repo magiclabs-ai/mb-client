@@ -43,6 +43,9 @@ export type DesignRequestProps = {
 export type State = typeof states[number]
 export type DesignRequestEventDetail = {
   state: State
+  slug: string
+  progress: number
+  message: string
 }
 export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>
 
@@ -109,10 +112,10 @@ export class DesignRequest {
     }, designRequestTimeout)
     webSocket.onmessage = (event) => {
       const detail = JSON.parse(event.data) as DesignRequestEventDetail
-      if (previousState !== detail.state) {
-        previousState = detail.state
+      if (previousState !== detail.slug) {
+        previousState = detail.slug
         const customEvent = new CustomEvent<DesignRequestEventDetail>('MagicBook.designRequestUpdated', {detail})
-        if (['error', 'ready'].includes(detail.state)) {
+        if (['error', 'ready'].includes(detail.slug)) {
           webSocket.close()
           clearTimeout(timeout)
         }
