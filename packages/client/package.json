@@ -21,7 +21,7 @@
     "build": "../../scripts/build.sh",
     "coverage": "vitest run --coverage",
     "deploy": "./scripts/deploy-npm.sh",
-    "lint": "eslint . --ext js,jsx,ts,tsx --config .eslintrc.json --no-eslintrc",
+    "lint": "eslint . --ext js,jsx,ts,tsx --config ../../.eslintrc.json --no-eslintrc",
     "test": "vitest --ui",
     "watch": "../../scripts/build.sh -w"
   },
