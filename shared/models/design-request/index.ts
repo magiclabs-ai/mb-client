@@ -12,11 +12,9 @@ import {
   styles,
   textStickerLevels,
   timeoutMessage
-} from '@/data/design-request'
-import {designRequestTimeout} from '@/config'
-import {designRequestToBook} from '@/utils/design-request-parser'
-import {getDesignOptions} from '@/utils/engine-api/design-options'
-import {retrieveGalleon, updateBook} from '@/utils/engine-api/books'
+} from '@/shared/data/design-request'
+import {designRequestTimeout} from '@/shared/config'
+import {designRequestToBook} from '@/shared/utils/design-request-parser'
 
 export type Occasion = typeof occasions[number]
 export type Style = keyof typeof styles
@@ -83,25 +81,25 @@ export class DesignRequest {
   }
 
   async getOptions(imageCount?: number) {
-    return await getDesignOptions(this.client, this.bookSize, imageCount || this.images.length,
+    return await this.client.engineAPI.getDesignOptions(this.bookSize, imageCount || this.images.length,
       this.imageFilteringLevel)
   }
 
   async submit(submitDesignRequestProps?: DesignRequestProps) {
     submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
     this.getProgress()
-    await updateBook(this.client, designRequestToBook(this))
+    await this.client.engineAPI.updateBook(designRequestToBook(this))
     return this
   }
 
   async setGuid(guid: string) {
     this.guid = guid
-    await updateBook(this.client, designRequestToBook(this))
+    await this.client.engineAPI.updateBook(designRequestToBook(this))
     return this.guid
   }
 
   async getJSON() {
-    return await retrieveGalleon(this.client, this.parentId)
+    return await this.client.engineAPI.retrieveGalleon(this.parentId)
   }
 
   private async eventHandler(detail: DesignRequestEventDetail, type='MagicBook.designRequestUpdated') {

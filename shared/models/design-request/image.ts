@@ -1,5 +1,4 @@
 import {MagicBookClient} from '../client'
-import {addImageInBook} from '@/utils/engine-api/images'
 import {z} from 'zod'
 
 export type Image = {
@@ -30,7 +29,7 @@ export class Images {
   async add(image: Image): Promise<number> {
     this.images.push(image)
     this.length = this.images.length
-    await addImageInBook(this.client, this.parentId, new ImageServer(image))
+    await this.client.engineAPI.addImageInBook(this.parentId, new ImageServer(image))
     return new Promise<number>((resolve) => {
       resolve(this.length)
     })

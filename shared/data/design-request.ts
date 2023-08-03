@@ -1,4 +1,5 @@
-import {DesignRequestEventDetail} from '@/models/design-request'
+import {DesignRequestEventDetail} from '../models/design-request'
+
 export const states = [
   'new',
   'ingesting',

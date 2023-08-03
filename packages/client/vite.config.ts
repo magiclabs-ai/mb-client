@@ -3,13 +3,12 @@ import {defineConfig} from 'vite'
 import dts from 'vite-plugin-dts'
 import path, {resolve} from 'path'
 
-
-console.log(resolve(__dirname, 'src'))
-
 export default defineConfig({
+  envDir: '../../',
   resolve: {
     alias: [
-      {find: '@', replacement: path.resolve(__dirname, 'src')}
+      {find: '@/shared', replacement: path.resolve(__dirname, '../../shared')},
+      {find: '@/client', replacement: path.resolve(__dirname, 'src')}
     ]
   },
   build: {

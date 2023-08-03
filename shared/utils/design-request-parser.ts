@@ -1,7 +1,8 @@
-import {Book, BookDesignRequestProps} from '@/models/book'
-import {DesignRequest} from '..'
+
+import {Book, BookDesignRequestProps} from '../models/book'
+import {DesignRequest} from '../models/design-request'
 import {camelCaseObjectKeysToSnakeCase} from './toolbox'
-import {styles} from '@/data/design-request'
+import {styles} from '../data/design-request'
 
 export function designRequestToBook(designRequest: DesignRequest) {
   const styleSlug = styles[designRequest.style].slug

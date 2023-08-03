@@ -10,7 +10,7 @@ dependencies:
     version: 8.0.2
   '@magiclabs.ai/magicbook-client':
     specifier: file:../dist
-    version: file:../dist
+    version: link:../dist
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -3401,8 +3401,3 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
-
-  file:../dist:
-    resolution: {directory: ../dist, type: directory}
-    name: dist
-    dev: false

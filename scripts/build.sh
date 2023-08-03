@@ -23,8 +23,7 @@ else
 fi
 
 cd $PACKAGE_DIR
-tsc
-vite build ${flags}
+npx vite build ${flags}
 sed "s/\.\//\.\//g; s/dist\///g" ./package.json > ./dist/package.json
 cp ./README.md ./dist/README.md
 pnpm i

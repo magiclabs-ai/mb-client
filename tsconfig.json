@@ -19,11 +19,21 @@
     "skipLibCheck": true,
     "types": [
       "vite/client"
-    ]
+    ],
+    "paths": {
+      "@/client/*": [
+        "./packages/client/*"
+      ],
+      "@/cli/*": [
+        "./packages/cli/*"
+      ],
+      "@/shared/*": [
+        "./shared/*"
+      ]
+    }
   },
   "exclude": [
     "node_modules",
-    "packages/client/example",
-    "**/__tests__"
+    "packages/client/example"
   ]
 }
