@@ -104,7 +104,7 @@ function App() {
             <span className='flex items-center justify-center space-x-2'>
               <span className='font-semibold'>Design request</span>
               <div className="w-px h-5 bg-gray-900/10" aria-hidden />
-              <span className='capitalize'>{designRequestEventDetail.message}</span>
+              <span>{designRequestEventDetail.message}</span>
             </span>
             {designRequestEventDetail.slug !== 'ready' &&
               <span className='absolute -right-1 -top-1'>

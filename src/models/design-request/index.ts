@@ -10,7 +10,8 @@ import {
   pageTypes,
   states,
   styles,
-  textStickerLevels
+  textStickerLevels,
+  timeoutMessage
 } from '@/data/design-request'
 import {designRequestTimeout} from '@/config'
 import {designRequestToBook} from '@/utils/design-request-parser'
@@ -26,7 +27,6 @@ export type ImageDensity = typeof imageDensities[number]
 export type ImageFilteringLevel = typeof imageFilteringLevels[number]
 export type EmbellishmentLevel = typeof embellishmentLevels[number]
 export type TextStickerLevel = typeof textStickerLevels[number]
-
 export type DesignRequestProps = {
   title?: string
   occasion?: Occasion
@@ -39,7 +39,6 @@ export type DesignRequestProps = {
   embellishmentLevel?: EmbellishmentLevel
   textStickerLevel?: TextStickerLevel
 }
-
 export type State = typeof states[number]
 export type DesignRequestEventDetail = {
   state: State
@@ -50,7 +49,8 @@ export type DesignRequestEventDetail = {
 export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>
 
 export class DesignRequest {
-  private client: MagicBookClient 
+  private client: MagicBookClient
+  private webSocket: WebSocket
   parentId: string
   title: string
   occasion: Occasion
@@ -66,8 +66,9 @@ export class DesignRequest {
   guid?: string
 
   constructor(parentId: string, client: MagicBookClient, designRequestProps?: DesignRequestProps) {
-    this.client = client
     this.parentId = parentId
+    this.client = client
+    this.webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
     this.title = designRequestProps?.title || ''
     this.occasion = designRequestProps?.occasion || occasions[0]
     this.style = designRequestProps?.style || parseInt(Object.keys(styles)[0]) as Style
@@ -103,24 +104,32 @@ export class DesignRequest {
     return await retrieveGalleon(this.client, this.parentId)
   }
 
+  private async eventHandler(detail: DesignRequestEventDetail, type='MagicBook.designRequestUpdated') {
+    const customEvent = new CustomEvent<DesignRequestEventDetail>(type, {detail})
+    window.dispatchEvent(customEvent)
+    if (['error', 'ready'].includes(detail.slug)) {
+      this.webSocket.close()
+    }
+  }
+
+  private timeoutHandler() {
+    return setTimeout(() => {
+      this.eventHandler(timeoutMessage)
+    }, designRequestTimeout)
+  }
+
   private async getProgress() {
     let previousState = 'new'
-    const webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
-    const timeout = setTimeout(() => {
-      webSocket.close()
-      throw new Error('Something went wrong. Please try again.')
-    }, designRequestTimeout)
-    webSocket.onmessage = (event) => {
+    let timeout: ReturnType<typeof setTimeout>
+    this.webSocket.onmessage = (event) => {
       const detail = JSON.parse(event.data) as DesignRequestEventDetail
       if (previousState !== detail.slug) {
+        timeout && clearTimeout(timeout)
+        timeout = this.timeoutHandler()
+        this.eventHandler(detail)
         previousState = detail.slug
-        const customEvent = new CustomEvent<DesignRequestEventDetail>('MagicBook.designRequestUpdated', {detail})
-        if (['error', 'ready'].includes(detail.slug)) {
-          webSocket.close()
-          clearTimeout(timeout)
-        }
-        window.dispatchEvent(customEvent)
       }
     }
+    this.webSocket.onclose = () => clearTimeout(timeout)
   }
 }

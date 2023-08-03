@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function assign(obj: Record<string, any>, fields: Array<string>, value: unknown) {
   const lastKey = fields.pop() || ''
   const lastObj = fields.reduce((obj, key) => 
@@ -6,6 +7,7 @@ export function assign(obj: Record<string, any>, fields: Array<string>, value: u
   lastObj[lastKey] = value
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function mergeNestedObject(obj: Record<string, any>, objToMerge: Record<string, any>) {
   Object.keys(objToMerge).map(key => {
     if (typeof obj[key] === 'object' && typeof objToMerge[key] === 'object') {
