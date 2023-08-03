@@ -18,6 +18,7 @@ describe('Axios', () => {
     try {
       const asyncMock = vi.fn().mockRejectedValue(new Error(errorMessage))
       await APIHandler(async () => asyncMock())
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       expect(error.message).toStrictEqual(errorMessage)
     }

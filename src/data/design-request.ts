@@ -1,3 +1,4 @@
+import {DesignRequestEventDetail} from '@/models/design-request'
 export const states = [
   'new',
   'ingesting',
@@ -198,3 +199,9 @@ export const imageDensities = ['low', 'medium', 'high'] as const
 export const imageFilteringLevels = ['best', 'most', 'all'] as const
 export const embellishmentLevels = ['none', 'few', 'lots'] as const
 export const textStickerLevels = ['none', 'few', 'lots'] as const
+export const timeoutMessage: DesignRequestEventDetail = {
+  state: 'error',
+  slug: 'error',
+  progress: 100,
+  message: 'Design failed'
+}

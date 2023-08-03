@@ -10,7 +10,7 @@ import {faker} from '@faker-js/faker'
 import {useEffect, useState} from 'react'
 
 function App() {
-  const client = new MagicBookClient('YOUR_API_KEY')
+  const client = new MagicBookClient(import.meta.env.VITE_MB_CLIENT_API_KEY as string)
   const [isCreatingDesignRequest, setIsCreatingDesignRequest] = useState<boolean>(false) 
   const [designRequestEventDetail, setDesignRequestEventDetail] = useState<DesignRequestEventDetail | null>()
   const [currentDesignRequest, setDesignRequest] = useState<DesignRequest | null>()
@@ -104,7 +104,7 @@ function App() {
             <span className='flex items-center justify-center space-x-2'>
               <span className='font-semibold'>Design request</span>
               <div className="w-px h-5 bg-gray-900/10" aria-hidden />
-              <span className='capitalize'>{designRequestEventDetail.message}</span>
+              <span>{designRequestEventDetail.message}</span>
             </span>
             {designRequestEventDetail.slug !== 'ready' &&
               <span className='absolute -right-1 -top-1'>

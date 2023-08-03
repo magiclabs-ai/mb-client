@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {assign, mergeNestedObject} from '../toolbox'
 import axios, {AxiosRequestConfig} from 'axios'
 
