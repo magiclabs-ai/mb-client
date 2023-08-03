@@ -88,6 +88,7 @@ describe('Design Request', async () => {
     await designRequest.getOptions()
     expect(designRequestOptions).toStrictEqual(snakeCaseObjectKeysToCamelCase(designOptions))
   })
+
   test('submitDesignRequest', async () => {
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
     const ws = vi.spyOn(window, 'WebSocket').mockImplementation((value) => (new WebSocketMock(value) as WebSocket))
@@ -100,23 +101,41 @@ describe('Design Request', async () => {
     })
     expect(ws).toHaveBeenCalledWith(`${webSocketHost}/?book_id=${designRequest.parentId}`)
     expect(submitDesignRequest).toStrictEqual(designRequest)
-    ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'submitted'})})
+    const submittedDetail =  {
+      state: 'submitted',
+      slug: 'submitted',
+      progress: 0,
+      message: 'Reviewing design preferences'
+    }
+    ws.mock.results[0].value.onmessage({data: JSON.stringify(submittedDetail)})
     expect(dispatchEventSpy.mock.calls.length).toStrictEqual(1)
     expect(ws).toHaveBeenCalledWith(`${webSocketHost}/?book_id=${designRequest.parentId}`)
     expect(submitDesignRequest).toStrictEqual(designRequest)
-    ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'submitted'})})
+    ws.mock.results[0].value.onmessage({data: JSON.stringify(submittedDetail)})
     expect(dispatchEventSpy.mock.calls.length).toStrictEqual(1)
-    ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'embellishing'})})
+    const embellishingDetail = {
+      state: 'embellishing',
+      slug: 'embellishing',
+      progress: 50,
+      message: 'Placing embellishments'
+    }
+    ws.mock.results[0].value.onmessage({data: JSON.stringify(embellishingDetail)})
     const embellishingEvent = dispatchEventSpy.mock.calls[1][0] as DesignRequestEvent
     expect(embellishingEvent.type).toStrictEqual('MagicBook.designRequestUpdated')
-    expect(embellishingEvent['detail']['state']).toStrictEqual('embellishing')
+    expect(embellishingEvent['detail']).toStrictEqual(embellishingDetail)
     expect(dispatchEventSpy.mock.calls.length).toStrictEqual(2)
     expect(wsClose).not.toHaveBeenCalled()
-    ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'error'})})
+    const readyDetail = {
+      state: 'ready',
+      slug: 'ready',
+      progress: 100,
+      message: 'Design is ready'
+    }
+    ws.mock.results[0].value.onmessage({data: JSON.stringify(readyDetail)})
     expect(wsClose).toHaveBeenCalled()
-    const errorEvent = dispatchEventSpy.mock.calls[2][0] as DesignRequestEvent
-    expect(errorEvent.type).toStrictEqual('MagicBook.designRequestUpdated')
-    expect(errorEvent['detail']['state']).toStrictEqual('error')
+    const readyEvent = dispatchEventSpy.mock.calls[2][0] as DesignRequestEvent
+    expect(readyEvent.type).toStrictEqual('MagicBook.designRequestUpdated')
+    expect(readyEvent['detail']).toStrictEqual(readyDetail)
     expect(dispatchEventSpy.mock.calls.length).toStrictEqual(3)
   })
   test.fails('submitDesignRequest with error', async () => {
