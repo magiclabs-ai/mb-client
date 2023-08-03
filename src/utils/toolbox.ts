@@ -56,3 +56,11 @@ export function snakeCaseObjectKeysToCamelCase(snakeCaseObject: Record<string, u
   })
   return snakeCaseObject
 }
+
+export async function handleAsyncFunction<T>(fn: () => Promise<T>) {
+  try {
+    return await fn()
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}

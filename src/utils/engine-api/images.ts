@@ -1,10 +1,16 @@
-import {APIHandler, post} from './axios'
 import {ImageServer, imageServerSchema} from '../../models/design-request/image'
 import {MagicBookClient} from '@/models/client'
+import { handleAsyncFunction } from '../toolbox'
 
-export async function addImageInBook({apiKey, apiHost}: MagicBookClient, bookId: string, payload: ImageServer) {
-  return APIHandler(async () => {
-    const res = (await post({url: `${apiHost}/v1/images/book/${bookId}`, apiKey, payload})).data
+export async function addImageInBook({fetcher}: MagicBookClient, bookId: string, payload: ImageServer) {
+  return handleAsyncFunction(async () => {
+    const res = await fetcher.call({
+      path: `/v1/images/book/${bookId}`,
+      options: {
+        method: 'POST',
+        body: payload
+      }
+    })
     return imageServerSchema.parse(res)
   })
 }

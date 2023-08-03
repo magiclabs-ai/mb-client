@@ -1,4 +1,5 @@
 import {assign, camelCaseObjectKeysToSnakeCase, camelCaseToSnakeCase,
+  handleAsyncFunction,
   mergeNestedObject,
   snakeCaseObjectKeysToCamelCase,
   snakeCaseToCamelCase} from '../../../src/utils/toolbox'
@@ -35,5 +36,13 @@ describe('Toolbox', () => {
     const snakeCaseObject = {hello_world: 'helloWorld', hello_world_test: 'helloWorldTest'}
     const camelCaseObject = {helloWorld: 'helloWorld', helloWorldTest: 'helloWorldTest'}
     expect(snakeCaseObjectKeysToCamelCase(snakeCaseObject)).toStrictEqual(camelCaseObject)
+  })
+  test('handleAsyncFunction succeed', async () => {
+    const res = await handleAsyncFunction(async () => new Promise(resolve => resolve('success')))
+    expect(res).toBe('success')
+  })
+  test.fails('handleAsyncFunction fails', async () => {
+    const res = await handleAsyncFunction(async () => {throw new Error('error')})
+    expect(res).toThrowError('error')
   })
 })
