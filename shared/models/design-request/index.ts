@@ -1,5 +1,6 @@
 import {Images} from './image'
 import {MagicBookClient} from '../client'
+import {ZodType, z} from 'zod'
 import {
   bookSizes,
   coverTypes,
@@ -15,6 +16,22 @@ import {
 } from '@/shared/data/design-request'
 import {designRequestTimeout} from '@/shared/config'
 import {designRequestToBook} from '@/shared/utils/design-request-parser'
+import {parse} from 'path'
+
+export function numericEnum<TValues extends readonly number[]>(
+  values: TValues
+) {
+  return z.number().superRefine((val, ctx) => {
+    if (!values.includes(val)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Invalid enum value. Expected ${values.join(
+          ' | '
+        )}, received ${val}`
+      })
+    }
+  }) as ZodType<TValues[number]>
+}
 
 export type Occasion = typeof occasions[number]
 export type Style = keyof typeof styles
@@ -25,6 +42,17 @@ export type ImageDensity = typeof imageDensities[number]
 export type ImageFilteringLevel = typeof imageFilteringLevels[number]
 export type EmbellishmentLevel = typeof embellishmentLevels[number]
 export type TextStickerLevel = typeof textStickerLevels[number]
+export const DesignRequestOptions = {
+  occasion: occasions,
+  style: Object.keys(styles).map(key => parseInt(key)),
+  bookSize: bookSizes,
+  coverType: coverTypes,
+  pageType: pageTypes,
+  imageDensity: imageDensities,
+  imageFilteringLevel: imageFilteringLevels,
+  embellishmentLevel: embellishmentLevels,
+  textStickerLevel: textStickerLevels
+}
 export type DesignRequestProps = {
   title?: string
   occasion?: Occasion

@@ -64,3 +64,8 @@ export async function handleAsyncFunction<T>(fn: () => Promise<T>) {
     return Promise.reject(error)
   }
 }
+
+export function isURL(str: string) {
+  const pattern = /^(https):\/\/[^ "]+$/
+  return pattern.test(str)
+}

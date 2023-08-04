@@ -1,4 +1,4 @@
-import { defineConfig } from 'tsup'
+import {defineConfig} from 'tsup'
 
 export default defineConfig({
   clean: true,
@@ -11,13 +11,16 @@ export default defineConfig({
   banner: {
     js: `
       import WebSocket from 'ws'
+      import { EventEmitter } from "node:events"
+      const eventEmitter = new EventEmitter()
       class Window {
         dispatchEvent(event) {
-          console.log(event)
+          eventEmitter.emit('event', event.detail)
         }
       }
       Object.assign(global, {
         WebSocket,
+        eventEmitter: eventEmitter,
         CustomEvent: class CustomEvent {
           type
           detail
