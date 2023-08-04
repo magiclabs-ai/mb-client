@@ -5,7 +5,7 @@ import {
 } from '@magiclabs.ai/magicbook-client'
 import {Option, program} from 'commander'
 import {faker} from '@faker-js/faker'
-import {getConfig} from '../utils/toolbox'
+import {getConfig, msToSeconds} from '../utils/toolbox'
 import {log} from 'console'
 import chalk from 'chalk'
 import cliProgress from 'cli-progress'
@@ -42,7 +42,7 @@ newBook.action(async (args) => {
   const imageUploadBar = new cliProgress.SingleBar({
     format: 'Uploaded images | {bar} | {percentage}% || {value}/{total} Images'
   }, cliProgress.Presets.shades_classic)
-  const imagesLength = 25
+  const imagesLength = 70
   imageUploadBar.start(imagesLength, 0)
   await Promise.all(Array.from(Array(imagesLength).keys()).map(async () => {
     const width = 1000
@@ -64,6 +64,7 @@ newBook.action(async (args) => {
   imageUploadBar.stop()
   log(chalk.bold('🌠 - Images Uploaded'))
   
+  let startAt: Date
   const creationProgressBar = new cliProgress.SingleBar({
     format: '{title} | {bar} | {percentage}%'
   }, cliProgress.Presets.shades_classic)
@@ -72,12 +73,18 @@ newBook.action(async (args) => {
       title: e.detail.message
     })
     if (e.detail.progress === 100) {
+      const endAt = new Date()
+      const duration = msToSeconds(endAt.getTime() - startAt.getTime())
+      const isSlow = duration > 30
       creationProgressBar.stop()
-      log(chalk.yellow('🎉 - Design Request Completed'))
+      log(chalk.bold[isSlow ? 'yellow' : 'green'](
+        `${isSlow ? '🚜 ' : '🏎️ '} - Design Request Completed in ${duration}s`
+      ))
       log(chalk.bold(`📋 - mb-web-demo preview: https://mb-web-demo-dev.vercel.app/book/${designRequest.parentId}`))
     }
   })
-  log(chalk.bold('🚀 - Design Request Submitted'))
+  log(chalk.bold('🚀 - Submitting Design Request'))
+  startAt = new Date()
   designRequest.submit()
-  creationProgressBar.start(100, 0)
+  creationProgressBar.start(100, 0, {title: 'Submitting Design Request'})
 })
