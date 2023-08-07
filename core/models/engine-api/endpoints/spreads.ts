@@ -1,6 +1,6 @@
 import {EngineAPI} from '..'
 import {SpreadSchema, SpreadServer} from '../../spread'
-import {bindThisToFunctions, handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/shared/utils/toolbox'
+import {bindThisToFunctions, handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 import {z} from 'zod'
 
 export class SpreadsEndpoints {
@@ -16,7 +16,8 @@ export class SpreadsEndpoints {
       const res = await this.engineAPI.fetcher.call({
         path: `/v1/spreads/book/${bookId}`
       })
-      return z.array(SpreadSchema).parse(snakeCaseObjectKeysToCamelCase(res))
+      return z.array(SpreadSchema).parse(res.map((spread: Record<string, unknown>) =>
+        snakeCaseObjectKeysToCamelCase(spread)))
     })
   }
   

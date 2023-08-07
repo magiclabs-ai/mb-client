@@ -1,5 +1,5 @@
 import {Option, program} from 'commander'
-import {SpreadServerSchema} from '@/shared/models/spread'
+import {SpreadServerSchema} from '@/core/models/spread'
 import {engineAPI} from '..'
 import {handleAPIResponse} from '../utils/toolbox'
 import {log} from 'console'
@@ -20,7 +20,7 @@ spreads.command('list')
       args.bookId = response.bookId
     }
     await handleAPIResponse(async () => {
-      const res = await engineAPI.spreads.retrieve(args.spreadId, args.bookId)
+      const res = await engineAPI.spreads.list(args.bookId)
       return res
     })
   })

@@ -1,7 +1,7 @@
 import {Option, program} from 'commander'
 import {engineAPI} from '..'
 import {handleAPIResponse} from '../utils/toolbox'
-import {imageServerSchema} from '@/shared/models/design-request/image'
+import {imageServerSchema} from '@/core/models/design-request/image'
 import {log} from 'console'
 import chalk from 'chalk'
 import prompts from 'prompts'

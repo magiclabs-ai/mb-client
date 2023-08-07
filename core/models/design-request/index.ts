@@ -13,10 +13,9 @@ import {
   styles,
   textStickerLevels,
   timeoutMessage
-} from '@/shared/data/design-request'
-import {designRequestTimeout} from '@/shared/config'
-import {designRequestToBook} from '@/shared/utils/design-request-parser'
-import {parse} from 'path'
+} from '@/core/data/design-request'
+import {designRequestTimeout} from '@/core/config'
+import {designRequestToBook} from '@/core/utils/design-request-parser'
 
 export function numericEnum<TValues extends readonly number[]>(
   values: TValues
@@ -109,25 +108,25 @@ export class DesignRequest {
   }
 
   async getOptions(imageCount?: number) {
-    return await this.client.engineAPI.getDesignOptions(this.bookSize, imageCount || this.images.length,
+    return await this.client.engineAPI.designOptions.retrieve(this.bookSize, imageCount || this.images.length,
       this.imageFilteringLevel)
   }
 
   async submit(submitDesignRequestProps?: DesignRequestProps) {
     submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
     this.getProgress()
-    await this.client.engineAPI.updateBook(designRequestToBook(this))
+    await this.client.engineAPI.books.update(this.parentId, designRequestToBook(this))
     return this
   }
 
   async setGuid(guid: string) {
     this.guid = guid
-    await this.client.engineAPI.updateBook(designRequestToBook(this))
+    await this.client.engineAPI.books.update(this.parentId, designRequestToBook(this))
     return this.guid
   }
 
   async getJSON() {
-    return await this.client.engineAPI.retrieveGalleon(this.parentId)
+    return await this.client.engineAPI.books.retrieveGalleon(this.parentId)
   }
 
   private async eventHandler(detail: DesignRequestEventDetail, type='MagicBook.designRequestUpdated') {

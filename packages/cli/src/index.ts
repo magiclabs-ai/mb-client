@@ -1,10 +1,12 @@
+#!/usr/bin/env node
 import './commands/books'
 import './commands/config'
 import './commands/design-options'
 import './commands/images'
 import './commands/mb-client'
+import './commands/spreads'
 import './commands/storyboard-items'
-import {EngineAPI} from '@/shared/models/engine-api'
+import {EngineAPI} from '@/core/models/engine-api'
 import {getConfig} from './utils/toolbox'
 import {program} from 'commander'
 

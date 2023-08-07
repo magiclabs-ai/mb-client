@@ -1,5 +1,5 @@
 import {Option, program} from 'commander'
-import {bookSizes, imageFilteringLevels} from '@/shared/data/design-request'
+import {bookSizes, imageFilteringLevels} from '@/core/data/design-request'
 import {engineAPI} from '..'
 import {handleAPIResponse} from '../utils/toolbox'
 import {log} from 'console'

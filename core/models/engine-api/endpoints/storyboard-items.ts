@@ -1,6 +1,6 @@
 import {EngineAPI} from '..'
 import {StoryboardItemServerSchema} from '../../storyboard-item'
-import {bindThisToFunctions, handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/shared/utils/toolbox'
+import {bindThisToFunctions, handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 import {z} from 'zod'
 
 export class StoryboardItemsEndpoints {

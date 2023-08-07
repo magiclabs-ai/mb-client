@@ -1,5 +1,5 @@
 import {Option, program} from 'commander'
-import {isURL} from '@/shared/utils/toolbox'
+import {isURL} from '@/core/utils/toolbox'
 import chalk from 'chalk'
 import prompts from 'prompts'
 const log = console.log

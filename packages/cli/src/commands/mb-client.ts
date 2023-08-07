@@ -1,4 +1,4 @@
-import {DesignRequestOptions} from '@/shared/models/design-request'
+import {DesignRequestEvent, DesignRequestOptions} from '@/core/models/design-request'
 import {
   Image,
   MagicBookClient
@@ -64,11 +64,14 @@ newBook.action(async (args) => {
   imageUploadBar.stop()
   log(chalk.bold('🌠 - Images Uploaded'))
   
+  // eslint-disable-next-line prefer-const
   let startAt: Date
   const creationProgressBar = new cliProgress.SingleBar({
     format: '{title} | {bar} | {percentage}%'
   }, cliProgress.Presets.shades_classic)
-  eventEmitter.on('event', (e) => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
+  eventEmitter.on('event', (e: DesignRequestEvent) => {
     creationProgressBar.update(e.detail.progress, {
       title: e.detail.message
     })

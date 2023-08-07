@@ -1,6 +1,6 @@
 import {BookSize, ImageFilteringLevel} from '../../design-request'
 import {EngineAPI} from '..'
-import {bindThisToFunctions, handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/shared/utils/toolbox'
+import {bindThisToFunctions, handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 import {designOptionsSchema} from '../../design-request/design-options'
 
 export class DesignOptionsEndpoints {

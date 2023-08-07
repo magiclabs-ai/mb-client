@@ -19,7 +19,7 @@ import {
   pageTypes,
   states,
   textStickerLevels
-} from '@/shared/data/design-request'
+} from '@/core/data/design-request'
 import {z} from 'zod'
 
 export type BookDesignRequestProps = {

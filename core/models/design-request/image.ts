@@ -29,7 +29,7 @@ export class Images {
   async add(image: Image): Promise<number> {
     this.images.push(image)
     this.length = this.images.length
-    await this.client.engineAPI.addImageInBook(this.parentId, new ImageServer(image))
+    await this.client.engineAPI.images.addToBook(this.parentId, new ImageServer(image))
     return new Promise<number>((resolve) => {
       resolve(this.length)
     })

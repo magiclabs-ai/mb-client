@@ -1,6 +1,6 @@
 import {Book, BookPropsSchema} from '../../book'
 import {EngineAPI} from '..'
-import {bindThisToFunctions, handleAsyncFunction} from '@/shared/utils/toolbox'
+import {bindThisToFunctions, handleAsyncFunction} from '@/core/utils/toolbox'
 import {bookCreationRequestSchema} from '../../galleon'
 
 export class BooksEndpoints {

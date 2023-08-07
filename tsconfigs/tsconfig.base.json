@@ -23,7 +23,7 @@
     "paths": {
       "@/client/*": ["./packages/client/*"],
       "@/cli/*": ["./packages/cli/*"],
-      "@/shared/*": ["./shared/*"]
+      "@/core/*": ["./core/*"]
     }
   }
 }

@@ -27,8 +27,8 @@
       "@/cli/*": [
         "./packages/cli/*"
       ],
-      "@/shared/*": [
-        "./shared/*"
+      "@/core/*": [
+        "./core/*"
       ]
     }
   },

@@ -17,7 +17,7 @@ export class MagicBookClient {
 
   async createDesignRequest(designRequestProps?: DesignRequestProps)
   : Promise<DesignRequest> {
-    const book = await this.engineAPI.createBook()
+    const book = await this.engineAPI.books.create()
     return new DesignRequest(book.id, this, designRequestProps)
   }
 }

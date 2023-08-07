@@ -1,4 +1,4 @@
-import {BookPropsSchema} from '@/shared/models/book'
+import {BookPropsSchema} from '@/core/models/book'
 import {Option, program} from 'commander'
 import {engineAPI} from '..'
 import {handleAPIResponse} from '../utils/toolbox'

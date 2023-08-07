@@ -1,6 +1,6 @@
 import {EngineAPI} from '..'
 import {ImageServer, imageServerSchema} from '../../design-request/image'
-import {bindThisToFunctions, handleAsyncFunction} from '@/shared/utils/toolbox'
+import {bindThisToFunctions, handleAsyncFunction} from '@/core/utils/toolbox'
 import {z} from 'zod'
 
 export class ImagesEndpoints {

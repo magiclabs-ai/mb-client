@@ -1,3 +1,16 @@
 {
   "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@/client/*": [
+        "../../packages/client/*"
+      ],
+      "@/cli/*": [
+        "./*"
+      ],
+      "@/core/*": [
+        "../../core/*"
+      ]
+    }
+  }
 }

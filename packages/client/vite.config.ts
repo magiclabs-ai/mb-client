@@ -7,7 +7,7 @@ export default defineConfig({
   envDir: '../../',
   resolve: {
     alias: [
-      {find: '@/shared', replacement: path.resolve(__dirname, '../../shared')},
+      {find: '@/core', replacement: path.resolve(__dirname, '../../core')},
       {find: '@/client', replacement: path.resolve(__dirname, 'src')}
     ]
   },
@@ -18,7 +18,7 @@ export default defineConfig({
       fileName: 'magicbook-client'
     }
   },
-  plugins: [dts({entryRoot: 'src',})],
+  plugins: [dts({entryRoot: 'src'})],
   test: {
     setupFiles: [
       '__tests__/mocks/fetch.ts',
@@ -30,7 +30,6 @@ export default defineConfig({
     coverage: {
       all: true,
       include: ['src/**/*.ts'],
-      exclude: ['src/data/design-request.ts'],
       provider: 'istanbul',
       reporter: ['text', 'json-summary', 'json', 'html']
     }

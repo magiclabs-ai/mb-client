@@ -64,8 +64,8 @@ importers:
         specifier: ^8.0.2
         version: 8.0.2
       '@magiclabs.ai/magicbook-client':
-        specifier: file:../client/dist
-        version: file:packages/client/dist
+        specifier: 0.6.1
+        version: link:../client/dist
       chalk:
         specifier: ^5.3.0
         version: 5.3.0
@@ -117,6 +117,12 @@ importers:
         version: 5.1.6
 
   packages/client:
+    dependencies:
+      rollup-plugin-execute:
+        specifier: ^1.1.1
+        version: 1.1.1
+
+  packages/client/dist:
     dependencies:
       rollup-plugin-execute:
         specifier: ^1.1.1
@@ -3097,11 +3103,4 @@ packages:
 
   /zod@3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
-    dev: false
-
-  file:packages/client/dist:
-    resolution: {directory: packages/client/dist, type: directory}
-    name: '@magiclabs.ai/magicbook-client'
-    dependencies:
-      rollup-plugin-execute: 1.1.1
     dev: false
