@@ -2,8 +2,8 @@ import {DesignRequest, DesignRequestEvent, DesignRequestProps} from '../../../sr
 import {Image, ImageServer, Images} from '../../../src/models/design-request/image'
 import {MagicBookClient} from '../../../src'
 import {SpyInstance, beforeEach, describe, expect, test, vi} from 'vitest'
-import {WebSocketMock} from '../../mocks/websocket'
-import {bookFactory} from '../../factories/book.factory'
+import {WebSocketMock} from '../../../../../core/mocks/websocket'
+import {bookFactory} from '../../../../../core/factories/book.factory'
 import {
   bookSizes,
   coverTypes,
@@ -15,12 +15,12 @@ import {
   styles,
   textStickerLevels
 } from '../../../src/data/design-request'
-import {designOptionsServerFactory} from '../../factories/design-options.factory'
+import {designOptionsServerFactory} from '../../../../../core/factories/design-options.factory'
 import {faker} from '@faker-js/faker'
-import {fetchMocker} from '../../mocks/fetch'
-import {galleonFactory} from '../../factories/galleon.factory'
-import {mockCreateBook, mockRetrieveBook, mockRetrieveGalleon, mockUpdateBook} from '../../mocks/books'
-import {mockGetDesignOptions} from '../../mocks/design-options'
+import {fetchMocker} from '../../../../../core/mocks/fetch'
+import {galleonFactory} from '../../../../../core/factories/galleon.factory'
+import {mockCreateBook, mockRetrieveBook, mockRetrieveGalleon, mockUpdateBook} from '../../../../../core/mocks/books'
+import {mockGetDesignOptions} from '../../../../../core/mocks/design-options'
 import {snakeCaseObjectKeysToCamelCase} from '@/utils/toolbox'
 
 describe('Design Request', async () => {

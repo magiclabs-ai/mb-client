@@ -1,17 +1,16 @@
+/* eslint-disable no-unused-vars */
 import {DesignRequest, DesignRequestProps} from './design-request'
 import {EngineAPI} from './engine-api'
 import {defaultApiHost, defaultWebSocketHost} from '../config'
 
 export class MagicBookClient {
-  apiKey: string
-  apiHost: string
-  webSocketHost: string
   engineAPI: EngineAPI
 
-  public constructor(apiKey: string, apiHost=defaultApiHost, webSocketHost=defaultWebSocketHost) {
-    this.apiKey = apiKey
-    this.apiHost = apiHost
-    this.webSocketHost = webSocketHost
+  public constructor(
+    private readonly apiKey: string,
+    private readonly apiHost=defaultApiHost,
+    readonly webSocketHost=defaultWebSocketHost
+  ) {
     this.engineAPI = new EngineAPI(this.apiHost, this.apiKey)
   }
 

@@ -1,8 +1,8 @@
 import {DesignRequestProps} from '@/models/design-request'
 import {MagicBookClient} from '@/index'
-import {bookFactory} from '../../factories/book.factory'
+import {bookFactory} from '../../../../../core/factories/book.factory'
 import {describe, expect, test} from 'vitest'
-import {mockCreateBook} from '../../mocks/books'
+import {mockCreateBook} from '../../../../../core/mocks/books'
 
 describe('Client', () => {
   test('createDesignRequest', async () => {

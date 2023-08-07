@@ -1,5 +1,5 @@
 import {Mock, vi} from 'vitest'
-import {createBook, retrieveBook, retrieveGalleon, updateBook} from '@/utils/engine-api/books'
+import {createBook, retrieveBook, retrieveGalleon, updateBook} from '@/core/utils/engine-api/books'
 
 vi.mock('@/utils/engine-api/books', async () => ({
   createBook: vi.fn(),

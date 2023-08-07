@@ -1,4 +1,4 @@
-import {BookCreationRequest} from '@/models/galleon'
+import {BookCreationRequest} from '@/core/models/galleon'
 import {faker} from '@faker-js/faker'
 
 export type galleonFactoryProps = {

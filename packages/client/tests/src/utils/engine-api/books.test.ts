@@ -1,9 +1,9 @@
 import {MagicBookClient} from '@/index'
-import {bookFactory} from '../../../factories/book.factory'
+import {bookFactory} from '../../../../../../core/factories/book.factory'
 import {createBook, retrieveBook, retrieveGalleon, updateBook} from '../../../../src/utils/engine-api/books'
 import {describe, expect, test, vi} from 'vitest'
-import {fetchMocker} from '../../../mocks/fetch'
-import {galleonFactory} from '../../../factories/galleon.factory'
+import {fetchMocker} from '../../../../../../core/mocks/fetch'
+import {galleonFactory} from '../../../../../../core/factories/galleon.factory'
 
 vi.unmock('@/utils/engine-api/books')
 describe('Book APIs', () => {

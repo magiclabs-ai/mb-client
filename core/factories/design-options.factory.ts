@@ -1,4 +1,4 @@
-import {DesignOptions} from '@/models/design-request/design-options'
+import {DesignOptions} from '@/core/models/design-request/design-options'
 import {faker} from '@faker-js/faker'
 
 export type ImageDensityOptionServer = {

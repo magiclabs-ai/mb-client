@@ -74,7 +74,6 @@ export type DesignRequestEventDetail = {
 export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>
 
 export class DesignRequest {
-  private client: MagicBookClient
   private webSocket: WebSocket
   parentId: string
   title: string
@@ -90,9 +89,9 @@ export class DesignRequest {
   images: Images
   guid?: string
 
-  constructor(parentId: string, client: MagicBookClient, designRequestProps?: DesignRequestProps) {
+  // eslint-disable-next-line no-unused-vars
+  constructor(parentId: string, private readonly client: MagicBookClient, designRequestProps?: DesignRequestProps) {
     this.parentId = parentId
-    this.client = client
     this.webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
     this.title = designRequestProps?.title || ''
     this.occasion = designRequestProps?.occasion || occasions[0]
