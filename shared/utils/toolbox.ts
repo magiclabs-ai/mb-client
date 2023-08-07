@@ -69,3 +69,16 @@ export function isURL(str: string) {
   const pattern = /^(https):\/\/[^ "]+$/
   return pattern.test(str)
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function bindThisToFunctions<TClass extends { new (): any}>(
+  instance: InstanceType<TClass>
+): void {
+  for (const name of Object.getOwnPropertyNames(
+    Object.getPrototypeOf(instance)
+  )) {
+    if (typeof instance[name] === 'function' && name !== 'constructor') {
+      instance[name] = instance[name].bind(instance)
+    }
+  }
+}

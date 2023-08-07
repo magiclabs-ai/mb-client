@@ -27,7 +27,15 @@ export class Fetcher {
       const baseOptions = {...this.options}
       const options = props.options ? mergeNestedObject(baseOptions, props.options) : baseOptions
       const res = await fetch(this.cleanUrl((new URL(props.path, this.baseUrl)).href), options)
-      return res.json()
+      if (res.status >= 200 && res.status < 300) {
+        try {
+          return await res.json()
+        } catch (error) {
+          return {}
+        }
+      } else {
+        throw Error(res.statusText)
+      }
     } catch (error) {
       return Promise.reject(error)
     }
