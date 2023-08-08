@@ -15,7 +15,7 @@ done
 rm -rf ./dist
 
 if [[ -z "${flags}" ]]; then
-  node ./configs/create-tsconfig.js
+  node ./create-tsconfig.js
 else
-  node ./configs/create-tsconfig.js --dev
+  node ./create-tsconfig.js --dev
 fi

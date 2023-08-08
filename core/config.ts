@@ -1,3 +1,3 @@
-export const defaultApiHost: string = import.meta.env?.VITE_API_HOST || 'http://localhost:2812'
-export const defaultWebSocketHost: string = import.meta.env?.VITE_WEBSOCKET_HOST || 'wss://localhost:2812'
-export const designRequestTimeout: number = parseInt(import.meta.env?.VITE_DESIGN_REQUEST_TIMEOUT) || 30000
+export const defaultApiHost: string = process.env.API_HOST || 'http://localhost:2812'
+export const defaultWebSocketHost: string = process.env.WEBSOCKET_HOST || 'wss://localhost:2812'
+export const designRequestTimeout: number = parseInt(process.env.DESIGN_REQUEST_TIMEOUT?.toString() || '3000')

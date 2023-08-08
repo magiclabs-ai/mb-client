@@ -7,7 +7,6 @@ import {galleonFactory} from '../../factories/galleon.factory'
 describe('Engine API Book Endpoints', () => {
   const engineAPI = new EngineAPI('https://api.magicbook.mock', '123')
 
-
   test('create', async () => {
     const fakeBook = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(fakeBook))
