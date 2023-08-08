@@ -9,7 +9,7 @@ import prompts from 'prompts'
 const books = program.command('books')
 
 books.command('create')
-  .addOption(new Option('-b, --book <book>', 'book object'))
+  .addOption(new Option('-b, --book <book>'))
   .action(async (args) => {
     const {isValid} = await validateArgs(() => {
       if (args.book) {
@@ -24,7 +24,7 @@ books.command('create')
   })
 
 books.command('get')
-  .addOption(new Option('--bookId <bookId>', 'ID of the book to retrieve'))
+  .addOption(new Option('--bookId <bookId>'))
   .action(async (args) => {
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
@@ -44,8 +44,8 @@ books.command('get')
   })
 
 books.command('update')
-  .addOption(new Option('--bookId <bookId>', 'ID of the book to update'))
-  .addOption(new Option('--book <book>', 'book object'))
+  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--book <book>'))
   .action(async (args) => {
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
@@ -78,7 +78,7 @@ books.command('update')
   })
 
 books.command('cancel')
-  .addOption(new Option('--bookId <bookId>', 'id of the book to cancel'))
+  .addOption(new Option('--bookId <bookId>'))
   .action(async (args) => {
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
@@ -98,7 +98,7 @@ books.command('cancel')
   })
 
 books.command('delete')
-  .addOption(new Option('--bookId <bookId>', 'id of the book to delete'))
+  .addOption(new Option('--bookId <bookId>'))
   .action(async (args) => {
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
@@ -118,7 +118,7 @@ books.command('delete')
   })
 
 books.command('galleon')
-  .addOption(new Option('--bookId <bookId>', 'id of the book to retrieve galleon'))
+  .addOption(new Option('--bookId <bookId>'))
   .action(async (args) => {
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {

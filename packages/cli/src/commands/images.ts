@@ -9,7 +9,7 @@ import prompts from 'prompts'
 const images = program.command('images')
 
 images.command('list')
-  .addOption(new Option('--bookId <bookId>', 'Id of the book to which the image belongs'))
+  .addOption(new Option('--bookId <bookId>'))
   .action(async (args) => {
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
@@ -28,7 +28,7 @@ images.command('list')
   })
 
 images.command('create')
-  .addOption(new Option('--bookId <bookId>', 'Id of the book to which the image belongs'))
+  .addOption(new Option('--bookId <bookId>'))
   .addOption(new Option('--image <image>', 'image object'))
   .action(async (args) => {
     const {isValid} = await validateArgs(async () => {
@@ -62,8 +62,8 @@ images.command('create')
   })
 
 images.command('get')
-  .addOption(new Option('--bookId <bookId>', 'Id of the book to which the image belongs'))
-  .addOption(new Option('--imageId <imageId>', 'Id of the image'))
+  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--imageId <imageId>'))
   .action(async (args) => {
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
@@ -91,9 +91,9 @@ images.command('get')
   })
 
 images.command('update')
-  .addOption(new Option('--bookId <bookId>', 'Id of the book to which the image belongs'))
-  .addOption(new Option('--imageId <imageId>', 'Id of the image'))
-  .addOption(new Option('--image <image>', 'Image object'))
+  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--imageId <imageId>'))
+  .addOption(new Option('--image <image>'))
   .action(async (args) => {
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
@@ -134,8 +134,8 @@ images.command('update')
   })
 
 images.command('delete')
-  .addOption(new Option('--bookId <bookId>', 'Id of the book to which the image belongs'))
-  .addOption(new Option('--imageId <imageId>', 'Id of the image'))
+  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--imageId <imageId>'))
   .action(async (args) => {
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
