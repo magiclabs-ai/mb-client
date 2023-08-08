@@ -36,7 +36,7 @@ export class Images {
 }
 
 export const imageServerSchema = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   handle: z.string(),
   url: z.string(),
   width: z.number(),

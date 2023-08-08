@@ -1,6 +1,6 @@
 import {EngineAPI} from '..'
 import {StoryboardItemServerSchema} from '../../storyboard-item'
-import {bindThisToFunctions, handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
+import {bindThisToFunctions, handleAsyncFunction} from '@/core/utils/toolbox'
 import {z} from 'zod'
 
 export class StoryboardItemsEndpoints {
@@ -16,8 +16,7 @@ export class StoryboardItemsEndpoints {
       const res = await this.engineAPI.fetcher.call({
         path: `/v1/storyboarditems/book/${bookId}`
       })
-      const storyboardItems = snakeCaseObjectKeysToCamelCase(res)
-      return z.array(StoryboardItemServerSchema).parse(storyboardItems)
+      return z.array(StoryboardItemServerSchema).parse(res)
     })
   }
 

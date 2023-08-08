@@ -1,9 +1,9 @@
-import {DesignRequest, DesignRequestEvent, DesignRequestProps} from '../../../src/models/design-request'
-import {Image, ImageServer, Images} from '../../../src/models/design-request/image'
-import {MagicBookClient} from '../../../src'
+import {DesignRequest, DesignRequestEvent, DesignRequestProps} from '@/core/models/design-request'
+import {Image, ImageServer, Images} from '@/core/models/design-request/image'
+import {MagicBookClient} from '@/core/models/client'
 import {SpyInstance, beforeEach, describe, expect, test, vi} from 'vitest'
-import {WebSocketMock} from '../../../../../core/mocks/websocket'
-import {bookFactory} from '../../../../../core/factories/book.factory'
+import {WebSocketMock} from '@/core/tests/mocks/websocket'
+import {bookFactory} from '@/core/tests/factories/book.factory'
 import {
   bookSizes,
   coverTypes,
@@ -14,14 +14,12 @@ import {
   pageTypes,
   styles,
   textStickerLevels
-} from '../../../src/data/design-request'
-import {designOptionsServerFactory} from '../../../../../core/factories/design-options.factory'
+} from '@/core/data/design-request'
+import {designOptionsServerFactory} from '@/core/tests/factories/design-options.factory'
 import {faker} from '@faker-js/faker'
-import {fetchMocker} from '../../../../../core/mocks/fetch'
-import {galleonFactory} from '../../../../../core/factories/galleon.factory'
-import {mockCreateBook, mockRetrieveBook, mockRetrieveGalleon, mockUpdateBook} from '../../../../../core/mocks/books'
-import {mockGetDesignOptions} from '../../../../../core/mocks/design-options'
-import {snakeCaseObjectKeysToCamelCase} from '@/utils/toolbox'
+import {fetchMocker} from '@/core/tests/mocks/fetch'
+import {galleonFactory} from '@/core/tests/factories/galleon.factory'
+import {snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 
 describe('Design Request', async () => {
   let designRequest: DesignRequest
@@ -38,15 +36,16 @@ describe('Design Request', async () => {
       pageType: 'dl',
       title: 'My Book'
     }
-    mockCreateBook.mockResolvedValue(bookFactory())
-    ws = vi.spyOn(window, 'WebSocket').mockImplementation((value) => (new WebSocketMock(value) as WebSocket))
+    fetchMocker.mockResponse(JSON.stringify(bookFactory()))
+    ws = vi.spyOn(window, 'WebSocket').mockImplementation((value) => (new WebSocketMock(value) as unknown as WebSocket))
     designRequest = await client.createDesignRequest(designRequestProps)
   })
 
   test('Design Request default values', async () => {
     const parentId = faker.string.uuid()
-    expect(JSON.stringify(new DesignRequest(parentId, client))).toStrictEqual(JSON.stringify({
-      client,
+    const designRequest = new DesignRequest(parentId, client)
+    expect(designRequest).toEqual({
+      client: client,
       webSocket: new WebSocket(`${webSocketHost}/?book_id=${parentId}`),
       parentId,
       title: '',
@@ -60,7 +59,7 @@ describe('Design Request', async () => {
       embellishmentLevel: embellishmentLevels[0],
       textStickerLevel: textStickerLevels[0],
       images: new Images(client, parentId)
-    }))
+    })
   })
   test('addImage', async () => {
     const image: Image = {
@@ -79,13 +78,13 @@ describe('Design Request', async () => {
   })
   test('getJSON', async () => {
     const galleon = galleonFactory({title: designRequest.title})
-    mockRetrieveGalleon.mockResolvedValue(galleon)
+    fetchMocker.mockResponse(JSON.stringify(galleon))
     const designRequestJSON = await designRequest.getJSON()
     expect(designRequestJSON.title).toStrictEqual(designRequest.title)
   })
   test('getOptions', async () => {
     const designOptions = designOptionsServerFactory()
-    mockGetDesignOptions.mockResolvedValue(designOptions)
+    fetchMocker.mockResponse(JSON.stringify(designOptions))
     const designRequestOptions = await designRequest.getOptions(faker.number.int({min: 20, max: 200}))
     // OR
     await designRequest.getOptions()
@@ -94,7 +93,7 @@ describe('Design Request', async () => {
   test('submitDesignRequest', async () => {
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
     const wsClose = vi.spyOn(WebSocketMock.prototype, 'close')
-    mockUpdateBook.mockResolvedValue(bookFactory())
+    fetchMocker.mockResponse(JSON.stringify(bookFactory()))
     const submitDesignRequest = await designRequest.submit({
       imageDensity: 'high',
       embellishmentLevel: 'few',
@@ -142,7 +141,7 @@ describe('Design Request', async () => {
   test('submitDesignRequest with error', async () => {
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
     vi.useFakeTimers()
-    mockRetrieveBook.mockResolvedValue(bookFactory({state: 'submitted'}))
+    fetchMocker.mockResponse(JSON.stringify(bookFactory({state: 'submitted'})))
     const submitDesignRequest = await designRequest.submit({
       imageDensity: 'high',
       embellishmentLevel: 'few',
@@ -155,7 +154,7 @@ describe('Design Request', async () => {
     expect(embellishingEvent['detail']['state']).toStrictEqual('error')
   })
   test('setGuid', async () => {
-    mockUpdateBook.mockResolvedValue({data: bookFactory()})
+    fetchMocker.mockResponse(JSON.stringify(bookFactory()))
     expect(await designRequest.setGuid(faker.string.uuid())).toStrictEqual(designRequest.guid)
   })
 })

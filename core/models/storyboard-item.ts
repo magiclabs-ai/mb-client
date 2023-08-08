@@ -75,8 +75,9 @@ export const StoryboardItemServerSchema = z.object({
   scene: z.number(),
   subscene: z.number(),
   spine_break: z.boolean(),
-  image: StoryboardItemImageSchema
+  image: StoryboardItemImageServerSchema
 })
+export type StoryboardItemServer = z.infer<typeof StoryboardItemServerSchema>
 
 export const StoryboardItemSchema = z.object({
   id: z.string(),

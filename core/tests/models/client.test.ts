@@ -1,8 +1,8 @@
-import {DesignRequestProps} from '@/models/design-request'
-import {MagicBookClient} from '@/index'
-import {bookFactory} from '../../../../../core/factories/book.factory'
+import {DesignRequestProps} from '@/core/models/design-request'
+import {MagicBookClient} from '@/core/models/client'
+import {bookFactory} from '@/core/tests/factories/book.factory'
 import {describe, expect, test} from 'vitest'
-import {mockCreateBook} from '../../../../../core/mocks/books'
+import {fetchMocker} from '@/core/tests/mocks/fetch'
 
 describe('Client', () => {
   test('createDesignRequest', async () => {
@@ -15,7 +15,7 @@ describe('Client', () => {
       coverType: 'hc',
       pageType: 'dl'
     }
-    mockCreateBook.mockResolvedValue({data: bookFactory()})
+    fetchMocker.mockResponse(JSON.stringify(bookFactory(designRequestProps)))
     const designRequest = await client.createDesignRequest(designRequestProps)
     Object.keys(designRequestProps).forEach((k) => {
       const key = k as keyof DesignRequestProps

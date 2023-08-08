@@ -1,6 +1,6 @@
 import {EngineAPI} from '..'
-import {SpreadSchema, SpreadServer} from '../../spread'
-import {bindThisToFunctions, handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
+import {SpreadServer, SpreadServerSchema} from '../../spread'
+import {bindThisToFunctions, handleAsyncFunction} from '@/core/utils/toolbox'
 import {z} from 'zod'
 
 export class SpreadsEndpoints {
@@ -16,8 +16,7 @@ export class SpreadsEndpoints {
       const res = await this.engineAPI.fetcher.call({
         path: `/v1/spreads/book/${bookId}`
       })
-      return z.array(SpreadSchema).parse(res.map((spread: Record<string, unknown>) =>
-        snakeCaseObjectKeysToCamelCase(spread)))
+      return z.array(SpreadServerSchema).parse(res)
     })
   }
   
@@ -33,7 +32,7 @@ export class SpreadsEndpoints {
           body: JSON.stringify(spread)
         }
       })
-      return SpreadSchema.parse(snakeCaseObjectKeysToCamelCase(res))
+      return SpreadServerSchema.parse(res)
     })
   }
 
@@ -45,7 +44,7 @@ export class SpreadsEndpoints {
       const res = await this.engineAPI.fetcher.call({
         path: `/v1/spreads/${spreadId}/book/${bookId}`
       })
-      return SpreadSchema.parse(snakeCaseObjectKeysToCamelCase(res))
+      return SpreadServerSchema.parse(res)
     })
   }
 
@@ -62,7 +61,7 @@ export class SpreadsEndpoints {
           body: JSON.stringify(spread)
         }
       })
-      return SpreadSchema.parse(snakeCaseObjectKeysToCamelCase(res))
+      return SpreadServerSchema.parse(res)
     })
   }
 

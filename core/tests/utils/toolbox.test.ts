@@ -1,9 +1,11 @@
 import {assign, camelCaseObjectKeysToSnakeCase, camelCaseToSnakeCase,
   handleAsyncFunction,
+  isURL,
   mergeNestedObject,
   snakeCaseObjectKeysToCamelCase,
-  snakeCaseToCamelCase} from '@/utils/toolbox'
+  snakeCaseToCamelCase} from '@/core/utils/toolbox'
 import {describe, expect, test} from 'vitest'
+import {faker} from '@faker-js/faker'
 
 describe('Toolbox', () => {
   test('assign function', () => {
@@ -44,5 +46,13 @@ describe('Toolbox', () => {
   test.fails('handleAsyncFunction fails', async () => {
     const res = await handleAsyncFunction(async () => {throw new Error('error')})
     expect(res).toThrowError('error')
+  })
+  test('isURL function', async () => {
+    const res = isURL('https://www.google.com')
+    expect(res).toBeTruthy()
+  })
+  test('isURL function that fails', async () => {
+    const res = isURL(faker.lorem.word())
+    expect(res).toBeFalsy()
   })
 })

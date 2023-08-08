@@ -47,10 +47,12 @@ export class BooksEndpoints {
 
   cancel(bookId: string) {
     return handleAsyncFunction(async () => {
-      await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call({
         path: `/v1/books/${bookId}/cancel`,
         options: {method: 'PUT'}
       })
+      BookPropsSchema.safeParse(res)
+      return new Book(res)
     })
   }
 
@@ -60,7 +62,6 @@ export class BooksEndpoints {
         path: `/v1/books/${bookId}`,
         options: {method: 'DELETE'}
       })
-      return {}
     })
   }
   

@@ -23,7 +23,7 @@ export class ImagesEndpoints {
       const res = await this.engineAPI.fetcher.call({
         path: `/v1/images/${imageId}/book/${bookId}/`
       })
-      return z.array(imageServerSchema).parse(res)
+      return imageServerSchema.parse(res)
     })
   }
   

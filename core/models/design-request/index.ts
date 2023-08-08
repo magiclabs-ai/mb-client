@@ -1,6 +1,5 @@
 import {Images} from './image'
 import {MagicBookClient} from '../client'
-import {ZodType, z} from 'zod'
 import {
   bookSizes,
   coverTypes,
@@ -16,21 +15,6 @@ import {
 } from '@/core/data/design-request'
 import {designRequestTimeout} from '@/core/config'
 import {designRequestToBook} from '@/core/utils/design-request-parser'
-
-export function numericEnum<TValues extends readonly number[]>(
-  values: TValues
-) {
-  return z.number().superRefine((val, ctx) => {
-    if (!values.includes(val)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: `Invalid enum value. Expected ${values.join(
-          ' | '
-        )}, received ${val}`
-      })
-    }
-  }) as ZodType<TValues[number]>
-}
 
 export type Occasion = typeof occasions[number]
 export type Style = keyof typeof styles

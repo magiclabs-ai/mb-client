@@ -12,7 +12,8 @@ export const states = [
   'embellishing',
   'polishing',
   'ready',
-  'error' 
+  'error',
+  'cancelled'
 ] as const
 export const occasions = [
   'baby',

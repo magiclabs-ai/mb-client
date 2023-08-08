@@ -8,7 +8,9 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
+    "coverage": "vitest --config ./configs/vitest/vitest.config.ts run --coverage",
     "lint": "cd packages/client && pnpm run lint",
+    "test": "vitest --config ./configs/vitest/vitest.config.ts",
     "watch": "turbo run watch"
   },
   "dependencies": {
