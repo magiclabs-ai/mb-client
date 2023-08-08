@@ -17,6 +17,7 @@ const newBook = mbClient.command('new')
 Object.keys(DesignRequestOptions).forEach((key) => {
   newBook.addOption(new Option(`--${key} <${key}>`))
 })
+newBook.addOption(new Option('--imageLength <imageLength>').default(70))
 
 newBook.action(async (args) => {
   const config = await getConfig()
@@ -42,7 +43,7 @@ newBook.action(async (args) => {
   const imageUploadBar = new cliProgress.SingleBar({
     format: 'Uploaded images | {bar} | {percentage}% || {value}/{total} Images'
   }, cliProgress.Presets.shades_classic)
-  const imagesLength = 70
+  const imagesLength = parseInt(args.imageLength)
   imageUploadBar.start(imagesLength, 0)
   await Promise.all(Array.from(Array(imagesLength).keys()).map(async () => {
     const width = 1000

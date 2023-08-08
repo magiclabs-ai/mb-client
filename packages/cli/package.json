@@ -12,8 +12,9 @@
   ],
   "scripts": {
     "build": "../../scripts/before-build.sh && tsup && ../../scripts/before-build.sh",
+    "coverage": "vitest run --coverage",
     "lint": "eslint . --ext js,jsx,ts,tsx --config ../../.eslintrc.json --no-eslintrc",
-    "test": "vitest --config ../../.vitestrc.json",
+    "test": "vitest",
     "watch": "../../scripts/before-build.sh -w && tsup --watch"
   },
   "dependencies": {
@@ -35,8 +36,10 @@
     "@typescript-eslint/eslint-plugin": "^6.2.1",
     "@typescript-eslint/parser": "^6.2.1",
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
+    "jsdom": "^22.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6",
-    "vitest": "^0.34.1"
+    "vitest": "^0.34.1",
+    "vitest-mock-process": "^1.0.4"
   }
 }

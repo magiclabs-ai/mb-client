@@ -3,6 +3,7 @@ import {isURL} from '@/core/utils/toolbox'
 import chalk from 'chalk'
 import prompts from 'prompts'
 const log = console.log
+import {configPath} from '../utils/toolbox'
 import {promises as fs} from 'fs'
 
 program.command('config')
@@ -40,7 +41,6 @@ program.command('config')
     if (!config.wsHost) {
       config.wsHost = config.apiHost.replace('https://api', 'wss://socket')
     }
-
-    fs.writeFile('.config.json', JSON.stringify(config))
+    await fs.writeFile(configPath, JSON.stringify(config))
     log(chalk.green('✅ - Config saved!'))
   })

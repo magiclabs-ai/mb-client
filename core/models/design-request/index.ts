@@ -13,8 +13,10 @@ import {
   textStickerLevels,
   timeoutMessage
 } from '@/core/data/design-request'
+import {designOptionsSchema} from './design-options'
 import {designRequestTimeout} from '@/core/config'
 import {designRequestToBook} from '@/core/utils/design-request-parser'
+import {snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 
 export type Occasion = typeof occasions[number]
 export type Style = keyof typeof styles
@@ -91,8 +93,11 @@ export class DesignRequest {
   }
 
   async getOptions(imageCount?: number) {
-    return await this.client.engineAPI.designOptions.retrieve(this.bookSize, imageCount || this.images.length,
-      this.imageFilteringLevel)
+    const options = designOptionsSchema.parse(snakeCaseObjectKeysToCamelCase(
+      await this.client.engineAPI.designOptions.retrieve(this.bookSize, imageCount || this.images.length,
+        this.imageFilteringLevel)
+    ))
+    return options
   }
 
   async submit(submitDesignRequestProps?: DesignRequestProps) {

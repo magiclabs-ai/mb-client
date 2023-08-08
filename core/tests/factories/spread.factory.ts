@@ -27,7 +27,6 @@ export function spreadFactory(props?: SpreadFactoryProps): Spread {
   }
 }
 
-
 export function spreadServerFactory(props?: SpreadFactoryProps): SpreadServer {
   return camelCaseObjectKeysToSnakeCase(spreadFactory(props)) as SpreadServer
 }

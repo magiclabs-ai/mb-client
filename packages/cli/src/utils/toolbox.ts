@@ -1,8 +1,13 @@
+import {fileURLToPath} from 'url'
 import {promises as fs} from 'fs'
+import {log} from 'console'
+import chalk from 'chalk'
 import clipboardy from 'clipboardy'
+import path from 'path'
 
+export const configPath = path.resolve(fileURLToPath(import.meta.url), '../../../dist/.config.json')
 export async function getConfig() {
-  return JSON.parse(await fs.readFile('.config.json', 'utf-8'))
+  return JSON.parse(await fs.readFile(configPath, 'utf-8'))
 }
 
 export function msToSeconds(ms: number) {
@@ -25,4 +30,15 @@ export async function handleAPIResponse<T>(fn: () => Promise<T>) {
 
 export function cleanJSON(obj: unknown) {
   return JSON.parse(JSON.stringify(obj))
+}
+
+export async function validateArgs(fn: () => void | Promise<void>) {
+  try {
+    await fn()
+    return {isValid: true}
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    log(chalk.red.bold(error.message))
+    return {isValid: false}
+  }
 }
