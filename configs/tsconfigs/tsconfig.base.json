@@ -17,9 +17,6 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "skipLibCheck": true,
-    "types": [
-      "vite/client"
-    ],
     "paths": {
       "@/client/*": ["./packages/client/*"],
       "@/cli/*": ["./packages/cli/*"],

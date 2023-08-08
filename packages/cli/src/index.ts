@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import './commands/books'
 import './commands/config'
 import './commands/design-options'

@@ -13,7 +13,6 @@
   "scripts": {
     "build": "../../scripts/before-build.sh && tsup && ../../scripts/before-build.sh",
     "coverage": "vitest run --coverage",
-    "lint": "eslint . --ext js,jsx,ts,tsx --config ../../.eslintrc.json --no-eslintrc",
     "test": "vitest",
     "watch": "../../scripts/before-build.sh -w && tsup --watch"
   },
