@@ -1,19 +1,18 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": [".env"],
   "pipeline": {
     "//#lint": {},
     "build": {
-      "dependsOn": ["^//#lint"],
-      "outputs": ["dist/**"]
+      "dependsOn": ["//#lint"],
+      "cache": false
     },
     "//#coverage": {
       "dependsOn": ["^build"],
-      "outputs": ["coverage/**"]
+      "cache": false
     },
     "coverage": {
-      "dependsOn": ["//#coverage"],
-      "outputs": ["coverage/**"]
+      "dependsOn": ["^//#coverage"],
+      "cache": false
     }
   }
 }

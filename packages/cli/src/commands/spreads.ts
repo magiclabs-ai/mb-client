@@ -1,7 +1,6 @@
 import {Option, program} from 'commander'
 import {SpreadServerSchema} from '@/core/models/spread'
-import {engineAPI} from '..'
-import {handleAPIResponse, validateArgs} from '../utils/toolbox'
+import {actionSetup, handleAPIResponse, validateArgs} from '../utils/toolbox'
 import {log} from 'console'
 import chalk from 'chalk'
 import prompts from 'prompts'
@@ -11,6 +10,7 @@ const spreads = program.command('spreads')
 spreads.command('list')
   .addOption(new Option('--bookId <bookId>'))
   .action(async (args) => {
+    const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
         const response = await prompts({
@@ -31,6 +31,7 @@ spreads.command('create')
   .addOption(new Option('--bookId <bookId>'))
   .addOption(new Option('--spread <spread>'))
   .action(async (args) => {
+    const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
         const response = await prompts({
@@ -65,6 +66,7 @@ spreads.command('get')
   .addOption(new Option('--spreadId <spreadId>'))
   .addOption(new Option('--bookId <bookId>'))
   .action(async (args) => {
+    const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
       if (!args.spreadId) {
         const response = await prompts({
@@ -95,6 +97,7 @@ spreads.command('update')
   .addOption(new Option('--bookId <bookId>'))
   .addOption(new Option('--spread <spread>'))
   .action(async (args) => {
+    const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
       if (!args.spreadId) {
         const response = await prompts({
@@ -137,6 +140,7 @@ spreads.command('delete')
   .addOption(new Option('--spreadId <spreadId>'))
   .addOption(new Option('--bookId <bookId>'))
   .action(async (args) => {
+    const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
       if (!args.spreadId) {
         const response = await prompts({

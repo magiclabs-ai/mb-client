@@ -1,9 +1,9 @@
-import '../../../src/index'
-import {commands} from '../../../src/index'
+import '../../../src/commands/config'
 import {describe, expect, test, vi} from 'vitest'
 import {faker} from '@faker-js/faker'
 import {getConfig} from '@/cli/src/utils/toolbox'
 import {mockProcessExit} from 'vitest-mock-process'
+import {program} from 'commander'
 
 mockProcessExit()
 vi.mock('prompts', async () => {
@@ -20,7 +20,7 @@ vi.mock('prompts', async () => {
 })
 describe('Config', () => {
   test('setup without args', async () => {
-    await commands.parseAsync(['config'], {from: 'user'})
+    await program.parseAsync(['config'], {from: 'user'})
   })
 
   test('setup', async () => {
@@ -30,7 +30,7 @@ describe('Config', () => {
       apiKey: faker.string.uuid(),
       copyResToClipboard: false
     }
-    await commands.parseAsync(['config', '--apiHost', fakeConfig.apiHost, '--wsHost', fakeConfig.wsHost, '--apiKey',
+    await program.parseAsync(['config', '--apiHost', fakeConfig.apiHost, '--wsHost', fakeConfig.wsHost, '--apiKey',
       fakeConfig.apiKey, '--copyResToClipboard', JSON.stringify(fakeConfig.copyResToClipboard)], {from: 'user'})
     const config = await getConfig()
     console.log(config)

@@ -1,7 +1,7 @@
 import fs from 'fs'
 
 const isDev = process.argv.includes('--dev')
-const basePaths = '../configs/tsconfigs/'
+const basePaths = '../../configs/tsconfigs/'
 const base = JSON.parse(fs.readFileSync(`${basePaths}tsconfig.base.json`, 'utf8'))
 const specificTsconfigPath = isDev ? `${basePaths}tsconfig.dev.json` : `${basePaths}tsconfig.prod.json`
 const specificTsconfig = JSON.parse(fs.readFileSync(specificTsconfigPath, 'utf8'))

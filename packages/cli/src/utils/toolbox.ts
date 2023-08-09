@@ -1,3 +1,4 @@
+import {EngineAPI} from '../../../../core/models/engine-api'
 import {fileURLToPath} from 'url'
 import {promises as fs} from 'fs'
 import {log} from 'console'
@@ -5,9 +6,17 @@ import chalk from 'chalk'
 import clipboardy from 'clipboardy'
 import path from 'path'
 
-export const configPath = path.resolve(fileURLToPath(import.meta.url), '../../../dist/.config.json')
+export const configPath = path.resolve(
+  fileURLToPath(import.meta.url),
+  '../../.config.json'
+)
+
 export async function getConfig() {
-  return JSON.parse(await fs.readFile(configPath, 'utf-8'))
+  try {
+    return JSON.parse(await fs.readFile(configPath, 'utf-8'))
+  } catch (error) {
+    log(chalk.red.bold('❌ - No config file found. Please run the config command'))
+  }
 }
 
 export function msToSeconds(ms: number) {
@@ -40,5 +49,17 @@ export async function validateArgs(fn: () => void | Promise<void>) {
   } catch (error: any) {
     log(chalk.red.bold(error.message))
     return {isValid: false}
+  }
+}
+
+export async function actionSetup() {
+  const config = await getConfig()
+  if (!config) {
+    process.exit(1)
+  } else {
+    return {
+      engineAPI: new EngineAPI(config.apiHost, config.apiKey),
+      config
+    }
   }
 }

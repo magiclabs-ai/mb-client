@@ -14,6 +14,10 @@ export default defineConfig({
     setupFiles: [
       './core/tests/mocks/fetch.ts'
     ],
+    exclude: [
+      'node_modules',
+      'packages'
+    ],
     environment: 'jsdom',
     coverage: {
       all: true,

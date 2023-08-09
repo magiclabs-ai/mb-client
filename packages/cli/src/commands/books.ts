@@ -1,7 +1,6 @@
 import {BookPropsSchema} from '@/core/models/book'
 import {Option, program} from 'commander'
-import {engineAPI} from '..'
-import {handleAPIResponse, validateArgs} from '../utils/toolbox'
+import {actionSetup, handleAPIResponse, validateArgs} from '../utils/toolbox'
 import {log} from 'console'
 import chalk from 'chalk'
 import prompts from 'prompts'
@@ -11,6 +10,7 @@ const books = program.command('books')
 books.command('create')
   .addOption(new Option('-b, --book <book>'))
   .action(async (args) => {
+    const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(() => {
       if (args.book) {
         BookPropsSchema.parse(JSON.parse(args.book))
@@ -26,6 +26,7 @@ books.command('create')
 books.command('get')
   .addOption(new Option('--bookId <bookId>'))
   .action(async (args) => {
+    const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
         const response = await prompts({
@@ -47,6 +48,7 @@ books.command('update')
   .addOption(new Option('--bookId <bookId>'))
   .addOption(new Option('--book <book>'))
   .action(async (args) => {
+    const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
         const response = await prompts({
@@ -80,6 +82,7 @@ books.command('update')
 books.command('cancel')
   .addOption(new Option('--bookId <bookId>'))
   .action(async (args) => {
+    const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
         const response = await prompts({
@@ -100,6 +103,7 @@ books.command('cancel')
 books.command('delete')
   .addOption(new Option('--bookId <bookId>'))
   .action(async (args) => {
+    const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
         const response = await prompts({
@@ -120,6 +124,7 @@ books.command('delete')
 books.command('galleon')
   .addOption(new Option('--bookId <bookId>'))
   .action(async (args) => {
+    const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
         const response = await prompts({

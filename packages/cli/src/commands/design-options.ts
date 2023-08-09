@@ -1,7 +1,6 @@
 import {Option, program} from 'commander'
+import {actionSetup, handleAPIResponse, validateArgs} from '../utils/toolbox'
 import {bookSizes, imageFilteringLevels} from '@/core/data/design-request'
-import {engineAPI} from '..'
-import {handleAPIResponse, validateArgs} from '../utils/toolbox'
 import {log} from 'console'
 import chalk from 'chalk'
 import prompts from 'prompts'
@@ -13,6 +12,7 @@ designOptions.command('getDensities')
   .addOption(new Option('--imageCount <imageCount>'))
   .addOption(new Option('--imageFilteringLevel <imageFilteringLevel>'))
   .action(async (args) => {
+    const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
       if (!args.bookSize) {
         const response = await prompts({

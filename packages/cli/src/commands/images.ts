@@ -1,6 +1,5 @@
 import {Option, program} from 'commander'
-import {engineAPI} from '..'
-import {handleAPIResponse, validateArgs} from '../utils/toolbox'
+import {actionSetup, handleAPIResponse, validateArgs} from '../utils/toolbox'
 import {imageServerSchema} from '@/core/models/design-request/image'
 import {log} from 'console'
 import chalk from 'chalk'
@@ -11,6 +10,7 @@ const images = program.command('images')
 images.command('list')
   .addOption(new Option('--bookId <bookId>'))
   .action(async (args) => {
+    const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
         const response = await prompts({
@@ -31,6 +31,7 @@ images.command('create')
   .addOption(new Option('--bookId <bookId>'))
   .addOption(new Option('--image <image>', 'image object'))
   .action(async (args) => {
+    const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
         const response = await prompts({
@@ -65,6 +66,7 @@ images.command('get')
   .addOption(new Option('--bookId <bookId>'))
   .addOption(new Option('--imageId <imageId>'))
   .action(async (args) => {
+    const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
         const response = await prompts({
@@ -95,6 +97,7 @@ images.command('update')
   .addOption(new Option('--imageId <imageId>'))
   .addOption(new Option('--image <image>'))
   .action(async (args) => {
+    const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
         const response = await prompts({
@@ -137,6 +140,7 @@ images.command('delete')
   .addOption(new Option('--bookId <bookId>'))
   .addOption(new Option('--imageId <imageId>'))
   .action(async (args) => {
+    const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
         const response = await prompts({

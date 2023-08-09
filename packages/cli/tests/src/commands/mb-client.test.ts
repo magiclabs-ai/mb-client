@@ -1,12 +1,12 @@
-import '../../../src/index'
+import '../../../src/commands/mb-client'
 import {EventEmitter} from 'stream'
 import {bookFactory} from '@/core/tests/factories/book.factory'
-import {commands} from '../../../src/index'
 import {describe, test, vi} from 'vitest'
 import {faker} from '@faker-js/faker'
 import {fetchMocker} from '../../../../../core/tests/mocks/fetch'
 import {imageServerFactory} from '../../../../../core/tests/factories/image.factory'
 import {mockProcessExit} from 'vitest-mock-process'
+import {program} from 'commander'
 
 mockProcessExit()
 vi.mock('prompts', async () => {
@@ -14,7 +14,6 @@ vi.mock('prompts', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     default: (props: any) => Promise.resolve({
       apiHost: faker.internet.url(),
-      // wsHost: faker.internet.url(),
       apiKey: faker.string.uuid(),
       isValid: typeof props.validate === 'function' ? props.validate(faker.internet.url()) : true,
       invalid: typeof props.validate === 'function' ? props.validate(JSON.stringify({})) : true
@@ -30,7 +29,7 @@ describe('mb-client', () => {
       [JSON.stringify(imageServerFactory()), {status: 200}],
       [JSON.stringify(book), {status: 200}]
     )
-    await commands.parseAsync(['mb-client', 'new', '--imageLength', '1'], {from: 'user'})
+    await program.parseAsync(['mb-client', 'new', '--imageLength', '1'], {from: 'user'})
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     eventEmitter.emit('event', {
@@ -59,7 +58,7 @@ describe('mb-client', () => {
       [JSON.stringify(imageServerFactory()), {status: 200}],
       [JSON.stringify(book), {status: 200}]
     )
-    await commands.parseAsync(['mb-client', 'new', '--imageLength', '1', '--occasion', 'baby', '--styles', '1005',
+    await program.parseAsync(['mb-client', 'new', '--imageLength', '1', '--occasion', 'baby', '--style', '1005',
       '--bookSize', '10x10', '--coverType', 'sc', '--pageType', 'sp', '--imageDensity', 'low',
       '--imageFilteringLevel', 'best', '--embellishmentLevel', 'lots', '--textStickerLevel', 'lots'], {from: 'user'})
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -73,7 +72,7 @@ describe('mb-client', () => {
       }
     })
     vi.useFakeTimers()
-    setInterval(()=>{}, 1000 * 60)
+    setInterval(()=>{}, 1000 * 40)
     vi.advanceTimersToNextTimer()
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore

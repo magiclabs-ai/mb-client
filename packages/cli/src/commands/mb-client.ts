@@ -4,8 +4,8 @@ import {
   MagicBookClient
 } from '@magiclabs.ai/magicbook-client'
 import {Option, program} from 'commander'
+import {actionSetup, msToSeconds} from '../utils/toolbox'
 import {faker} from '@faker-js/faker'
-import {getConfig, msToSeconds} from '../utils/toolbox'
 import {log} from 'console'
 import chalk from 'chalk'
 import cliProgress from 'cli-progress'
@@ -20,7 +20,7 @@ Object.keys(DesignRequestOptions).forEach((key) => {
 newBook.addOption(new Option('--imageLength <imageLength>').default(70))
 
 newBook.action(async (args) => {
-  const config = await getConfig()
+  const {config} = await actionSetup()
   for (const [key, options] of Object.entries(DesignRequestOptions)) {
     if (!args[key]) {
       const response = await prompts({
