@@ -19,6 +19,10 @@ export function mergeNestedObject(obj: Record<string, any>, objToMerge: Record<s
   return obj
 }
 
+export function camelCaseToKebabCase(str: string) {
+  return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
+}
+
 export function camelCaseToSnakeCase(str: string) {
   return str.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase()
 }
@@ -66,7 +70,7 @@ export async function handleAsyncFunction<T>(fn: () => Promise<T>) {
 }
 
 export function isURL(str: string) {
-  const pattern = /^(https):\/\/[^ "]+$/
+  const pattern = /^(https|ws|wss):\/\/[^ "]+$/
   return pattern.test(str)
 }
 

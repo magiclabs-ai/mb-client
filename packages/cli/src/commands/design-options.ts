@@ -5,12 +5,12 @@ import {log} from 'console'
 import chalk from 'chalk'
 import prompts from 'prompts'
 
-const designOptions = program.command('designOptions')
+export const designOptions = program.command('design-options')
 
-designOptions.command('getDensities')
-  .addOption(new Option('--bookSize <bookSize>'))
-  .addOption(new Option('--imageCount <imageCount>'))
-  .addOption(new Option('--imageFilteringLevel <imageFilteringLevel>'))
+designOptions.command('get-densities')
+  .addOption(new Option('--book-size <bookSize>'))
+  .addOption(new Option('--image-count <imageCount>'))
+  .addOption(new Option('--image-filtering-level <imageFilteringLevel>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {

@@ -29,7 +29,7 @@ describe('mb-client', () => {
       [JSON.stringify(imageServerFactory()), {status: 200}],
       [JSON.stringify(book), {status: 200}]
     )
-    await program.parseAsync(['mb-client', 'new', '--imageLength', '1'], {from: 'user'})
+    await program.parseAsync(['mb-client', 'design-request', 'new', '--image-count', '1'], {from: 'user'})
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     eventEmitter.emit('event', {
@@ -58,9 +58,10 @@ describe('mb-client', () => {
       [JSON.stringify(imageServerFactory()), {status: 200}],
       [JSON.stringify(book), {status: 200}]
     )
-    await program.parseAsync(['mb-client', 'new', '--imageLength', '1', '--occasion', 'baby', '--style', '1005',
-      '--bookSize', '10x10', '--coverType', 'sc', '--pageType', 'sp', '--imageDensity', 'low',
-      '--imageFilteringLevel', 'best', '--embellishmentLevel', 'lots', '--textStickerLevel', 'lots'], {from: 'user'})
+    await program.parseAsync(['mb-client', 'design-request', 'new', '--image-count', '1', '--occasion', 'baby',
+      '--style', '1005', '--book-size', '10x10', '--cover-type', 'sc', '--page-type', 'sp', '--image-density', 'low',
+      '--image-filtering-level', 'best', '--embellishment-level', 'lots', '--text-sticker-level', 'lots']
+    , {from: 'user'})
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     eventEmitter.emit('event', {

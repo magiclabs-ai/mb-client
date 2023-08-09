@@ -1,20 +1,20 @@
 import {EngineAPI} from '../../../../core/models/engine-api'
+import {type PackageJson} from 'type-fest'
 import {fileURLToPath} from 'url'
 import {promises as fs} from 'fs'
 import {log} from 'console'
 import chalk from 'chalk'
 import path from 'path'
 
-export const configPath = path.resolve(
-  fileURLToPath(import.meta.url),
-  '../../.config.json'
-)
+export const basePath = path.join(fileURLToPath(import.meta.url),
+  import.meta.url.includes('index.mjs') ? '..' : '../../..')
+export const configPath = path.join(basePath, '.config.json')
 
 export async function getConfig() {
   try {
     return JSON.parse(await fs.readFile(configPath, 'utf-8'))
   } catch (error) {
-    log(chalk.red.bold('❌ - No config file found. Please run the config command'))
+    log(chalk.red.bold('❌ - No config file found. Please run the config command: mb-cli config'))
   }
 }
 
@@ -58,4 +58,9 @@ export async function actionSetup() {
       config
     }
   }
+}
+
+export async function getPackageInfo() {
+  const packageJsonPath = path.join(basePath, 'package.json')
+  return JSON.parse(await fs.readFile(packageJsonPath, 'utf-8')) as PackageJson
 }

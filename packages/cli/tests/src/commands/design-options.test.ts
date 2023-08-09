@@ -27,15 +27,15 @@ describe('Design Options', () => {
   test('getDensities without args', async () => {
     const designOptions = designOptionsServerFactory()
     fetchMocker.mockResponse(JSON.stringify(designOptions))
-    await program.parseAsync(['designOptions', 'getDensities'], {from: 'user'})
+    await program.parseAsync(['design-options', 'get-densities'], {from: 'user'})
     expect(logSpy.mock.calls[0][0]).toStrictEqual(JSON.parse(JSON.stringify(designOptions)))
   })
 
-  test('getDensities', async () => {
+  test('Get densities', async () => {
     const designOptions = designOptionsServerFactory()
     fetchMocker.mockResponse(JSON.stringify(designOptions))
-    await program.parseAsync(['designOptions', 'getDensities',
-      '--bookSize', '10x10', '--imageCount', '20', '--imageFilteringLevel', 'none'], {from: 'user'})
+    await program.parseAsync(['design-options', 'get-densities',
+      '--book-size', '10x10', '--image-count', '20', '--image-filtering-level', 'none'], {from: 'user'})
     expect(logSpy.mock.calls[1][0]).toStrictEqual(JSON.parse(JSON.stringify(designOptions)))
   })
 })

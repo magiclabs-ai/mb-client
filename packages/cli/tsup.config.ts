@@ -1,4 +1,7 @@
+import * as dotenv from 'dotenv'
 import {defineConfig} from 'tsup'
+
+dotenv.config({path: '../../.env'})
 
 export default defineConfig({
   clean: true,
@@ -8,6 +11,11 @@ export default defineConfig({
   sourcemap: true,
   target: 'esnext',
   outDir: 'dist',
+  env: {
+    API_HOST: process.env.API_HOST || '',
+    WEBSOCKET_HOST: process.env.WEBSOCKET_HOST || '',
+    DESIGN_REQUEST_TIMEOUT: process.env.DESIGN_REQUEST_TIMEOUT || ''
+  },
   banner: {
     js: `
       import WebSocket from 'ws'

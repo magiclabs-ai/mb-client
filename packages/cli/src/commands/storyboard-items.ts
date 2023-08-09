@@ -4,10 +4,10 @@ import {log} from 'console'
 import chalk from 'chalk'
 import prompts from 'prompts'
 
-const storyboardItems = program.command('storyboardItems')
+export const storyboardItems = program.command('storyboard-items')
 
 storyboardItems.command('get')
-  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {

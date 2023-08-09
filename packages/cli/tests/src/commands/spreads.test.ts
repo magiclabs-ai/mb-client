@@ -32,7 +32,7 @@ describe('Spreads', () => {
   test('list spreads', async () => {
     const spreads = [spreadServerFactory(), spreadServerFactory()]
     fetchMocker.mockResponse(JSON.stringify(spreads))
-    await program.parseAsync(['spreads', 'list', '--bookId', 'book.id'], {from: 'user'})
+    await program.parseAsync(['spreads', 'list', '--book-id', 'book.id'], {from: 'user'})
     expect(logSpy.mock.calls[1][0]).toStrictEqual(JSON.parse(JSON.stringify(spreads)))
   })
 
@@ -47,7 +47,7 @@ describe('Spreads', () => {
   test('create spread', async () => {
     const spread = spreadServerFactory()
     fetchMocker.mockResponse(JSON.stringify(spread))
-    await program.parseAsync(['spreads', 'create', '--bookId', 'book.id', '--spread', JSON.stringify(spread)],
+    await program.parseAsync(['spreads', 'create', '--book-id', 'book.id', '--spread', JSON.stringify(spread)],
       {from: 'user'})
     expect(logSpy.mock.calls[3][0]).toStrictEqual(JSON.parse(JSON.stringify(spread)))
   })
@@ -62,7 +62,7 @@ describe('Spreads', () => {
   test('get spread', async () => {
     const spread = spreadServerFactory()
     fetchMocker.mockResponse(JSON.stringify(spread))
-    await program.parseAsync(['spreads', 'get', '--bookId', 'book.id', '--spreadId', 'spread.id'], {from: 'user'})
+    await program.parseAsync(['spreads', 'get', '--book-id', 'book.id', '--spread-id', 'spread.id'], {from: 'user'})
     expect(logSpy.mock.calls[5][0]).toStrictEqual(JSON.parse(JSON.stringify(spread)))
   })
 
@@ -76,7 +76,7 @@ describe('Spreads', () => {
   test('update spread', async () => {
     const spread = spreadServerFactory()
     fetchMocker.mockResponse(JSON.stringify(spread))
-    await program.parseAsync(['spreads', 'update', '--bookId', 'book.id', '--spreadId',
+    await program.parseAsync(['spreads', 'update', '--book-id', 'book.id', '--spread-id',
       'spread.id', '--spread', JSON.stringify(spread)], {from: 'user'})
     expect(logSpy.mock.calls[7][0]).toStrictEqual(JSON.parse(JSON.stringify(spread)))
   })
@@ -88,6 +88,6 @@ describe('Spreads', () => {
 
   test('delete spread', async () => {
     fetchMocker.mockResponse(JSON.stringify({}))
-    await program.parseAsync(['spreads', 'delete', '--bookId', 'book.id', '--spreadId', 'spread.id'], {from: 'user'})
+    await program.parseAsync(['spreads', 'delete', '--book-id', 'book.id', '--spread-id', 'spread.id'], {from: 'user'})
   })
 })

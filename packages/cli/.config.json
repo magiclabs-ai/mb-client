@@ -1,1 +1,1 @@
-{"apiHost":"http://localhost:8080","wsHost":"wss://localhost:8080","apiKey":"1234"}
+{"apiHost":"https://api.magicbook.io","wsHost":"wss://socket.magicbook.io","apiKey":"86b43225-f7dd-4e68-a1a3-6650d3c12564"}

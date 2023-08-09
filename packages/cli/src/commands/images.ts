@@ -5,10 +5,10 @@ import {log} from 'console'
 import chalk from 'chalk'
 import prompts from 'prompts'
 
-const images = program.command('images')
+export const images = program.command('images')
 
 images.command('list')
-  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
@@ -28,7 +28,7 @@ images.command('list')
   })
 
 images.command('create')
-  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--book-id <bookId>'))
   .addOption(new Option('--image <image>', 'image object'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
@@ -63,7 +63,7 @@ images.command('create')
   })
 
 images.command('get')
-  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--book-id <bookId>'))
   .addOption(new Option('--imageId <imageId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
@@ -93,7 +93,7 @@ images.command('get')
   })
 
 images.command('update')
-  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--book-id <bookId>'))
   .addOption(new Option('--imageId <imageId>'))
   .addOption(new Option('--image <image>'))
   .action(async (args) => {
@@ -137,7 +137,7 @@ images.command('update')
   })
 
 images.command('delete')
-  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--book-id <bookId>'))
   .addOption(new Option('--imageId <imageId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()

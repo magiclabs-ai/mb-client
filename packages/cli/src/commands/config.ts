@@ -4,12 +4,13 @@ import chalk from 'chalk'
 import prompts from 'prompts'
 const log = console.log
 import {configPath} from '../utils/toolbox'
+import {defaultApiHost, defaultWebSocketHost} from '../../../../core/config'
 import {promises as fs} from 'fs'
 
-program.command('config')
-  .addOption(new Option('--apiHost <apiHost>'))
-  .addOption(new Option('--wsHost <wsHost>'))
-  .addOption(new Option('--apiKey <apiKey>'))
+export const config = program.command('config')
+  .addOption(new Option('--api-host <apiHost>').default(defaultApiHost))
+  .addOption(new Option('--ws-host <wsHost>').default(defaultWebSocketHost))
+  .addOption(new Option('--api-key <apiKey>'))
   .action(async (args) => {
     const config  = {
       apiHost: args.apiHost,
@@ -17,11 +18,11 @@ program.command('config')
       apiKey: args.apiKey
     }
   
-    if (!config.apiHost) {
+    if (!isURL(config.apiHost)) {
       const response = await prompts({
         type: 'text',
         name: 'apiHost',
-        message: 'Enter the API host:',
+        message: 'Please enter a valid URL for API host:',
         validate: value => isURL(value) ? true : 'Please enter a valid URL'
       })
       config.apiHost = response.apiHost
@@ -36,8 +37,14 @@ program.command('config')
       config.apiKey = response.apiKey
     }
 
-    if (!config.wsHost) {
-      config.wsHost = config.apiHost.replace('https://api', 'wss://socket')
+    if (!isURL(config.wsHost)) {
+      const response = await prompts({
+        type: 'text',
+        name: 'wsHost',
+        message: 'Please enter a valid URL for WS host:',
+        validate: value => isURL(value) ? true : 'Please enter a valid URL'
+      })
+      config.wsHost = response.wsHost
     }
     await fs.writeFile(configPath, JSON.stringify(config))
     log(chalk.green('✅ - Config saved!'))

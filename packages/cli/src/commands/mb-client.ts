@@ -2,24 +2,25 @@ import {DesignRequestEvent, DesignRequestOptions} from '@/core/models/design-req
 import {
   Image,
   MagicBookClient
-} from '@magiclabs.ai/magicbook-client'
+} from '@/client/src/index'
 import {Option, program} from 'commander'
 import {actionSetup, msToSeconds} from '../utils/toolbox'
+import {camelCaseToKebabCase} from '../../../../core/utils/toolbox'
 import {faker} from '@faker-js/faker'
 import {log} from 'console'
 import chalk from 'chalk'
 import cliProgress from 'cli-progress'
 import prompts from 'prompts'
 
-const mbClient = program.command('mb-client')
-const newBook = mbClient.command('new')
+export const mbClient = program.command('mb-client')
+const newDesignRequest = mbClient.command('design-request').command('new')
 
 Object.keys(DesignRequestOptions).forEach((key) => {
-  newBook.addOption(new Option(`--${key} <${key}>`))
+  newDesignRequest.addOption(new Option(`--${camelCaseToKebabCase(key)} <${key}>`))
 })
-newBook.addOption(new Option('--imageLength <imageLength>').default(70))
+newDesignRequest.addOption(new Option('--image-count <imageCount>').default(70))
 
-newBook.action(async (args) => {
+newDesignRequest.action(async (args) => {
   const {config} = await actionSetup()
   for (const [key, options] of Object.entries(DesignRequestOptions)) {
     if (!args[key]) {
@@ -43,7 +44,7 @@ newBook.action(async (args) => {
   const imageUploadBar = new cliProgress.SingleBar({
     format: 'Uploaded images | {bar} | {percentage}% || {value}/{total} Images'
   }, cliProgress.Presets.shades_classic)
-  const imagesLength = parseInt(args.imageLength)
+  const imagesLength = parseInt(args.imageCount)
   imageUploadBar.start(imagesLength, 0)
   await Promise.all(Array.from(Array(imagesLength).keys()).map(async () => {
     const width = 1000

@@ -42,7 +42,7 @@ describe('Books', () => {
   test('get book', async () => {
     const book = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(book))
-    await program.parseAsync(['books', 'get', '--bookId', book.id], {from: 'user'})
+    await program.parseAsync(['books', 'get', '--book-id', book.id], {from: 'user'})
     expect(logSpy.mock.calls[2][0]).toStrictEqual(JSON.parse(JSON.stringify(book)))
   })
 
@@ -56,7 +56,7 @@ describe('Books', () => {
   test('update book', async () => {
     const book = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(book))
-    await program.parseAsync(['books', 'update', '--bookId', book.id, '--book', JSON.stringify(book)], {from: 'user'})
+    await program.parseAsync(['books', 'update', '--book-id', book.id, '--book', JSON.stringify(book)], {from: 'user'})
     expect(logSpy.mock.calls[4][0]).toStrictEqual(JSON.parse(JSON.stringify(book)))
   })
 
@@ -70,7 +70,7 @@ describe('Books', () => {
   test('cancel book', async () => {
     const book = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(book))
-    await program.parseAsync(['books', 'cancel', '--bookId', book.id], {from: 'user'})
+    await program.parseAsync(['books', 'cancel', '--book-id', book.id], {from: 'user'})
     expect(logSpy.mock.calls[6][0]).toStrictEqual(JSON.parse(JSON.stringify(book)))
   })
 
@@ -83,7 +83,7 @@ describe('Books', () => {
   test('delete book', async () => {
     const book = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(book))
-    await program.parseAsync(['books', 'delete', '--bookId', book.id], {from: 'user'})
+    await program.parseAsync(['books', 'delete', '--book-id', book.id], {from: 'user'})
   })
 
   test('retrieve book galleon without args', async () => {
@@ -96,7 +96,7 @@ describe('Books', () => {
   test('retrieve book galleon', async () => {
     const galleon = galleonFactory()
     fetchMocker.mockResponse(JSON.stringify(galleon))
-    await program.parseAsync(['books', 'galleon', '--bookId', 'book.id'], {from: 'user'})
+    await program.parseAsync(['books', 'galleon', '--book-id', 'book.id'], {from: 'user'})
     expect(logSpy.mock.calls[8][0]).toStrictEqual(JSON.parse(JSON.stringify(galleon)))
   })
 })

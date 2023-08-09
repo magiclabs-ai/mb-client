@@ -5,10 +5,10 @@ import {log} from 'console'
 import chalk from 'chalk'
 import prompts from 'prompts'
 
-const spreads = program.command('spreads')
+export const spreads = program.command('spreads')
 
 spreads.command('list')
-  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
@@ -28,7 +28,7 @@ spreads.command('list')
   })
 
 spreads.command('create')
-  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--book-id <bookId>'))
   .addOption(new Option('--spread <spread>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
@@ -63,8 +63,8 @@ spreads.command('create')
   })
 
 spreads.command('get')
-  .addOption(new Option('--spreadId <spreadId>'))
-  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--spread-id <spreadId>'))
+  .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
@@ -93,8 +93,8 @@ spreads.command('get')
   })
 
 spreads.command('update')
-  .addOption(new Option('--spreadId <spreadId>'))
-  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--spread-id <spreadId>'))
+  .addOption(new Option('--book-id <bookId>'))
   .addOption(new Option('--spread <spread>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
@@ -137,8 +137,8 @@ spreads.command('update')
   })
 
 spreads.command('delete')
-  .addOption(new Option('--spreadId <spreadId>'))
-  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--spread-id <spreadId>'))
+  .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {

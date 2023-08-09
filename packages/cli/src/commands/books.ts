@@ -5,7 +5,7 @@ import {log} from 'console'
 import chalk from 'chalk'
 import prompts from 'prompts'
 
-const books = program.command('books')
+export const books = program.command('books')
 
 books.command('create')
   .addOption(new Option('-b, --book <book>'))
@@ -24,7 +24,7 @@ books.command('create')
   })
 
 books.command('get')
-  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
@@ -45,7 +45,7 @@ books.command('get')
   })
 
 books.command('update')
-  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--book-id <bookId>'))
   .addOption(new Option('--book <book>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
@@ -80,7 +80,7 @@ books.command('update')
   })
 
 books.command('cancel')
-  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
@@ -101,7 +101,7 @@ books.command('cancel')
   })
 
 books.command('delete')
-  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
@@ -122,7 +122,7 @@ books.command('delete')
   })
 
 books.command('galleon')
-  .addOption(new Option('--bookId <bookId>'))
+  .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {

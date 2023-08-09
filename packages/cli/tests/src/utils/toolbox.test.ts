@@ -1,4 +1,4 @@
-import {actionSetup} from '../../../src/utils/toolbox'
+import {actionSetup, getPackageInfo} from '../../../src/utils/toolbox'
 import {configPath, getConfig, handleAPIResponse} from '@/cli/src/utils/toolbox'
 import {describe, expect, test} from 'vitest'
 import {promises as fs} from 'fs'
@@ -26,5 +26,8 @@ describe('Toolbox', () => {
     actionSetup()
     await fs.writeFile(configPath, JSON.stringify(config))
     await fs.unlink(tempPath)
+  })
+  test('getPackageInfo', async () => {
+    expect((await getPackageInfo()).name).toBe('@magiclabs.ai/magicbook-cli')
   })
 })

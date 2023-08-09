@@ -32,7 +32,7 @@ describe('Images', () => {
   test('list images', async () => {
     const images = [imageServerFactory(), imageServerFactory()]
     fetchMocker.mockResponse(JSON.stringify(images))
-    await program.parseAsync(['images', 'list', '--bookId', 'book.id'], {from: 'user'})
+    await program.parseAsync(['images', 'list', '--book-id', 'book.id'], {from: 'user'})
     expect(logSpy.mock.calls[1][0]).toStrictEqual(JSON.parse(JSON.stringify(images)))
   })
 
@@ -47,7 +47,7 @@ describe('Images', () => {
   test('create image', async () => {
     const image = imageServerFactory()
     fetchMocker.mockResponse(JSON.stringify(image))
-    await program.parseAsync(['images', 'create', '--bookId', 'book.id', '--image', JSON.stringify(image)],
+    await program.parseAsync(['images', 'create', '--book-id', 'book.id', '--image', JSON.stringify(image)],
       {from: 'user'})
     expect(logSpy.mock.calls[3][0]).toStrictEqual(JSON.parse(JSON.stringify(image)))
   })
@@ -62,7 +62,7 @@ describe('Images', () => {
   test('get image', async () => {
     const image = imageServerFactory()
     fetchMocker.mockResponse(JSON.stringify(image))
-    await program.parseAsync(['images', 'get', '--bookId', 'book.id', '--imageId', 'image.id'], {from: 'user'})
+    await program.parseAsync(['images', 'get', '--book-id', 'book.id', '--image-id', 'image.id'], {from: 'user'})
     expect(logSpy.mock.calls[5][0]).toStrictEqual(JSON.parse(JSON.stringify(image)))
   })
 
@@ -76,7 +76,7 @@ describe('Images', () => {
   test('update image', async () => {
     const image = imageServerFactory()
     fetchMocker.mockResponse(JSON.stringify(image))
-    await program.parseAsync(['images', 'update', '--bookId', 'book.id', '--imageId',
+    await program.parseAsync(['images', 'update', '--book-id', 'book.id', '--image-id',
       'image.id', '--image', JSON.stringify(image)], {from: 'user'})
     expect(logSpy.mock.calls[7][0]).toStrictEqual(JSON.parse(JSON.stringify(image)))
   })
@@ -88,6 +88,6 @@ describe('Images', () => {
 
   test('delete image', async () => {
     fetchMocker.mockResponse(JSON.stringify({}))
-    await program.parseAsync(['images', 'delete', '--bookId', 'book.id', '--imageId', 'image.id'], {from: 'user'})
+    await program.parseAsync(['images', 'delete', '--book-id', 'book.id', '--image-id', 'image.id'], {from: 'user'})
   })
 })

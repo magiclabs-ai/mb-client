@@ -23,16 +23,25 @@ describe('Config', () => {
     await program.parseAsync(['config'], {from: 'user'})
   })
 
-  test('setup', async () => {
+  test('setup with prompts', async () => {
     const fakeConfig = {
-      apiHost: 'https://fake-api.magicbook.io',
-      wsHost: 'wss://fake-socket.magicbook.io',
+      apiHost: 'fake.url',
+      wsHost: 'fake.url',
       apiKey: faker.string.uuid()
     }
-    await program.parseAsync(['config', '--apiHost', fakeConfig.apiHost, '--wsHost', fakeConfig.wsHost, '--apiKey',
+    await program.parseAsync(['config', '--api-host', fakeConfig.apiHost, '--ws-host', fakeConfig.wsHost, '--api-key',
+      fakeConfig.apiKey], {from: 'user'})
+  })
+  
+  test('setup', async () => {
+    const fakeConfig = {
+      apiHost: 'https://api.magicbook.io',
+      wsHost: 'wss://socket.magicbook.io',
+      apiKey: faker.string.uuid()
+    }
+    await program.parseAsync(['config', '--api-host', fakeConfig.apiHost, '--ws-host', fakeConfig.wsHost, '--api-key',
       fakeConfig.apiKey], {from: 'user'})
     const config = await getConfig()
-    console.log(config)
     expect(config).toStrictEqual(fakeConfig)
   })
 })
