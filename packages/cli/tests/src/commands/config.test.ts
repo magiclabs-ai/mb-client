@@ -27,11 +27,10 @@ describe('Config', () => {
     const fakeConfig = {
       apiHost: 'https://fake-api.magicbook.io',
       wsHost: 'wss://fake-socket.magicbook.io',
-      apiKey: faker.string.uuid(),
-      copyResToClipboard: false
+      apiKey: faker.string.uuid()
     }
     await program.parseAsync(['config', '--apiHost', fakeConfig.apiHost, '--wsHost', fakeConfig.wsHost, '--apiKey',
-      fakeConfig.apiKey, '--copyResToClipboard', JSON.stringify(fakeConfig.copyResToClipboard)], {from: 'user'})
+      fakeConfig.apiKey], {from: 'user'})
     const config = await getConfig()
     console.log(config)
     expect(config).toStrictEqual(fakeConfig)

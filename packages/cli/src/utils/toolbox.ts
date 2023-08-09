@@ -3,7 +3,6 @@ import {fileURLToPath} from 'url'
 import {promises as fs} from 'fs'
 import {log} from 'console'
 import chalk from 'chalk'
-import clipboardy from 'clipboardy'
 import path from 'path'
 
 export const configPath = path.resolve(
@@ -28,9 +27,6 @@ export async function handleAPIResponse<T>(fn: () => Promise<T>) {
     const res = await fn()
     if (res) {
       console.log(cleanJSON(res))
-      if ((await getConfig())['copyResToClipboard']) {
-        clipboardy.writeSync(JSON.stringify(res))
-      }
     }
   } catch (error) {
     console.log(`❌ - ${error}`)

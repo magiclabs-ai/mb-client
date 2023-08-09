@@ -10,13 +10,11 @@ program.command('config')
   .addOption(new Option('--apiHost <apiHost>'))
   .addOption(new Option('--wsHost <wsHost>'))
   .addOption(new Option('--apiKey <apiKey>'))
-  .addOption(new Option('--copyResToClipboard -c <copyResToClipboard>'))
   .action(async (args) => {
     const config  = {
       apiHost: args.apiHost,
       wsHost: args.wsHost,
-      apiKey: args.apiKey,
-      copyResToClipboard: args.copyResToClipboard || false
+      apiKey: args.apiKey
     }
   
     if (!config.apiHost) {
