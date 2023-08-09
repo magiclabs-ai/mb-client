@@ -12,6 +12,8 @@ jobs:
       VITE_API_HOST: ${{secrets.VITE_API_HOST}}
     steps:
       - uses: actions/checkout@v3
+      - name: Install xsel  
+        run: sudo apt i -y xsel
       - uses: actions/setup-node@v3
         with:
           node-version: '18.x'

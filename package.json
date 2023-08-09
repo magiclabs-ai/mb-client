@@ -10,7 +10,7 @@
     "coverage": "vitest --config ./configs/vitest/vitest.config.ts run --coverage",
     "lint": "eslint . --ext js,jsx,ts,tsx --config ./.eslintrc.json --no-eslintrc",
     "turbo:build": "pnpm i && turbo run build",
-    "turbo:coverage": "pnpm i -f && turbo run coverage"
+    "turbo:coverage": "turbo run coverage"
   },
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
