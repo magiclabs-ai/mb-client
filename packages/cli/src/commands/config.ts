@@ -17,7 +17,6 @@ export const config = program.command('config')
       wsHost: args.wsHost,
       apiKey: args.apiKey
     }
-  
     if (!isURL(config.apiHost)) {
       const response = await prompts({
         type: 'text',
@@ -27,7 +26,6 @@ export const config = program.command('config')
       })
       config.apiHost = response.apiHost
     }
-
     if (!config.apiKey) {
       const response = await prompts({
         type: 'text',
@@ -36,7 +34,6 @@ export const config = program.command('config')
       })
       config.apiKey = response.apiKey
     }
-
     if (!isURL(config.wsHost)) {
       const response = await prompts({
         type: 'text',

@@ -18,8 +18,8 @@ const newDesignRequest = mbClient.command('design-request').command('new')
 Object.keys(DesignRequestOptions).forEach((key) => {
   newDesignRequest.addOption(new Option(`--${camelCaseToKebabCase(key)} <${key}>`))
 })
-newDesignRequest.addOption(new Option('--image-count <imageCount>').default(70))
 
+newDesignRequest.addOption(new Option('--image-count <imageCount>').default(70))
 newDesignRequest.action(async (args) => {
   const {config} = await actionSetup()
   for (const [key, options] of Object.entries(DesignRequestOptions)) {
@@ -65,7 +65,6 @@ newDesignRequest.action(async (args) => {
   }))
   imageUploadBar.stop()
   log(chalk.bold('🌠 - Images Uploaded'))
-  
   // eslint-disable-next-line prefer-const
   let startAt: Date
   const creationProgressBar = new cliProgress.SingleBar({

@@ -1,5 +1,6 @@
 import {Option, program} from 'commander'
 import {actionSetup, handleAPIResponse, validateArgs} from '../utils/toolbox'
+import {formatReturnJSON} from '@/core/utils/toolbox'
 import {imageServerSchema} from '@/core/models/design-request/image'
 import {log} from 'console'
 import chalk from 'chalk'
@@ -23,7 +24,7 @@ images.command('list')
     })
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.images.list(args.bookId)
-      return res
+      return formatReturnJSON(res)
     })
   })
 
@@ -58,7 +59,7 @@ images.command('create')
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.images.addToBook(args.bookId, args.image)
       log(chalk.bold(`🎆 - Image added to book ${args.bookId}!`))
-      return res
+      return formatReturnJSON(res)
     })
   })
 
@@ -88,7 +89,7 @@ images.command('get')
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.images.retrieve(args.imageId, args.bookId)
       log(chalk.bold('🎇 - Image Retrieved!'))
-      return res
+      return formatReturnJSON(res)
     })
   })
 
@@ -132,7 +133,7 @@ images.command('update')
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.images.update(args.imageId, args.bookId, args.image)
       log(chalk.yellow.bold('🎇 - Image Updated!'))
-      return res
+      return formatReturnJSON(res)
     })
   })
 

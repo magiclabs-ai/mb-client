@@ -34,7 +34,8 @@ export class Fetcher {
           return {}
         }
       } else {
-        throw Error(res.statusText)
+        const detail = (await res.json()).detail
+        throw Error(`${res.status} ${detail || res.statusText}`)
       }
     } catch (error) {
       return Promise.reject(error)

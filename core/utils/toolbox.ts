@@ -86,3 +86,7 @@ export function bindThisToFunctions<TClass extends { new (): any}>(
     }
   }
 }
+
+export async function formatReturnJSON(value: unknown) {
+  return JSON.stringify(value, null, 2)
+}

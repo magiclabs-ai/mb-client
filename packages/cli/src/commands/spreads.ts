@@ -1,6 +1,7 @@
 import {Option, program} from 'commander'
 import {SpreadServerSchema} from '@/core/models/spread'
 import {actionSetup, handleAPIResponse, validateArgs} from '../utils/toolbox'
+import {formatReturnJSON} from '@/core/utils/toolbox'
 import {log} from 'console'
 import chalk from 'chalk'
 import prompts from 'prompts'
@@ -23,7 +24,7 @@ spreads.command('list')
     })
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.spreads.list(args.bookId)
-      return res
+      return formatReturnJSON(res)
     })
   })
 
@@ -58,7 +59,7 @@ spreads.command('create')
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.spreads.create(args.bookId, args.spread)
       log(chalk.bold('🌠 - Spread created!'))
-      return res
+      return formatReturnJSON(res)
     })
   })
 
@@ -88,7 +89,7 @@ spreads.command('get')
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.spreads.retrieve(args.spreadId, args.bookId)
       log(chalk.bold('🌠 - Spread retrieved!'))
-      return res
+      return formatReturnJSON(res)
     })
   })
 
@@ -132,7 +133,7 @@ spreads.command('update')
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.spreads.retrieve(args.spreadId, args.bookId)
       log(chalk.yellow.bold('🌠 - Spread updated!'))
-      return res
+      return formatReturnJSON(res)
     })
   })
 
@@ -162,7 +163,7 @@ spreads.command('delete')
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.spreads.delete(args.spreadId, args.bookId)
       log(chalk.bold('❌ - Spread deleted!'))
-      return res
+      return formatReturnJSON(res)
     })
   })
 

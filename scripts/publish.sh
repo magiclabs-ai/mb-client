@@ -16,5 +16,5 @@ for item in "${packages[@]}"; do
     echo "Package: $item@$version"
     cd $baseDir/packages/$item
     sed -i "s/\"version\": \".*\"/\"version\": \"$version\"/" package.json
-    echo "publishCommand: $publishCommand"
+    eval $publishCommand
 done

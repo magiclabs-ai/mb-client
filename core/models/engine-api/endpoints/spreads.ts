@@ -1,6 +1,7 @@
 import {EngineAPI} from '..'
 import {SpreadServer, SpreadServerSchema} from '../../spread'
 import {bindThisToFunctions, handleAsyncFunction} from '@/core/utils/toolbox'
+import {cleanJSON} from '@/cli/src/utils/toolbox'
 import {z} from 'zod'
 
 export class SpreadsEndpoints {
@@ -29,7 +30,7 @@ export class SpreadsEndpoints {
         path: `/v1/spreads/book/${bookId}`,
         options: {
           method: 'POST',
-          body: JSON.stringify(spread)
+          body: cleanJSON(spread)
         }
       })
       return SpreadServerSchema.parse(res)
@@ -58,7 +59,7 @@ export class SpreadsEndpoints {
         path: `/v1/spreads/${spreadId}/book/${bookId}`,
         options: {
           method: 'PUT',
-          body: JSON.stringify(spread)
+          body: cleanJSON(spread)
         }
       })
       return SpreadServerSchema.parse(res)

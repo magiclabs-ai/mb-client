@@ -1,6 +1,7 @@
 import {EngineAPI} from '..'
 import {ImageServer, imageServerSchema} from '../../design-request/image'
 import {bindThisToFunctions, handleAsyncFunction} from '@/core/utils/toolbox'
+import {cleanJSON} from '@/cli/src/utils/toolbox'
 import {z} from 'zod'
 
 export class ImagesEndpoints {
@@ -33,7 +34,7 @@ export class ImagesEndpoints {
         path: `/v1/images/${imageId}/book/${bookId}/`,
         options: {
           method: 'PUT',
-          body: JSON.stringify(image)
+          body: cleanJSON(image)
         }
       })
       return imageServerSchema.parse(res)
@@ -57,7 +58,7 @@ export class ImagesEndpoints {
         path: `/v1/images/book/${bookId}`,
         options: {
           method: 'POST',
-          body: JSON.stringify(payload)
+          body: cleanJSON(payload)
         }
       })
       return imageServerSchema.parse(res)

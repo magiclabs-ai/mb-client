@@ -1,6 +1,7 @@
 import {BookPropsSchema} from '@/core/models/book'
 import {Option, program} from 'commander'
 import {actionSetup, handleAPIResponse, validateArgs} from '../utils/toolbox'
+import {formatReturnJSON} from '@/core/utils/toolbox'
 import {log} from 'console'
 import chalk from 'chalk'
 import prompts from 'prompts'
@@ -19,7 +20,7 @@ books.command('create')
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.books.create(args.book)
       log(chalk.bold('📕 - Book created!'))
-      return res
+      return formatReturnJSON(res)
     })
   })
 
@@ -40,7 +41,7 @@ books.command('get')
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.books.retrieve(args.bookId)
       log(chalk.bold('✅ - Book retrieved!'))
-      return res
+      return formatReturnJSON(res)
     })
   })
 
@@ -75,7 +76,7 @@ books.command('update')
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.books.update(args.bookId, args.book)
       log(chalk.yellow.bold('📕 - Book updated!'))
-      return res
+      return formatReturnJSON(res)
     })
   })
 
@@ -96,7 +97,7 @@ books.command('cancel')
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.books.cancel(args.bookId)
       log(chalk.yellow.bold('📕 - Book canceled!'))
-      return res
+      return formatReturnJSON(res)
     })
   })
 
@@ -117,7 +118,7 @@ books.command('delete')
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.books.delete(args.bookId)
       log(chalk.red.bold('🗑️ - Book deleted!'))
-      return res
+      return formatReturnJSON(res)
     })
   })
 
@@ -138,6 +139,6 @@ books.command('galleon')
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.books.retrieveGalleon(args.bookId)
       log(chalk.red.bold('✅ - Galleon retrieved!'))
-      return res
+      return formatReturnJSON(res)
     })
   })
