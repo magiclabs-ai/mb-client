@@ -1,4 +1,6 @@
-import {assign, camelCaseObjectKeysToSnakeCase, camelCaseToSnakeCase,
+import {assign, camelCaseObjectKeysToSnakeCase, camelCaseToKebabCase,
+  camelCaseToSnakeCase,
+  formatReturnJSON,
   handleAsyncFunction,
   isURL,
   mergeNestedObject,
@@ -20,6 +22,10 @@ describe('Toolbox', () => {
     const objectToMerge = {item: {item: {item: 'test'}}}
     expect(mergeNestedObject(initialObject, objectToMerge))
       .toStrictEqual({item: {item: {name: 'itemName', item: 'test'}}})
+  })
+  test('camelCaseToKebabCase', () => {
+    expect(camelCaseToKebabCase('helloWorld')).toBe('hello-world')
+    expect(camelCaseToKebabCase('helloWorldTest')).toBe('hello-world-test')
   })
   test('camelCaseToSnakeCase', () => {
     expect(camelCaseToSnakeCase('helloWorld')).toBe('hello_world')
@@ -54,5 +60,9 @@ describe('Toolbox', () => {
   test('isURL function that fails', async () => {
     const res = isURL(faker.lorem.word())
     expect(res).toBeFalsy()
+  })
+  test('formatReturnJSON', async () => {
+    const res = formatReturnJSON({hello: 'world'})
+    expect(res).toBe('{\n  "hello": "world"\n}')
   })
 })

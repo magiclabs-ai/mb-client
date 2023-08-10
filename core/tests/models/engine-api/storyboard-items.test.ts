@@ -9,7 +9,7 @@ describe('Engine API Storyboard Items Endpoints', () => {
   test('retrieve', async () => {
     const fakeStoryBoardItems = [storyboardItemServerFactory(), storyboardItemServerFactory()]
     fetchMocker.mockResponse(JSON.stringify(fakeStoryBoardItems))
-    const storyboardItems = await engineAPI.storyboardItems.retrieve('bookId')
+    const storyboardItems = await engineAPI.storyboardItems.list('bookId')
     expect(storyboardItems).toStrictEqual(JSON.parse(JSON.stringify(fakeStoryBoardItems)))
   })
 })

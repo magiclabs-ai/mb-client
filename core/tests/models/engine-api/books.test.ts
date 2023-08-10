@@ -13,6 +13,13 @@ describe('Engine API Book Endpoints', () => {
     const book = await engineAPI.books.create()
     expect(book).toStrictEqual(fakeBook)
   })
+
+  test('create with book', async () => {
+    const fakeBook = bookFactory()
+    fetchMocker.mockResponse(JSON.stringify(fakeBook))
+    const book = await engineAPI.books.create(fakeBook)
+    expect(book).toStrictEqual(fakeBook)
+  })
   
   test('retrieve', async () => {
     const fakeBook = bookFactory()

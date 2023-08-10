@@ -19,14 +19,14 @@ describe('Storyboard Items', () => {
   test('get without args', async () => {
     const storyboardItems = [storyboardItemServerFactory(), storyboardItemServerFactory()]
     fetchMocker.mockResponse(JSON.stringify(storyboardItems))
-    await program.parseAsync(['storyboard-items', 'get'], {from: 'user'})
+    await program.parseAsync(['storyboard-items', 'list'], {from: 'user'})
     expect(logSpy.mock.calls[0][0]).toStrictEqual(formatReturnJSON(storyboardItems))
   })
 
   test('get', async () => {
     const storyboardItems = [storyboardItemServerFactory(), storyboardItemServerFactory()]
     fetchMocker.mockResponse(JSON.stringify(storyboardItems))
-    await program.parseAsync(['storyboard-items', 'get', '--book-id', 'book.id'], {from: 'user'})
+    await program.parseAsync(['storyboard-items', 'list', '--book-id', 'book.id'], {from: 'user'})
     expect(logSpy.mock.calls[1][0]).toStrictEqual(formatReturnJSON(storyboardItems))
   })
 })

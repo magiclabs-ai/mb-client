@@ -5,8 +5,8 @@ export const spreadServerSchema = z.object({
   book_id: z.string(),
   state: z.string(),
   spread_type: z.string(),
-  width: z.number(),
-  height: z.number(),
+  width: z.number().optional(),
+  height: z.number().optional(),
   sequence: z.number(),
   wells: z.array(z.unknown()),
   background: z.unknown(),
@@ -14,7 +14,7 @@ export const spreadServerSchema = z.object({
   embellished_at: z.string(),
   polished_at: z.string(),
   metadata: z.unknown(),
-  url: z.string().nullable()
+  url: z.string().nullable().optional()
 })
 export type SpreadServer = z.infer<typeof spreadServerSchema>
 
@@ -23,8 +23,8 @@ export const spreadSchema = z.object({
   bookId: z.string(),
   state: z.string(),
   spreadType: z.string(),
-  width: z.number(),
-  height: z.number(),
+  width: z.number().optional(),
+  height: z.number().optional(),
   sequence: z.number(),
   wells: z.array(z.unknown()),
   background: z.unknown(),
@@ -32,6 +32,6 @@ export const spreadSchema = z.object({
   embellishedAt: z.string(),
   polishedAt: z.string(),
   metadata: z.unknown(),
-  url: z.string().nullable()
+  url: z.string().nullable().optional()
 })
 export type Spread = z.infer<typeof spreadSchema>

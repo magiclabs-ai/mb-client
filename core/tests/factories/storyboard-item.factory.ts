@@ -38,7 +38,7 @@ export function storyboardItemFactory(props?: StoryboardItemFactoryProps): Story
         width: faker.number.int({min: 1, max: 100}),
         height: faker.number.int({min: 1, max: 100})
       },
-      takenAt: faker.date.past().toISOString(),
+      takenAt: faker.date.past().getTime(),
       width: faker.number.int({min: 1, max: 100}),
       height: faker.number.int({min: 1, max: 100})
     }
