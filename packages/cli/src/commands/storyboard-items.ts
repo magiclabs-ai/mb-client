@@ -1,5 +1,6 @@
 import {Option, program} from 'commander'
 import {actionSetup, handleAPIResponse, validateArgs} from '../utils/toolbox'
+import {formatReturnJSON} from '../../../../core/utils/toolbox'
 import {log} from 'console'
 import chalk from 'chalk'
 import prompts from 'prompts'
@@ -23,7 +24,7 @@ storyboardItems.command('get')
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.storyboardItems.retrieve(args.bookId)
       log(chalk.bold('🎚️ - Storyboard items retrieved!'))
-      return res
+      return formatReturnJSON(res)
     })
   })
 

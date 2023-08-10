@@ -1,4 +1,4 @@
-import {BookCreationRequest} from '@/core/models/galleon'
+import {BookCreationRequest, bookCreationRequestSchema} from '@/core/models/galleon'
 import {faker} from '@faker-js/faker'
 
 export type galleonFactoryProps = {
@@ -6,7 +6,7 @@ export type galleonFactoryProps = {
 }
 
 export function galleonFactory(props?: galleonFactoryProps): BookCreationRequest {
-  return {
+  return bookCreationRequestSchema.parse({
     'title': props?.title || faker.lorem.words(3),
     'binding': 'sl',
     'coverSpecId': '11x14_bk_hard',
@@ -1916,5 +1916,5 @@ export function galleonFactory(props?: galleonFactoryProps): BookCreationRequest
         }
       ]
     }
-  }
+  })
 }

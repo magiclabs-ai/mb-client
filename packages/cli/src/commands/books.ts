@@ -138,7 +138,7 @@ books.command('galleon')
     })
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.books.retrieveGalleon(args.bookId)
-      log(chalk.red.bold('✅ - Galleon retrieved!'))
+      log(chalk.bold('✅ - Galleon retrieved!'))
       return formatReturnJSON(res)
     })
   })

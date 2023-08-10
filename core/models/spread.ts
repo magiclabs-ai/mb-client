@@ -1,6 +1,6 @@
 import {z} from 'zod'
 
-export const SpreadServerSchema = z.object({
+export const spreadServerSchema = z.object({
   id: z.string(),
   book_id: z.string(),
   state: z.string(),
@@ -16,9 +16,9 @@ export const SpreadServerSchema = z.object({
   metadata: z.unknown(),
   url: z.string().nullable()
 })
-export type SpreadServer = z.infer<typeof SpreadServerSchema>
+export type SpreadServer = z.infer<typeof spreadServerSchema>
 
-export const SpreadSchema = z.object({
+export const spreadSchema = z.object({
   id: z.string(),
   bookId: z.string(),
   state: z.string(),
@@ -34,4 +34,4 @@ export const SpreadSchema = z.object({
   metadata: z.unknown(),
   url: z.string().nullable()
 })
-export type Spread = z.infer<typeof SpreadSchema>
+export type Spread = z.infer<typeof spreadSchema>

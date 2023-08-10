@@ -1,5 +1,6 @@
-import {EngineAPI} from '../../../../core/models/engine-api'
+import {EngineAPI} from '@/core/models/engine-api'
 import {type PackageJson} from 'type-fest'
+import {cleanJSON} from '@/core/utils/toolbox'
 import {fileURLToPath} from 'url'
 import {promises as fs} from 'fs'
 import {log} from 'console'
@@ -31,10 +32,6 @@ export async function handleAPIResponse<T>(fn: () => Promise<T>) {
   } catch (error) {
     console.log(`❌ - ${error}`)
   }
-}
-
-export function cleanJSON(obj: unknown) {
-  return JSON.parse(JSON.stringify(obj))
 }
 
 export async function validateArgs(fn: () => void | Promise<void>) {

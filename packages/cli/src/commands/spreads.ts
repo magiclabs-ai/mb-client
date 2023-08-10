@@ -1,8 +1,8 @@
 import {Option, program} from 'commander'
-import {SpreadServerSchema} from '@/core/models/spread'
 import {actionSetup, handleAPIResponse, validateArgs} from '../utils/toolbox'
 import {formatReturnJSON} from '@/core/utils/toolbox'
 import {log} from 'console'
+import {spreadServerSchema} from '@/core/models/spread'
 import chalk from 'chalk'
 import prompts from 'prompts'
 
@@ -43,13 +43,13 @@ spreads.command('create')
         args.bookId = response.bookId
       }
       if (args.spread) {
-        SpreadServerSchema.parse(JSON.parse(args.spread))
+        spreadServerSchema.parse(JSON.parse(args.spread))
       } else {
         const response = await prompts({
           type: 'text',
           name: 'spread',
           message: 'Enter the spread object:',
-          validate: value => SpreadServerSchema.safeParse(JSON.parse(value)).success 
+          validate: value => spreadServerSchema.safeParse(JSON.parse(value)).success 
             ? true 
             : 'Please enter a spread object'
         })
@@ -117,13 +117,13 @@ spreads.command('update')
         args.bookId = response.bookId
       }
       if (args.spread) {
-        SpreadServerSchema.parse(JSON.parse(args.spread))
+        spreadServerSchema.parse(JSON.parse(args.spread))
       } else {
         const response = await prompts({
           type: 'text',
           name: 'spread',
           message: 'Enter the spread object:',
-          validate: value => SpreadServerSchema.safeParse(JSON.parse(value)).success 
+          validate: value => spreadServerSchema.safeParse(JSON.parse(value)).success 
             ? true 
             : 'Please enter a spread object'
         })

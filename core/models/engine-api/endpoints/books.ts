@@ -2,7 +2,7 @@ import {Book, BookPropsSchema} from '../../book'
 import {EngineAPI} from '..'
 import {bindThisToFunctions, handleAsyncFunction} from '@/core/utils/toolbox'
 import {bookCreationRequestSchema} from '../../galleon'
-import {cleanJSON} from '@/cli/src/utils/toolbox'
+import {cleanJSON} from '@/core/utils/toolbox'
 
 export class BooksEndpoints {
   // eslint-disable-next-line no-unused-vars
@@ -16,7 +16,7 @@ export class BooksEndpoints {
         path: '/v1/books',
         options: {
           method: 'POST',
-          body: cleanJSON(book)
+          body: book ? cleanJSON(book) : {}
         }
       })
       BookPropsSchema.safeParse(res)
@@ -71,7 +71,7 @@ export class BooksEndpoints {
       const res = await this.engineAPI.fetcher.call({
         path: `/v1/books/${bookId}/format/galleon`
       })
-      return bookCreationRequestSchema.safeParse(res)
+      return bookCreationRequestSchema.parse(res)
     })
   }
 

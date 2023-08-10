@@ -1,6 +1,7 @@
 import {Option, program} from 'commander'
 import {actionSetup, handleAPIResponse, validateArgs} from '../utils/toolbox'
 import {bookSizes, imageFilteringLevels} from '@/core/data/design-request'
+import {formatReturnJSON} from '@/core/utils/toolbox'
 import {log} from 'console'
 import chalk from 'chalk'
 import prompts from 'prompts'
@@ -47,7 +48,7 @@ designOptions.command('get-densities')
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.designOptions.retrieve(args.bookSize, args.imageCount, args.imageFilteringLevel)
       log(chalk.bold('🎛️ - Densities retrieved!'))
-      return res
+      return formatReturnJSON(res)
     })
   })
 

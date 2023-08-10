@@ -1,4 +1,4 @@
-import {mergeNestedObject} from '../utils/toolbox'
+import {isBrowser, mergeNestedObject} from '../utils/toolbox'
 
 export type CallProps = {
   path: string
@@ -24,6 +24,9 @@ export class Fetcher {
 
   async call(props: CallProps) {
     try {
+      if (props.options?.body && isBrowser()) {
+        props.options.body = JSON.stringify(props.options.body)
+      }
       const baseOptions = {...this.options}
       const options = props.options ? mergeNestedObject(baseOptions, props.options) : baseOptions
       const res = await fetch(this.cleanUrl((new URL(props.path, this.baseUrl)).href), options)

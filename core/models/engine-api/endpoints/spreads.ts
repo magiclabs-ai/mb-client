@@ -1,7 +1,7 @@
 import {EngineAPI} from '..'
-import {SpreadServer, SpreadServerSchema} from '../../spread'
+import {SpreadServer, spreadServerSchema} from '../../spread'
 import {bindThisToFunctions, handleAsyncFunction} from '@/core/utils/toolbox'
-import {cleanJSON} from '@/cli/src/utils/toolbox'
+import {cleanJSON} from '@/core/utils/toolbox'
 import {z} from 'zod'
 
 export class SpreadsEndpoints {
@@ -17,7 +17,7 @@ export class SpreadsEndpoints {
       const res = await this.engineAPI.fetcher.call({
         path: `/v1/spreads/book/${bookId}`
       })
-      return z.array(SpreadServerSchema).parse(res)
+      return z.array(spreadServerSchema).parse(res)
     })
   }
   
@@ -33,7 +33,7 @@ export class SpreadsEndpoints {
           body: cleanJSON(spread)
         }
       })
-      return SpreadServerSchema.parse(res)
+      return spreadServerSchema.parse(res)
     })
   }
 
@@ -45,7 +45,7 @@ export class SpreadsEndpoints {
       const res = await this.engineAPI.fetcher.call({
         path: `/v1/spreads/${spreadId}/book/${bookId}`
       })
-      return SpreadServerSchema.parse(res)
+      return spreadServerSchema.parse(res)
     })
   }
 
@@ -62,7 +62,7 @@ export class SpreadsEndpoints {
           body: cleanJSON(spread)
         }
       })
-      return SpreadServerSchema.parse(res)
+      return spreadServerSchema.parse(res)
     })
   }
 

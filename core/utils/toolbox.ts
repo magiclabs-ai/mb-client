@@ -87,6 +87,14 @@ export function bindThisToFunctions<TClass extends { new (): any}>(
   }
 }
 
-export async function formatReturnJSON(value: unknown) {
+export function formatReturnJSON(value: unknown) {
   return JSON.stringify(value, null, 2)
+}
+
+export function cleanJSON(obj: unknown) {
+  return JSON.parse(JSON.stringify(obj))
+}
+
+export function isBrowser() {
+  return (typeof window != 'undefined' && window.document)
 }

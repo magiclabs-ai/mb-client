@@ -1,7 +1,7 @@
 import {EngineAPI} from '..'
 import {ImageServer, imageServerSchema} from '../../design-request/image'
 import {bindThisToFunctions, handleAsyncFunction} from '@/core/utils/toolbox'
-import {cleanJSON} from '@/cli/src/utils/toolbox'
+import {cleanJSON} from '@/core/utils/toolbox'
 import {z} from 'zod'
 
 export class ImagesEndpoints {
