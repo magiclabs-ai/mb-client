@@ -40,7 +40,7 @@ export const StoryboardItemImageServerSchema = z.object({
     width: z.number(),
     height: z.number()
   }),
-  taken_at: z.string(),
+  taken_at: z.number(),
   width: z.number(),
   height: z.number()
 })
@@ -57,7 +57,7 @@ export const StoryboardItemImageSchema = z.object({
     width: z.number(),
     height: z.number()
   }),
-  takenAt: z.string(),
+  takenAt: z.number(),
   width: z.number(),
   height: z.number()
 })
@@ -70,11 +70,11 @@ export const StoryboardItemServerSchema = z.object({
   duplicate: z.boolean(),
   selected: z.boolean(),
   surface_weight: z.number(),
-  front_cover: z.boolean(),
-  back_cover: z.boolean(),
+  front_cover: z.boolean().optional(),
+  back_cover: z.boolean().optional(),
   scene: z.number(),
   subscene: z.number(),
-  spine_break: z.boolean(),
+  spine_break: z.boolean().optional(),
   image: StoryboardItemImageServerSchema
 })
 export type StoryboardItemServer = z.infer<typeof StoryboardItemServerSchema>
@@ -87,11 +87,11 @@ export const StoryboardItemSchema = z.object({
   duplicate: z.boolean(),
   selected: z.boolean(),
   surfaceWeight: z.number(),
-  frontCover: z.boolean(),
-  backCover: z.boolean(),
+  frontCover: z.boolean().optional(),
+  backCover: z.boolean().optional(),
   scene: z.number(),
   subscene: z.number(),
-  spineBreak: z.boolean(),
+  spineBreak: z.boolean().optional(),
   image: StoryboardItemImageSchema
 })
 

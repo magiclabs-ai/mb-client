@@ -9,7 +9,7 @@ export class StoryboardItemsEndpoints {
     bindThisToFunctions(this)
   }
 
-  retrieve(
+  list(
     bookId: string
   ) {
     return handleAsyncFunction(async () => {

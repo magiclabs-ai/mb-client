@@ -7,7 +7,7 @@ import prompts from 'prompts'
 
 export const storyboardItems = program.command('storyboard-items')
 
-storyboardItems.command('get')
+storyboardItems.command('list')
   .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
@@ -22,7 +22,7 @@ storyboardItems.command('get')
       }
     })
     isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.storyboardItems.retrieve(args.bookId)
+      const res = await engineAPI.storyboardItems.list(args.bookId)
       log(chalk.bold('🎚️ - Storyboard items retrieved!'))
       return formatReturnJSON(res)
     })
