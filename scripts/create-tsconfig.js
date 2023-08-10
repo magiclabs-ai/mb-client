@@ -9,4 +9,4 @@ const tsconfig = {
   ...base,
   ...specificTsconfig
 }
-fs.writeFileSync('../tsconfig.json', JSON.stringify(tsconfig, null, 2))
+fs.writeFileSync('../../tsconfig.json', JSON.stringify(tsconfig, null, 2))

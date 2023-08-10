@@ -16,7 +16,7 @@
   "scripts": {
     "build": "../../scripts/build/before.sh && tsup && ../../scripts/build/after.sh",
     "coverage": "./scripts/before-coverage.sh && vitest run --coverage",
-    "watch": "../../scripts/build/before.sh -w && tsup --watch"
+    "watch": "../../scripts/build/before.sh --watch && tsup --watch"
   },
   "dependencies": {
     "@faker-js/faker": "^8.0.2",

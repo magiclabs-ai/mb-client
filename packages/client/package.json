@@ -20,7 +20,7 @@
   "scripts": {
     "build": "../../scripts/build/before.sh && tsup && ../../scripts/build/after.sh",
     "deploy": "./scripts/deploy-npm.sh",
-    "watch": "../../scripts/build/before.sh -w && tsup --watch"
+    "watch": "../../scripts/build/before.sh --watch && tsup --watch"
   },
   "dependencies": {
     "dotenv": "^16.3.1",

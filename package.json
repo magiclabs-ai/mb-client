@@ -1,6 +1,6 @@
 {
   "name": "mb-client",
-  "version": "1.0.0",
+  "version": "0.6.2",
   "description": "",
   "keywords": [],
   "license": "ISC",
@@ -9,6 +9,8 @@
   "scripts": {
     "coverage": "vitest --config ./configs/vitest/vitest.config.ts run --coverage",
     "lint": "eslint . --ext js,jsx,ts,tsx --config ./.eslintrc.json --no-eslintrc",
+    "pub:beta": "./scripts/publish.sh --beta",
+    "pub:release": "./scripts/publish.sh",
     "turbo:build": "pnpm i && turbo run build",
     "turbo:coverage": "turbo run coverage"
   },

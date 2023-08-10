@@ -3,17 +3,10 @@
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 cd $SCRIPT_DIR
 
-flags=""
-while getopts ":w" opt; do
-  case ${opt} in
-    w ) flags+="--watch" ;;
-  esac
-done
-
 rm -rf ./dist
 
-if [[ -z "${flags}" ]]; then
-  node ../create-tsconfig.js
-else
+if [[ "$1" == "--watch" ]]; then
   node ../create-tsconfig.js --dev
+else
+  node ../create-tsconfig.js
 fi
