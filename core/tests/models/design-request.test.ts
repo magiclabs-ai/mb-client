@@ -159,6 +159,13 @@ describe('Design Request', async () => {
     })
     ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'submitted'})})
     expect(submitDesignRequest).toStrictEqual(designRequest)
+    const embellishingDetail = {
+      state: 'embellishing',
+      slug: 'embellishing',
+      progress: 50,
+      message: 'Placing embellishments'
+    }
+    ws.mock.results[0].value.onmessage({data: JSON.stringify(embellishingDetail)})
     vi.advanceTimersToNextTimer()
     const embellishingEvent = dispatchEventSpy.mock.calls[1][0] as DesignRequestEvent
     expect(embellishingEvent['detail']['state']).toStrictEqual('error')
@@ -168,6 +175,7 @@ describe('Design Request', async () => {
     fetchMocker.mockResponse(JSON.stringify(bookFactory()))
     expect(await designRequest.setGuid(faker.string.uuid())).toStrictEqual(designRequest.guid)
   })
+
   test('cancel', async () => {
     fetchMocker.mockResponse(JSON.stringify(bookFactory({state: 'cancelled'})))
     await designRequest.cancel()

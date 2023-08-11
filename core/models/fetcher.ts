@@ -1,4 +1,4 @@
-import {isBrowser, mergeNestedObject} from '../utils/toolbox'
+import {mergeNestedObject} from '../utils/toolbox'
 
 export type CallProps = {
   path: string
