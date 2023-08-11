@@ -144,7 +144,6 @@ export class DesignRequest {
 
   private timeoutHandler() {
     return setTimeout(() => {
-      console.log('HEKKI')
       this.eventHandler(timeoutMessage)
     }, designRequestTimeout)
   }
@@ -153,7 +152,6 @@ export class DesignRequest {
     let timeout: ReturnType<typeof setTimeout>
     this.webSocket.onmessage = (event) => {
       const detail = JSON.parse(event.data) as DesignRequestEventDetail
-      console.log(this.state !== detail.state)
       if (this.state !== detail.state) {
         timeout && clearTimeout(timeout)
         timeout = this.timeoutHandler()

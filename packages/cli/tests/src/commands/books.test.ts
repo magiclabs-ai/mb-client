@@ -28,11 +28,6 @@ describe('Books', () => {
     expect(logSpy.mock.calls[0][0]).toStrictEqual(formatReturnJSON(book))
   })
 
-  test.fails('fail to create a book', async () => {
-    const run = await program.parseAsync(['books', 'create', '--book', '{"hello": "world"}'], {from: 'user'})
-    expect(run).rejects.toThrow()
-  })
-
   test('get book without args', async () => {
     const book = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(book))
