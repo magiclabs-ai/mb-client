@@ -72,7 +72,7 @@ export const bookDesignRequestSchema = z.object({
 })
 
 export const BookPropsSchema = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   title: z.string(),
   design_request: bookDesignRequestSchema,
   state: z.enum(states).optional(),

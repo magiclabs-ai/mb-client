@@ -24,8 +24,8 @@ export class Fetcher {
 
   async call(props: CallProps) {
     try {
-      if (props.options?.body && isBrowser()) {
-        props.options.body = JSON.stringify(props.options.body)
+      if (props.options?.body && typeof props.options.body !== 'string') {
+        props.options.body = JSON.stringify(props.options?.body)
       }
       const baseOptions = {...this.options}
       const options = props.options ? mergeNestedObject(baseOptions, props.options) : baseOptions
@@ -39,7 +39,7 @@ export class Fetcher {
       } else {
         let detail = res.statusText
         try { 
-          detail = (await res.json())?.detail
+          detail = JSON.stringify((await res.json())?.detail)
         } catch (error) { /* empty */ }
         throw Error(`${res.status} ${detail}`)
       }

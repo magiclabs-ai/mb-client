@@ -153,7 +153,7 @@ export class DesignRequest {
     let timeout: ReturnType<typeof setTimeout>
     this.webSocket.onmessage = (event) => {
       const detail = JSON.parse(event.data) as DesignRequestEventDetail
-      if (this.state !== detail.slug) {
+      if (this.state !== detail.state) {
         timeout && clearTimeout(timeout)
         timeout = this.timeoutHandler()
         this.eventHandler(detail)

@@ -52,13 +52,13 @@ export class ImagesEndpoints {
     })
   }
 
-  addToBook(bookId: string, payload: ImageServer) {
+  addToBook(bookId: string, image: ImageServer) {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call({
         path: `/v1/images/book/${bookId}`,
         options: {
           method: 'POST',
-          body: cleanJSON(payload)
+          body: cleanJSON(image)
         }
       })
       return imageServerSchema.parse(res)
