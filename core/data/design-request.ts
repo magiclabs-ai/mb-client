@@ -15,6 +15,7 @@ export const states = [
   'error',
   'cancelled'
 ] as const
+export const isDesignRequestSubmitted = (state: string) => !['new', 'ingesting'].includes(state)
 export const occasions = [
   'baby',
   'birthday',

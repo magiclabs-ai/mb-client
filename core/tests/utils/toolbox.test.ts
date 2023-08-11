@@ -8,6 +8,7 @@ import {assign, camelCaseObjectKeysToSnakeCase, camelCaseToKebabCase,
   snakeCaseToCamelCase} from '@/core/utils/toolbox'
 import {describe, expect, test} from 'vitest'
 import {faker} from '@faker-js/faker'
+import {getStyleIdBySlug} from '../../utils/toolbox'
 
 describe('Toolbox', () => {
   test('assign function', () => {
@@ -64,5 +65,9 @@ describe('Toolbox', () => {
   test('formatReturnJSON', async () => {
     const res = formatReturnJSON({hello: 'world'})
     expect(res).toBe('{\n  "hello": "world"\n}')
+  })
+  test('getStyleIdBySlug to return undefined', async () => {
+    const res = getStyleIdBySlug('test')
+    expect(res).toBeUndefined()
   })
 })

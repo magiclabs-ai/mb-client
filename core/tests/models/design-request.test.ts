@@ -26,12 +26,16 @@ import {galleonFactory} from '@/core/tests/factories/galleon.factory'
 import {snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 
 describe('Design Request', async () => {
-  let designRequest: DesignRequest
+  // let designRequest: DesignRequest
   let ws: SpyInstance<[url: string | URL, protocols?: string | string[] | undefined], WebSocket>
   const webSocketHost = 'wss://api.magicbook.mock'
   const client = new MagicBookClient('123', 'https://api.magicbook.mock', webSocketHost)
 
   beforeEach(async () => {
+    ws = vi.spyOn(window, 'WebSocket').mockImplementation((value) => (new WebSocketMock(value) as unknown as WebSocket))
+  })
+
+  async function createDesignRequest(props?: DesignRequestProps) {
     const designRequestProps: DesignRequestProps = {
       occasion: 'birthday',
       style: 5274,
@@ -41,9 +45,8 @@ describe('Design Request', async () => {
       title: 'My Book'
     }
     fetchMocker.mockResponse(JSON.stringify(bookFactory()))
-    ws = vi.spyOn(window, 'WebSocket').mockImplementation((value) => (new WebSocketMock(value) as unknown as WebSocket))
-    designRequest = await client.createDesignRequest(designRequestProps)
-  })
+    return await client.createDesignRequest({...designRequestProps, ...props})
+  }
 
   test('Design Request default values', async () => {
     const parentId = faker.string.uuid()
@@ -68,6 +71,7 @@ describe('Design Request', async () => {
   })
 
   test('addImage', async () => {
+    const designRequest = await createDesignRequest()
     const image: Image = {
       handle: 'imageId',
       url: 'imageURL',
@@ -83,7 +87,14 @@ describe('Design Request', async () => {
     expect(await designRequest.images.add(image)).toStrictEqual(1)
   })
 
+  test.fails('getJSON while dr is not ready', async () => {
+    const designRequest = await createDesignRequest({state: 'new'})
+    const designRequestJSON = await designRequest.getJSON()
+    expect(designRequestJSON).toThrowError('Design Request is not ready')
+  })
+
   test('getJSON', async () => {
+    const designRequest = await createDesignRequest({state: 'ready'})
     const galleon = galleonFactory({title: designRequest.title})
     fetchMocker.mockResponse(JSON.stringify(galleon))
     const designRequestJSON = await designRequest.getJSON()
@@ -91,6 +102,7 @@ describe('Design Request', async () => {
   })
 
   test('getOptions', async () => {
+    const designRequest = await createDesignRequest()
     const designOptions = designOptionsServerFactory()
     fetchMocker.mockResponse(JSON.stringify(designOptions))
     const designRequestOptions = await designRequest.getOptions(faker.number.int({min: 20, max: 200}))
@@ -99,7 +111,14 @@ describe('Design Request', async () => {
     expect(designRequestOptions).toStrictEqual(snakeCaseObjectKeysToCamelCase(designOptions))
   })
 
+  test.fails('submitDesignRequest while dr is not new', async () => {
+    const designRequest = await createDesignRequest({state: 'ready'})
+    const designRequestJSON = await designRequest.submit()
+    expect(designRequestJSON).toThrowError('Design request already submitted')
+  })
+
   test('submitDesignRequest', async () => {
+    const designRequest = await createDesignRequest({state: 'new'})
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
     const wsClose = vi.spyOn(WebSocketMock.prototype, 'close')
     fetchMocker.mockResponse(JSON.stringify(bookFactory()))
@@ -149,6 +168,7 @@ describe('Design Request', async () => {
   })
 
   test('submitDesignRequest with error', async () => {
+    const designRequest = await createDesignRequest({state: 'new'})
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
     vi.useFakeTimers()
     fetchMocker.mockResponse(JSON.stringify(bookFactory({state: 'submitted'})))
@@ -167,16 +187,43 @@ describe('Design Request', async () => {
     }
     ws.mock.results[0].value.onmessage({data: JSON.stringify(embellishingDetail)})
     vi.advanceTimersToNextTimer()
-    const embellishingEvent = dispatchEventSpy.mock.calls[1][0] as DesignRequestEvent
+    const embellishingEvent = dispatchEventSpy.mock.calls[2][0] as DesignRequestEvent
     expect(embellishingEvent['detail']['state']).toStrictEqual('error')
   })
   
   test('setGuid', async () => {
+    const designRequest = await createDesignRequest({state: 'ready'})
     fetchMocker.mockResponse(JSON.stringify(bookFactory()))
     expect(await designRequest.setGuid(faker.string.uuid())).toStrictEqual(designRequest.guid)
   })
+  
+  test.fails('setGuid before dr is submitted', async () => {
+    const designRequest = await createDesignRequest({state: 'new'})
+    await designRequest.setGuid(faker.string.uuid())
+    expect(designRequest).toThrowError('Design request not submitted')
+  })
 
+
+  test.fails('cancel when dr is already cancelled', async () => {
+    const designRequest = await createDesignRequest({state: 'cancelled'})
+    await designRequest.cancel()
+    expect(designRequest).toThrowError('Design Request is already cancelled')
+  })
+  
+  test.fails('cancel when dr is already ready', async () => {
+    const designRequest = await createDesignRequest({state: 'ready'})
+    await designRequest.cancel()
+    expect(designRequest).toThrowError('Design Request is already ready')
+  })
+  
+  test.fails('cancel when dr is already new', async () => {
+    const designRequest = await createDesignRequest({state: 'new'})
+    await designRequest.cancel()
+    expect(designRequest).toThrowError('Design request not submitted')
+  })
+ 
   test('cancel', async () => {
+    const designRequest = await createDesignRequest({state: 'submitted'})
     fetchMocker.mockResponse(JSON.stringify(bookFactory({state: 'cancelled'})))
     await designRequest.cancel()
     expect(designRequest.state).toStrictEqual('cancelled')

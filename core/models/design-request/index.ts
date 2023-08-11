@@ -18,6 +18,7 @@ import {
 import {camelCaseObjectKeysToSnakeCase, cleanJSON, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 import {designOptionsSchema} from './design-options'
 import {designRequestTimeout} from '@/core/config'
+import {isDesignRequestSubmitted} from '../../data/design-request'
 
 export type Occasion = typeof occasions[number]
 export type Style = keyof typeof styles
@@ -41,6 +42,7 @@ export const DesignRequestOptions = {
 }
 export type DesignRequestProps = {
   title?: string
+  state?: State
   occasion?: Occasion
   style?: Style
   bookSize?: BookSize
@@ -81,7 +83,7 @@ export class DesignRequest {
   constructor(parentId: string, private readonly client: MagicBookClient, designRequestProps?: DesignRequestProps) {
     this.parentId = parentId
     this.webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
-    this.state = states[0]
+    this.state = designRequestProps?.state || states[0]
     this.title = designRequestProps?.title || ''
     this.occasion = designRequestProps?.occasion || occasions[0]
     this.style = designRequestProps?.style || parseInt(Object.keys(styles)[0]) as Style
@@ -108,33 +110,54 @@ export class DesignRequest {
   }
 
   async submit(submitDesignRequestProps?: DesignRequestProps) {
-    submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
-    this.getProgress()
-    this.updateDesignRequest(
-      (await this.client.engineAPI.books.update(this.parentId, this.toBook())).toDesignRequestProps()
-    )
-    return this
+    if (isDesignRequestSubmitted(this.state)) {
+      throw new Error('Design request already submitted')
+    } else {
+      submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
+      this.getProgress()
+      this.updateDesignRequest(
+        (await this.client.engineAPI.books.update(this.parentId, this.toBook())).toDesignRequestProps()
+      )
+      this.state = states[1]
+      return this
+    }
   }
 
   async setGuid(guid: string) {
-    this.guid = guid
-    this.updateDesignRequest(
-      (await this.client.engineAPI.books.update(this.parentId, this.toBook())).toDesignRequestProps()
-    )
-    return this.guid
+    if (!isDesignRequestSubmitted(this.state)) {
+      throw new Error('Design request not submitted')
+    } else {
+      this.guid = guid
+      this.updateDesignRequest(
+        (await this.client.engineAPI.books.update(this.parentId, this.toBook())).toDesignRequestProps()
+      )
+      return this.guid
+    }
   }
  
   async cancel() {
-    this.updateDesignRequest(
-      (await this.client.engineAPI.books.cancel(this.parentId)).toDesignRequestProps()
-    )
-    this.state = 'cancelled'
-    await this.eventHandler(cancelledMessage)
-    return this
+    if (this.state === 'cancelled') {
+      throw new Error('Design request already cancelled')
+    } else if (this.state === 'ready') {
+      throw new Error('Design request already ready')
+    } else if (!isDesignRequestSubmitted(this.state)) {
+      throw new Error('Design request not submitted')
+    } else {
+      this.updateDesignRequest(
+        (await this.client.engineAPI.books.cancel(this.parentId)).toDesignRequestProps()
+      )
+      this.state = 'cancelled'
+      await this.eventHandler(cancelledMessage)
+      return this
+    }
   }
 
   async getJSON() {
-    return await this.client.engineAPI.books.retrieveGalleon(this.parentId)
+    if (this.state === 'ready') {
+      return await this.client.engineAPI.books.retrieveGalleon(this.parentId)
+    } else {
+      throw new Error('Design request not ready')
+    }
   }
 
   private async eventHandler(detail: DesignRequestEventDetail, type='MagicBook.designRequestUpdated') {
