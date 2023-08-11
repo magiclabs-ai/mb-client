@@ -207,3 +207,9 @@ export const timeoutMessage: DesignRequestEventDetail = {
   progress: 100,
   message: 'Design failed'
 }
+export const cancelledMessage: DesignRequestEventDetail = {
+  state: 'cancelled',
+  slug: 'cancelled',
+  progress: 100,
+  message: 'Design canceled'
+}

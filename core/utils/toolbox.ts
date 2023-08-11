@@ -1,3 +1,5 @@
+import {styles} from '../data/design-request'
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function assign(obj: Record<string, any>, fields: Array<string>, value: unknown) {
   const lastKey = fields.pop() || ''
@@ -93,4 +95,14 @@ export function formatReturnJSON(value: unknown) {
 
 export function cleanJSON(obj: unknown) {
   return JSON.parse(JSON.stringify(obj))
+}
+
+export function getStyleIdBySlug(slug: string): number | undefined {
+  for (const id  in styles) {
+    const style = styles[id as unknown as keyof typeof styles]
+    if (style.slug === slug) {
+      return parseInt(id)
+    }
+  }
+  return undefined
 }

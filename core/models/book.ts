@@ -20,7 +20,7 @@ import {
   states,
   textStickerLevels
 } from '../data/design-request'
-import {snakeCaseObjectKeysToCamelCase} from '../utils/toolbox'
+import {getStyleIdBySlug, snakeCaseObjectKeysToCamelCase} from '../utils/toolbox'
 import {z} from 'zod'
 
 export type BookDesignRequestProps = {
@@ -81,14 +81,14 @@ export const BookPropsSchema = z.object({
 export type BookProps = z.infer<typeof BookPropsSchema>
 
 export class Book {
-  id?: string
+  id: string
   title: string
   design_request: BookDesignRequest
   state?: State
   guid?: string
 
   constructor(props: BookProps) {
-    this.id = props.id
+    this.id = props.id || ''
     this.title = props.title
     this.design_request = new BookDesignRequest(props.design_request)
     this.state = props.state
@@ -97,6 +97,7 @@ export class Book {
 
   toDesignRequestProps() {
     const props = {...this, ...this.design_request} as unknown as Record<string, unknown>
+    props.style = getStyleIdBySlug(props.style as string)
     delete props.design_request
     return snakeCaseObjectKeysToCamelCase(props)
   }

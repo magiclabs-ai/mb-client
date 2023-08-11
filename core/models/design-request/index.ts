@@ -3,6 +3,7 @@ import {Images} from './image'
 import {MagicBookClient} from '../client'
 import {
   bookSizes,
+  cancelledMessage,
   coverTypes,
   embellishmentLevels,
   imageDensities,
@@ -127,6 +128,8 @@ export class DesignRequest {
     this.updateDesignRequest(
       (await this.client.engineAPI.books.cancel(this.parentId)).toDesignRequestProps()
     )
+    this.state = 'cancelled'
+    await this.eventHandler(cancelledMessage)
     return this
   }
 
@@ -137,7 +140,7 @@ export class DesignRequest {
   private async eventHandler(detail: DesignRequestEventDetail, type='MagicBook.designRequestUpdated') {
     const customEvent = new CustomEvent<DesignRequestEventDetail>(type, {detail})
     window.dispatchEvent(customEvent)
-    if (['error', 'ready'].includes(detail.slug)) {
+    if (['error', 'ready', 'cancelled'].includes(detail.slug)) {
       this.webSocket.close()
     }
   }
@@ -176,7 +179,8 @@ export class DesignRequest {
       id: designRequest.parentId,
       guid: designRequest.guid,
       title: designRequest.title,
-      design_request: bookDesignRequest
+      design_request: bookDesignRequest,
+      state: designRequest.state
     })
   }
 }

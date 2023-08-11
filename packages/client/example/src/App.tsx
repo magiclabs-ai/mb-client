@@ -91,8 +91,12 @@ function App() {
     setDesignRequest(designRequest)
   }
 
-  function stopDesignRequestFlow() {
-    setIsCreatingDesignRequest(false)
+  async function cancelDesignRequest() {
+    if (currentDesignRequest) {
+      console.log('designRequest.cancel:', await currentDesignRequest.cancel())
+    }
+    // setDesignRequest(null)
+    // setIsCreatingDesignRequest(false)
   }
 
   return (
@@ -127,30 +131,33 @@ function App() {
           and uses it to connect to the MagicBook server.
         </p>
         <div className='flex items-center justify-center mt-10 gap-x-6'>
-          {!isCreatingDesignRequest 
-            ? <button
-              onClick={createDesignRequest}
-              className='rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
+          <button
+            onClick={createDesignRequest}
+            disabled={isCreatingDesignRequest}
+            className='rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
               hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
-              focus-visible:outline-indigo-600'
-            >
+              focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed'
+          >
               Create design request
-            </button>
-            : <button
-              onClick={stopDesignRequestFlow}
-              className='rounded-md bg-slate-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
-              hover:bg-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
-              focus-visible:outline-slate-600'
-            >
-              Stop design request flow
-            </button>
-          }
+          </button>
           <a 
             href='https://www.npmjs.com/package/@magiclabs.ai/magicbook-client'
             target='_blank'
             className='text-sm font-semibold leading-6 text-gray-900'>
             Learn more <span aria-hidden='true'>→</span>
           </a>
+        </div>
+        <div className='mt-2'>
+          {currentDesignRequest &&
+            <button
+              onClick={cancelDesignRequest}
+              className='rounded-md bg-red-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
+                hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+                focus-visible:outline-red-600'
+            >
+              Cancel design request
+            </button>
+          }
         </div>
         <div className='fixed bottom-0 left-0 w-full backdrop-blur-sm'>
           <p className='flex items-center justify-center m-4 font-mono text-xs leading-8 text-gray-600 rounded-full'>
