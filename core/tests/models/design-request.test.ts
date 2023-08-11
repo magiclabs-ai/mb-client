@@ -1,4 +1,8 @@
-import {DesignRequest, DesignRequestEvent, DesignRequestProps} from '@/core/models/design-request'
+import {
+  DesignRequest,
+  DesignRequestEvent,
+  DesignRequestProps
+} from '@/core/models/design-request'
 import {Image, ImageServer, Images} from '@/core/models/design-request/image'
 import {MagicBookClient} from '@/core/models/client'
 import {SpyInstance, beforeEach, describe, expect, test, vi} from 'vitest'
@@ -49,6 +53,7 @@ describe('Design Request', async () => {
       webSocket: new WebSocket(`${webSocketHost}/?book_id=${parentId}`),
       parentId,
       title: '',
+      state: 'new',
       occasion: occasions[0],
       style: parseInt(Object.keys(styles)[0]),
       bookSize: bookSizes[0],
@@ -61,6 +66,7 @@ describe('Design Request', async () => {
       images: new Images(client, parentId)
     })
   })
+
   test('addImage', async () => {
     const image: Image = {
       handle: 'imageId',
@@ -76,12 +82,14 @@ describe('Design Request', async () => {
     fetchMocker.mockResponse(JSON.stringify(new ImageServer(image)))
     expect(await designRequest.images.add(image)).toStrictEqual(1)
   })
+
   test('getJSON', async () => {
     const galleon = galleonFactory({title: designRequest.title})
     fetchMocker.mockResponse(JSON.stringify(galleon))
     const designRequestJSON = await designRequest.getJSON()
     expect(designRequestJSON.title).toStrictEqual(designRequest.title)
   })
+
   test('getOptions', async () => {
     const designOptions = designOptionsServerFactory()
     fetchMocker.mockResponse(JSON.stringify(designOptions))
@@ -90,6 +98,7 @@ describe('Design Request', async () => {
     await designRequest.getOptions()
     expect(designRequestOptions).toStrictEqual(snakeCaseObjectKeysToCamelCase(designOptions))
   })
+
   test('submitDesignRequest', async () => {
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
     const wsClose = vi.spyOn(WebSocketMock.prototype, 'close')
@@ -138,6 +147,7 @@ describe('Design Request', async () => {
     expect(readyEvent['detail']).toStrictEqual(readyDetail)
     expect(dispatchEventSpy.mock.calls.length).toStrictEqual(3)
   })
+
   test('submitDesignRequest with error', async () => {
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
     vi.useFakeTimers()
@@ -153,8 +163,14 @@ describe('Design Request', async () => {
     const embellishingEvent = dispatchEventSpy.mock.calls[1][0] as DesignRequestEvent
     expect(embellishingEvent['detail']['state']).toStrictEqual('error')
   })
+  
   test('setGuid', async () => {
     fetchMocker.mockResponse(JSON.stringify(bookFactory()))
     expect(await designRequest.setGuid(faker.string.uuid())).toStrictEqual(designRequest.guid)
+  })
+  test('cancel', async () => {
+    fetchMocker.mockResponse(JSON.stringify(bookFactory({state: 'cancelled'})))
+    await designRequest.cancel()
+    expect(designRequest.state).toStrictEqual('cancelled')
   })
 })

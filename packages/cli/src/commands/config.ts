@@ -4,7 +4,7 @@ import chalk from 'chalk'
 import prompts from 'prompts'
 const log = console.log
 import {configPath} from '../utils/toolbox'
-import {defaultApiHost, defaultWebSocketHost} from '../../../../core/config'
+import {defaultApiHost, defaultWebSocketHost} from '@/core/config'
 import {promises as fs} from 'fs'
 
 export const config = program.command('config')

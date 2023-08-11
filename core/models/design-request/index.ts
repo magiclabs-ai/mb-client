@@ -1,3 +1,4 @@
+import {Book, BookDesignRequestProps} from '../book'
 import {Images} from './image'
 import {MagicBookClient} from '../client'
 import {
@@ -13,10 +14,9 @@ import {
   textStickerLevels,
   timeoutMessage
 } from '@/core/data/design-request'
+import {camelCaseObjectKeysToSnakeCase, cleanJSON, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 import {designOptionsSchema} from './design-options'
 import {designRequestTimeout} from '@/core/config'
-import {designRequestToBook} from '@/core/utils/design-request-parser'
-import {snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 
 export type Occasion = typeof occasions[number]
 export type Style = keyof typeof styles
@@ -61,6 +61,7 @@ export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>
 
 export class DesignRequest {
   private webSocket: WebSocket
+  state: State
   parentId: string
   title: string
   occasion: Occasion
@@ -79,6 +80,7 @@ export class DesignRequest {
   constructor(parentId: string, private readonly client: MagicBookClient, designRequestProps?: DesignRequestProps) {
     this.parentId = parentId
     this.webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
+    this.state = states[0]
     this.title = designRequestProps?.title || ''
     this.occasion = designRequestProps?.occasion || occasions[0]
     this.style = designRequestProps?.style || parseInt(Object.keys(styles)[0]) as Style
@@ -92,6 +94,10 @@ export class DesignRequest {
     this.images = new Images(this.client, this.parentId)
   }
 
+  private updateDesignRequest(designRequestProps: DesignRequestProps) {
+    Object.assign(this, designRequestProps)
+  }
+
   async getOptions(imageCount?: number) {
     const options = designOptionsSchema.parse(snakeCaseObjectKeysToCamelCase(
       await this.client.engineAPI.designOptions.retrieve(this.bookSize, imageCount || this.images.length,
@@ -101,16 +107,28 @@ export class DesignRequest {
   }
 
   async submit(submitDesignRequestProps?: DesignRequestProps) {
+    this.toBook()
     submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
     this.getProgress()
-    await this.client.engineAPI.books.update(this.parentId, designRequestToBook(this))
+    this.updateDesignRequest(
+      (await this.client.engineAPI.books.update(this.parentId, this.toBook())).toDesignRequestProps()
+    )
     return this
   }
 
   async setGuid(guid: string) {
     this.guid = guid
-    await this.client.engineAPI.books.update(this.parentId, designRequestToBook(this))
+    this.updateDesignRequest(
+      (await this.client.engineAPI.books.update(this.parentId, this.toBook())).toDesignRequestProps()
+    )
     return this.guid
+  }
+ 
+  async cancel() {
+    this.updateDesignRequest(
+      (await this.client.engineAPI.books.cancel(this.parentId)).toDesignRequestProps()
+    )
+    return this
   }
 
   async getJSON() {
@@ -144,5 +162,23 @@ export class DesignRequest {
       }
     }
     this.webSocket.onclose = () => clearTimeout(timeout)
+  }
+
+  private toBook() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const designRequest = {...this} as Record<string, any>
+    delete designRequest['client']
+    delete designRequest['images']['client']
+    delete designRequest['webSocket']
+    const styleSlug = styles[this.style].slug
+    const bookDesignRequest = 
+      camelCaseObjectKeysToSnakeCase(cleanJSON(designRequest)) as BookDesignRequestProps
+    bookDesignRequest.style = styleSlug
+    return new Book({
+      id: designRequest.parentId,
+      guid: designRequest.guid,
+      title: designRequest.title,
+      design_request: bookDesignRequest
+    })
   }
 }

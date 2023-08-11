@@ -19,7 +19,8 @@ import {
   pageTypes,
   states,
   textStickerLevels
-} from '@/core/data/design-request'
+} from '../data/design-request'
+import {snakeCaseObjectKeysToCamelCase} from '../utils/toolbox'
 import {z} from 'zod'
 
 export type BookDesignRequestProps = {
@@ -92,5 +93,11 @@ export class Book {
     this.design_request = new BookDesignRequest(props.design_request)
     this.state = props.state
     this.guid = props.guid
+  }
+
+  toDesignRequestProps() {
+    const props = {...this, ...this.design_request} as unknown as Record<string, unknown>
+    delete props.design_request
+    return snakeCaseObjectKeysToCamelCase(props)
   }
 }

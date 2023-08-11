@@ -91,13 +91,13 @@ describe('Books', () => {
     const galleon = galleonFactory()
     fetchMocker.mockResponse(JSON.stringify(galleon))
     await program.parseAsync(['books', 'galleon'], {from: 'user'})
-    expect(logSpy.mock.calls[7][0]).toMatchObject(formatReturnJSON(galleon))
+    expect(logSpy.mock.calls[7][0]).toStrictEqual(formatReturnJSON(galleon))
   })
 
   test('retrieve book galleon', async () => {
     const galleon = galleonFactory()
     fetchMocker.mockResponse(JSON.stringify(galleon))
     await program.parseAsync(['books', 'galleon', '--book-id', 'book.id'], {from: 'user'})
-    expect(logSpy.mock.calls[8][0]).toEqual(formatReturnJSON(galleon))
+    expect(logSpy.mock.calls[8][0]).toStrictEqual(formatReturnJSON(galleon))
   })
 })
