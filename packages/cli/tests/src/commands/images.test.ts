@@ -53,6 +53,13 @@ describe('Images', () => {
     expect(logSpy.mock.calls[3][0]).toStrictEqual(formatReturnJSON(image))
   })
 
+  test('create image with wrong payload', async () => {
+    const image = {fake: 'object'}
+    fetchMocker.mockResponse(JSON.stringify(image))
+    await program.parseAsync(['images', 'create', '--book-id', 'book.id', '--image', JSON.stringify(image)],
+      {from: 'user'})
+  })
+
   test('get image without args', async () => {
     const image = imageServerFactory()
     fetchMocker.mockResponse(JSON.stringify(image))
