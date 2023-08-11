@@ -1,5 +1,4 @@
-
-![GitHub CI](https://github.com/magiclabs-ai/mb-client/actions/workflows/test.yml/badge.svg) ![GitHub CI](https://github.com/magiclabs-ai/mb-client/actions/workflows/linter.yml/badge.svg) [![npm version](https://img.shields.io/npm/v/@magiclabs.ai/magicbook-cli.svg)](https://www.npmjs.com/package/@magiclabs.ai/magicbook-cli)
+![GitHub CI](https://github.com/magiclabs-ai/mb-client/actions/workflows/ci.yml/badge.svg) [![npm version](https://img.shields.io/npm/v/@magiclabs.ai/magicbook-cli.svg)](https://www.npmjs.com/package/@magiclabs.ai/magicbook-cli)
 
 # magicbook-cli
 
