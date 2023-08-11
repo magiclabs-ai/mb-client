@@ -9,16 +9,10 @@ import prompts from 'prompts'
 export const books = program.command('books')
 
 books.command('create')
-  .addOption(new Option('-b, --book <book>'))
-  .action(async (args) => {
+  .action(async () => {
     const {engineAPI} = await actionSetup()
-    const {isValid} = await validateArgs(() => {
-      if (args.book) {
-        BookPropsSchema.parse(JSON.parse(args.book))
-      }
-    })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.books.create(args.book)
+    await handleAPIResponse(async () => {
+      const res = await engineAPI.books.create()
       log(chalk.bold('📕 - Book created!'))
       return formatReturnJSON(res)
     })

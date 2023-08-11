@@ -81,7 +81,7 @@ export const BookPropsSchema = z.object({
 export type BookProps = z.infer<typeof BookPropsSchema>
 
 export class Book {
-  id: string
+  id?: string
   title: string
   design_request: BookDesignRequest
   state?: State
