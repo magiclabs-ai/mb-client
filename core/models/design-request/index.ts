@@ -150,15 +150,14 @@ export class DesignRequest {
   }
 
   private async getProgress() {
-    let previousState = 'new'
     let timeout: ReturnType<typeof setTimeout>
     this.webSocket.onmessage = (event) => {
       const detail = JSON.parse(event.data) as DesignRequestEventDetail
-      if (previousState !== detail.slug) {
+      if (this.state !== detail.slug) {
         timeout && clearTimeout(timeout)
         timeout = this.timeoutHandler()
         this.eventHandler(detail)
-        previousState = detail.slug
+        this.state = detail.state
       }
     }
     this.webSocket.onclose = () => clearTimeout(timeout)
