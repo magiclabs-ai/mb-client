@@ -21,7 +21,7 @@ jobs:
           version: 8
           run_install: false
       - run: pnpm i
-      - run: pnpm run coverage
+      - run: pnpm run turbo:coverage
       - run: chmod +x ./scripts/publish.sh && ./scripts/publish.sh ${{github.event.release.prerelease && '--canary' || ''}}
         shell: bash
         env:

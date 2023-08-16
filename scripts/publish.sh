@@ -1,7 +1,7 @@
 #!/bin/bash
 
 version=$(sed -n 's/.*"version": "\(.*\)".*/\1/p' package.json)
-publishCommand="pnpm publish --access public --tag"
+publishCommand="pnpm publish --no-git-checks --access public --tag"
 packages=("cli" "client")
 baseDir=$PWD
 
