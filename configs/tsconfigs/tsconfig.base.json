@@ -18,20 +18,9 @@
     "noImplicitReturns": true,
     "skipLibCheck": true,
     "paths": {
-      "@/client/*": [
-        "./packages/client/*"
-      ],
-      "@/cli/*": [
-        "./packages/cli/*"
-      ],
-      "@/core/*": [
-        "./core/*"
-      ]
+      "@/client/*": ["./packages/client/*"],
+      "@/cli/*": ["./packages/cli/*"],
+      "@/core/*": ["./core/*"]
     }
-  },
-  "exclude": [
-    "node_modules",
-    "packages/client/example",
-    "**/tests"
-  ]
+  }
 }

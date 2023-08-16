@@ -1,49 +1,34 @@
 {
-  "name": "@magiclabs.ai/magicbook-client",
-  "version": "0.6.1",
-  "private": false,
-  "description": "TypeScript package to create photo books with the Magicbook API.",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/magiclabs-ai/mb-client"
-  },
+  "name": "mb-client",
+  "version": "0.6.2",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
   "type": "module",
-  "exports": {
-    ".": {
-      "import": "./dist/magicbook-client.js",
-      "require": "./dist/magicbook-client.umd.cjs"
-    }
-  },
-  "main": "./dist/magicbook-client.umd.cjs",
-  "module": "./dist/magicbook-client.js",
-  "types": "./src/index.d.ts",
   "scripts": {
-    "build": "./scripts/build.sh",
-    "coverage": "vitest run --coverage",
-    "deploy": "./scripts/deploy-npm.sh",
-    "lint": "eslint . --ext js,jsx,ts,tsx --config .eslintrc.json --no-eslintrc",
-    "test": "vitest --ui",
-    "watch": "./scripts/build.sh -w"
+    "coverage": "vitest --config ./configs/vitest/vitest.config.ts run --coverage",
+    "lint": "eslint . --ext js,jsx,ts,tsx --config ./.eslintrc.json --no-eslintrc",
+    "pub:canary": "./scripts/publish.sh --canary",
+    "pub:release": "./scripts/publish.sh",
+    "turbo:build": "pnpm i && turbo run build",
+    "turbo:coverage": "turbo run coverage"
   },
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
-    "jsdom": "^22.1.0",
-    "rollup-plugin-execute": "^1.1.1",
-    "vite": "^4.4.8",
-    "vite-plugin-dts": "^3.4.0",
-    "zod": "^3.21.4"
-  },
-  "devDependencies": {
     "@types/node": "^18.14.0",
     "@typescript-eslint/eslint-plugin": "^6.2.1",
     "@typescript-eslint/parser": "^6.2.1",
     "@vitest/coverage-istanbul": "^0.34.1",
     "@vitest/coverage-v8": "^0.34.1",
     "@vitest/ui": "^0.34.1",
+    "dotenv": "^16.3.1",
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
+    "jsdom": "^22.1.0",
+    "turbo": "^1.10.12",
     "typescript": "^5.1.6",
     "vitest": "^0.34.1",
-    "vitest-fetch-mock": "^0.2.2"
-  },
-  "packageManager": "pnpm@8.6.11"
+    "vitest-fetch-mock": "^0.2.2",
+    "zod": "^3.21.4"
+  }
 }
