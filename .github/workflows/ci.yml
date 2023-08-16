@@ -62,4 +62,29 @@ jobs:
         json-summary-path: './packages/cli/coverage/coverage-summary.json'
         json-final-path: './packages/cli/coverage/coverage-final.json'
         vite-config-path: './packages/cli/vitest.config.ts'
+  design-request:
+    name: Test Design Request Creation
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+    - uses: actions/checkout@v3
+    - name: 'Install Node'
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+    - uses: pnpm/action-setup@v2
+      name: Install pnpm
+      with:
+        version: 8
+        run_install: false
+    - name: 'Install Deps'
+      run: cd packages/cli && pnpm install && pnpm run build && cd dist
+    - name: 'Setup CLI'
+      run: node index.mjs config --api-host ${{secrets.API_HOST}} --ws-host ${{secrets.WS_HOST}} --api-key ${{secrets.API_KEY}}
+    - name: 'Test'
+      run: node index.mjs design-request new --title TEST --occasion baby --style 6117 --book-size 8x8 --cover-type sc --page-type sp --image-density low --image-filtering-level best --embellishment-level lots --text-sticker-level few
 

@@ -15,6 +15,7 @@ import prompts from 'prompts'
 export const mbClient = program.command('mb-client')
 const newDesignRequest = mbClient.command('design-request').command('new')
 
+newDesignRequest.addOption(new Option('--title <title>').default('My Book'))
 Object.keys(DesignRequestOptions).forEach((key) => {
   newDesignRequest.addOption(new Option(`--${camelCaseToKebabCase(key)} <${key}>`))
 })
