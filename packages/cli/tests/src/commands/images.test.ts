@@ -14,9 +14,7 @@ vi.mock('prompts', async () => {
       bookId: 'ABC',
       imageId: 'DEF',
       image: JSON.stringify(imageServerFactory()),
-      // book: JSON.stringify(bookFactory()),
-      isValid: typeof props.validate === 'function' ? props.validate(JSON.stringify(imageServerFactory())) : true,
-      invalid: typeof props.validate === 'function' ? props.validate(JSON.stringify({})) : true
+      isValid: typeof props.validate === 'function' ? props.validate(JSON.stringify(imageServerFactory())) : true
     })
   }
 })

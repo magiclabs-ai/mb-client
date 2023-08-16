@@ -49,9 +49,7 @@ spreads.command('create')
           type: 'text',
           name: 'spread',
           message: 'Enter the spread object:',
-          validate: value => spreadServerSchema.safeParse(JSON.parse(value)).success 
-            ? true 
-            : 'Please enter a spread object'
+          validate: value => spreadServerSchema.parse(JSON.parse(value)) as unknown as boolean
         })
         args.spread = response.spread
       }
@@ -123,9 +121,7 @@ spreads.command('update')
           type: 'text',
           name: 'spread',
           message: 'Enter the spread object:',
-          validate: value => spreadServerSchema.safeParse(JSON.parse(value)).success 
-            ? true 
-            : 'Please enter a spread object'
+          validate: value => spreadServerSchema.parse(JSON.parse(value)) as unknown as boolean
         })
         args.spread = response.spread
       }

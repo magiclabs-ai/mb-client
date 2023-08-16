@@ -49,9 +49,7 @@ images.command('create')
           type: 'text',
           name: 'image',
           message: 'Enter the image object:',
-          validate: value => imageServerSchema.safeParse(JSON.parse(value)).success 
-            ? true 
-            : 'Please enter a valid Image object'
+          validate: value => imageServerSchema.parse(JSON.parse(value)) as unknown as boolean
         })
         args.image = response.image
       }
@@ -123,9 +121,7 @@ images.command('update')
           type: 'text',
           name: 'image',
           message: 'Enter the image object:',
-          validate: value => imageServerSchema.safeParse(JSON.parse(value)).success 
-            ? true 
-            : 'Please enter a image object'
+          validate: value => imageServerSchema.parse(JSON.parse(value)) as unknown as boolean
         })
         args.image = response.image
       }

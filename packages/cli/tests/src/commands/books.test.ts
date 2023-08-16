@@ -13,9 +13,8 @@ vi.mock('prompts', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     default: (props: any) => Promise.resolve({
       bookId: 'ABC',
-      book: JSON.stringify(bookFactory()),
-      isValid: typeof props.validate === 'function' ? props.validate(JSON.stringify(bookFactory())) : true,
-      invalid: typeof props.validate === 'function' ? props.validate(JSON.stringify({})) : true
+      book: bookFactory(),
+      isValid: typeof props.validate === 'function' ? props.validate(bookFactory()) : true
     })
   }
 })

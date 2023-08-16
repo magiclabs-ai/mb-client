@@ -60,9 +60,7 @@ books.command('update')
           type: 'text',
           name: 'book',
           message: 'Enter the book object:',
-          validate: value => BookPropsSchema.safeParse(JSON.parse(value)).success 
-            ? true 
-            : 'Please enter a valid book object'
+          validate: value => BookPropsSchema.parse(value) as unknown as boolean
         })
         args.book = response.book
       }

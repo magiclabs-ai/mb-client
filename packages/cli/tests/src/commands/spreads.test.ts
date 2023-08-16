@@ -15,8 +15,7 @@ vi.mock('prompts', async () => {
       spreadId: 'DEF',
       spread: JSON.stringify(spreadServerFactory()),
       // book: JSON.stringify(bookFactory()),
-      isValid: typeof props.validate === 'function' ? props.validate(JSON.stringify(spreadServerFactory())) : true,
-      invalid: typeof props.validate === 'function' ? props.validate(JSON.stringify({})) : true
+      isValid: typeof props.validate === 'function' ? props.validate(JSON.stringify(spreadServerFactory())) : true
     })
   }
 })
