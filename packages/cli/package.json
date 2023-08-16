@@ -8,7 +8,7 @@
   "exports": "./dist/index.mjs",
   "main": "dist/index.mjs",
   "bin": {
-    "mb-cli": "./dist/index.mjs"
+    "mb": "./dist/index.mjs"
   },
   "files": [
     "dist"

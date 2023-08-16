@@ -1,6 +1,6 @@
 ![GitHub CI](https://github.com/magiclabs-ai/mb-client/actions/workflows/ci.yml/badge.svg) [![npm version](https://img.shields.io/npm/v/@magiclabs.ai/magicbook-cli.svg)](https://www.npmjs.com/package/@magiclabs.ai/magicbook-cli)
 
-# magicbook-cli
+# MagicBook Command Line Interface
 
 TypeScript CLI to use the Magicbook API.
 
@@ -14,10 +14,10 @@ npm install -g @magiclabs.ai/magicbook-cli@latest
 
 Use the config command to set your credentials.
 ```bash
-mb-cli config
+mb config
 ```
 
-Use the assistance command to access a comprehensive list of the commands that are currently accessible.
+Use `mb [command] --help` for more information about a command.
 ```bash
-mb-cli --help
+mb --help
 ```

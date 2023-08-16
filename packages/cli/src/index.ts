@@ -12,8 +12,8 @@ import {storyboardItems} from './commands/storyboard-items'
 (async () => {
   const packageInfo = await getPackageInfo()
   const program = new Command()
-    .name('mb-cli')
-    .description('MagicBook CLI')
+    .name('mb')
+    .description('MagicBook Command Line Interface')
     .version(
       packageInfo.version || '1.0.0',
       '-v, --version',
