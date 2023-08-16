@@ -59,9 +59,9 @@ books.command('update')
         const response = await prompts({
           type: 'text',
           name: 'book',
-          message: 'Enter the book object:',
-          validate: value => BookPropsSchema.parse(value) as unknown as boolean
+          message: 'Enter the book object:'
         })
+        BookPropsSchema.parse(JSON.parse(response.book))
         args.book = response.book
       }
     })

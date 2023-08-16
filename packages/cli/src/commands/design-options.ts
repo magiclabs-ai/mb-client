@@ -38,7 +38,7 @@ designOptions.command('get-densities')
         const response = await prompts({
           type: 'autocomplete',
           name: 'imageFilteringLevel',
-          message: 'Enter the image count:',
+          message: 'Pick the image filtering level:',
           choices: imageFilteringLevels.map((option) => ({title: option.toString(), value: option})),
           initial: imageFilteringLevels[0]
         })

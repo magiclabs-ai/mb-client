@@ -48,9 +48,9 @@ images.command('create')
         const response = await prompts({
           type: 'text',
           name: 'image',
-          message: 'Enter the image object:',
-          validate: value => imageServerSchema.parse(JSON.parse(value)) as unknown as boolean
+          message: 'Enter the image object:'
         })
+        imageServerSchema.parse(JSON.parse(response.image))
         args.image = response.image
       }
     })
@@ -120,9 +120,9 @@ images.command('update')
         const response = await prompts({
           type: 'text',
           name: 'image',
-          message: 'Enter the image object:',
-          validate: value => imageServerSchema.parse(JSON.parse(value)) as unknown as boolean
+          message: 'Enter the image object:'
         })
+        imageServerSchema.parse(JSON.parse(response.image))
         args.image = response.image
       }
     })

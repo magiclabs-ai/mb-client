@@ -42,16 +42,11 @@ spreads.command('create')
         })
         args.bookId = response.bookId
       }
-      if (args.spread) {
+      try {
         spreadServerSchema.parse(JSON.parse(args.spread))
-      } else {
-        const response = await prompts({
-          type: 'text',
-          name: 'spread',
-          message: 'Enter the spread object:',
-          validate: value => spreadServerSchema.parse(JSON.parse(value)) as unknown as boolean
-        })
-        args.spread = response.spread
+      } catch (e) {
+        log(chalk.red.bold('🚨 - You need to specify a spread object using: --spread'))
+        process.exit(1)
       }
     })
     isValid && await handleAPIResponse(async () => {
@@ -71,7 +66,7 @@ spreads.command('get')
         const response = await prompts({
           type: 'text',
           name: 'spreadId',
-          message: 'Enter the Spread id:'
+          message: 'Enter the spread id:'
         })
         args.spreadId = response.spreadId
       }
@@ -114,16 +109,11 @@ spreads.command('update')
         })
         args.bookId = response.bookId
       }
-      if (args.spread) {
+      try {
         spreadServerSchema.parse(JSON.parse(args.spread))
-      } else {
-        const response = await prompts({
-          type: 'text',
-          name: 'spread',
-          message: 'Enter the spread object:',
-          validate: value => spreadServerSchema.parse(JSON.parse(value)) as unknown as boolean
-        })
-        args.spread = response.spread
+      } catch (e) {
+        log(chalk.red.bold('🚨 - You need to specify a spread object using: --spread'))
+        process.exit(1)
       }
     })
     isValid && await handleAPIResponse(async () => {
@@ -158,7 +148,7 @@ spreads.command('delete')
     })
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.spreads.delete(args.spreadId, args.bookId)
-      log(chalk.bold('❌ - Spread deleted!'))
+      log(chalk.bold('🗑️ - Spread deleted!'))
       return formatReturnJSON(res)
     })
   })
