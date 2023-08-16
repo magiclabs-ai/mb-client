@@ -27,7 +27,7 @@ books.command('get')
         const response = await prompts({
           type: 'text',
           name: 'bookId',
-          message: 'Enter the Book id:'
+          message: 'Enter the book id:'
         })
         args.bookId = response.bookId
       }
@@ -49,7 +49,7 @@ books.command('update')
         const response = await prompts({
           type: 'text',
           name: 'bookId',
-          message: 'Enter the Book id:'
+          message: 'Enter the book id:'
         })
         args.bookId = response.bookId
       }
@@ -59,10 +59,10 @@ books.command('update')
         const response = await prompts({
           type: 'text',
           name: 'book',
-          message: 'Enter the Book object:',
+          message: 'Enter the book object:',
           validate: value => BookPropsSchema.safeParse(JSON.parse(value)).success 
             ? true 
-            : 'Please enter a valid Book object'
+            : 'Please enter a valid book object'
         })
         args.book = response.book
       }
@@ -83,7 +83,7 @@ books.command('cancel')
         const response = await prompts({
           type: 'text',
           name: 'bookId',
-          message: 'Enter the Book id:'
+          message: 'Enter the book id:'
         })
         args.bookId = response.bookId
       }
@@ -104,7 +104,7 @@ books.command('delete')
         const response = await prompts({
           type: 'text',
           name: 'bookId',
-          message: 'Enter the Book id:'
+          message: 'Enter the book id:'
         })
         args.bookId = response.bookId
       }
@@ -125,7 +125,7 @@ books.command('galleon')
         const response = await prompts({
           type: 'text',
           name: 'bookId',
-          message: 'Enter the Book id:'
+          message: 'Enter the book id:'
         })
         args.bookId = response.bookId
       }

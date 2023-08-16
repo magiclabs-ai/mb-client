@@ -16,7 +16,7 @@ storyboardItems.command('list')
         const response = await prompts({
           type: 'text',
           name: 'bookId',
-          message: 'Enter the Book id:'
+          message: 'Enter the book id:'
         })
         args.bookId = response.bookId
       }

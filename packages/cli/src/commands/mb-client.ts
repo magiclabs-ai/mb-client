@@ -5,7 +5,7 @@ import {
 } from '@/client/src/index'
 import {Option, program} from 'commander'
 import {actionSetup, msToSeconds} from '../utils/toolbox'
-import {camelCaseToKebabCase} from '../../../../core/utils/toolbox'
+import {camelCaseToKebabCase, camelCaseToWords} from '@/core/utils/toolbox'
 import {faker} from '@faker-js/faker'
 import {log} from 'console'
 import chalk from 'chalk'
@@ -28,7 +28,7 @@ newDesignRequest.action(async (args) => {
       const response = await prompts({
         type: 'autocomplete',
         name: key,
-        message: `Pick the ${key}:`,
+        message: `Pick the ${camelCaseToWords(key)}:`,
         choices: options.map((option) => ({title: option.toString(), value: option})),
         initial: options[0]
       })
@@ -37,10 +37,10 @@ newDesignRequest.action(async (args) => {
   }
 
   const client = new MagicBookClient(config.apiKey, config.apiHost, config.wsHost)
-  log(chalk.bold('💿 - Init Client'))
+  log(chalk.bold('💿 - Init client'))
 
   const designRequest = await client.createDesignRequest(args)
-  log(chalk.bold('🎨 - Design Request Created'))
+  log(chalk.bold('🎨 - Design request created'))
 
   const imageUploadBar = new cliProgress.SingleBar({
     format: 'Uploaded images | {bar} | {percentage}% || {value}/{total} Images'
@@ -65,7 +65,7 @@ newDesignRequest.action(async (args) => {
     imageUploadBar.increment()
   }))
   imageUploadBar.stop()
-  log(chalk.bold('🌠 - Images Uploaded'))
+  log(chalk.bold('🌠 - Images uploaded'))
   // eslint-disable-next-line prefer-const
   let startAt: Date
   const creationProgressBar = new cliProgress.SingleBar({
@@ -83,13 +83,13 @@ newDesignRequest.action(async (args) => {
       const isSlow = duration > 30
       creationProgressBar.stop()
       log(chalk.bold[isSlow ? 'yellow' : 'green'](
-        `${isSlow ? '🚜 ' : '🏎️ '} - Design Request Completed in ${duration}s`
+        `${isSlow ? '🚜 ' : '🏎️ '} - Design request completed in ${duration}s`
       ))
       log(chalk.bold(`📋 - mb-web-demo preview: https://mb-web-demo-dev.vercel.app/book/${designRequest.parentId}`))
     }
   })
-  log(chalk.bold('🚀 - Submitting Design Request'))
+  log(chalk.bold('🚀 - Submitting design request'))
   startAt = new Date()
   designRequest.submit()
-  creationProgressBar.start(100, 0, {title: 'Submitting Design Request'})
+  creationProgressBar.start(100, 0, {title: 'Submitting design request'})
 })

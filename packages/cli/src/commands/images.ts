@@ -17,7 +17,7 @@ images.command('list')
         const response = await prompts({
           type: 'text',
           name: 'bookId',
-          message: 'Enter the Book id:'
+          message: 'Enter the book id:'
         })
         args.bookId = response.bookId
       }
@@ -38,7 +38,7 @@ images.command('create')
         const response = await prompts({
           type: 'text',
           name: 'bookId',
-          message: 'Enter the Book id:'
+          message: 'Enter the book id:'
         })
         args.bookId = response.bookId
       }
@@ -73,7 +73,7 @@ images.command('get')
         const response = await prompts({
           type: 'text',
           name: 'bookId',
-          message: 'Enter the Book id:'
+          message: 'Enter the book id:'
         })
         args.bookId = response.bookId
       }
@@ -88,7 +88,7 @@ images.command('get')
     })
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.images.retrieve(args.imageId, args.bookId)
-      log(chalk.bold('🎇 - Image Retrieved!'))
+      log(chalk.bold('🎇 - Image retrieved!'))
       return formatReturnJSON(res)
     })
   })
@@ -104,7 +104,7 @@ images.command('update')
         const response = await prompts({
           type: 'text',
           name: 'bookId',
-          message: 'Enter the Book id:'
+          message: 'Enter the book id:'
         })
         args.bookId = response.bookId
       }
@@ -132,7 +132,7 @@ images.command('update')
     })
     isValid && await handleAPIResponse(async () => {
       const res = await engineAPI.images.update(args.imageId, args.bookId, args.image)
-      log(chalk.yellow.bold('🎇 - Image Updated!'))
+      log(chalk.yellow.bold('🎇 - Image updated!'))
       return formatReturnJSON(res)
     })
   })
@@ -147,7 +147,7 @@ images.command('delete')
         const response = await prompts({
           type: 'text',
           name: 'bookId',
-          message: 'Enter the Book id:'
+          message: 'Enter the book id:'
         })
         args.bookId = response.bookId
       }
@@ -162,6 +162,6 @@ images.command('delete')
     })
     isValid && await handleAPIResponse(async () => {
       await engineAPI.images.delete(args.imageId, args.bookId)
-      log(chalk.bold('🗑️ - Image Deleted!'))
+      log(chalk.bold('🗑️ - Image deleted!'))
     })
   })

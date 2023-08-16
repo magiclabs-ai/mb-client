@@ -17,7 +17,7 @@ spreads.command('list')
         const response = await prompts({
           type: 'text',
           name: 'bookId',
-          message: 'Enter the Book id:'
+          message: 'Enter the book id:'
         })
         args.bookId = response.bookId
       }
@@ -38,7 +38,7 @@ spreads.command('create')
         const response = await prompts({
           type: 'text',
           name: 'bookId',
-          message: 'Enter the Book id:'
+          message: 'Enter the book id:'
         })
         args.bookId = response.bookId
       }
@@ -81,7 +81,7 @@ spreads.command('get')
         const response = await prompts({
           type: 'text',
           name: 'bookId',
-          message: 'Enter the Book id:'
+          message: 'Enter the book id:'
         })
         args.bookId = response.bookId
       }
@@ -104,7 +104,7 @@ spreads.command('update')
         const response = await prompts({
           type: 'text',
           name: 'spreadId',
-          message: 'Enter the Spread id:'
+          message: 'Enter the spread id:'
         })
         args.spreadId = response.spreadId
       }
@@ -112,7 +112,7 @@ spreads.command('update')
         const response = await prompts({
           type: 'text',
           name: 'bookId',
-          message: 'Enter the Book id:'
+          message: 'Enter the book id:'
         })
         args.bookId = response.bookId
       }
@@ -147,7 +147,7 @@ spreads.command('delete')
         const response = await prompts({
           type: 'text',
           name: 'spreadId',
-          message: 'Enter the Spread id:'
+          message: 'Enter the spread id:'
         })
         args.spreadId = response.spreadId
       }
@@ -155,7 +155,7 @@ spreads.command('delete')
         const response = await prompts({
           type: 'text',
           name: 'bookId',
-          message: 'Enter the Book id:'
+          message: 'Enter the book id:'
         })
         args.bookId = response.bookId
       }

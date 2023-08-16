@@ -63,6 +63,10 @@ export function snakeCaseObjectKeysToCamelCase(snakeCaseObject: Record<string, u
   return snakeCaseObject
 }
 
+export function camelCaseToWords(str: string) {
+  return str.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase()
+}
+
 export async function handleAsyncFunction<T>(fn: () => Promise<T>) {
   try {
     return await fn()
