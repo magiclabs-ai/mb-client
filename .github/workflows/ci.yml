@@ -86,5 +86,5 @@ jobs:
     - name: 'Setup CLI'
       run: cd packages/cli/dist && node index.mjs config --api-host ${{secrets.API_HOST}} --ws-host ${{secrets.WS_HOST}} --api-key ${{secrets.API_KEY}}
     - name: 'Test'
-      run: cd packages/cli/dist && node index.mjs design-request new --title TEST --occasion baby --style 6117 --book-size 8x8 --cover-type sc --page-type sp --image-density low --image-filtering-level best --embellishment-level lots --text-sticker-level few
+      run: cd packages/cli/dist && node index.mjs mb-client design-request new --title TEST --occasion baby --style 6117 --book-size 8x8 --cover-type sc --page-type sp --image-density low --image-filtering-level best --embellishment-level lots --text-sticker-level few
 
