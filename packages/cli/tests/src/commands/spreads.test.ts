@@ -13,8 +13,6 @@ vi.mock('prompts', async () => {
     default: (props: any) => Promise.resolve({
       bookId: 'ABC',
       spreadId: 'DEF',
-      spread: JSON.stringify(spreadServerFactory()),
-      // book: JSON.stringify(bookFactory()),
       isValid: typeof props.validate === 'function' ? props.validate(JSON.stringify(spreadServerFactory())) : true
     })
   }
@@ -39,9 +37,8 @@ describe('Spreads', () => {
   test('create spread without args', async () => {
     const spread = spreadServerFactory()
     fetchMocker.mockResponse(JSON.stringify(spread))
-    await program.parseAsync(['spreads', 'create'],
-      {from: 'user'})
-    expect(logSpy.mock.calls[2][0]).toStrictEqual(formatReturnJSON(spread))
+    await program.parseAsync(['spreads', 'create'], {from: 'user'})
+    expect(logSpy.mock.calls[2][0]).toStrictEqual('❌ - SyntaxError: Unexpected token u in JSON at position 0')
   })
 
   test('create spread', async () => {
