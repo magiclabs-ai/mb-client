@@ -2,6 +2,7 @@ import {
   DesignRequest,
   DesignRequestEvent,
   DesignRequestEventDetail,
+  EngineAPI,
   Image,
   MagicBookClient
 } from '@magiclabs.ai/magicbook-client'
@@ -109,6 +110,11 @@ function App() {
           'app': 'mb-client-example'
         }))
     }
+  }
+
+  async function listEmbellishments() {
+    const test = new EngineAPI('https://api.dev-sls.magicbook.io', import.meta.env.VITE_MB_CLIENT_API_KEY as string)
+    await test.embellishments.listForStyle('modern-black-sfly')
   }
 
   return (

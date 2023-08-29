@@ -1,13 +1,12 @@
 import {Book, BookReport, bookPropsSchema} from '../../book'
 import {EngineAPI} from '..'
-import {bindThisToFunctions, handleAsyncFunction} from '@/core/utils/toolbox'
 import {bookCreationRequestSchema} from '../../galleon'
 import {cleanJSON} from '@/core/utils/toolbox'
+import {handleAsyncFunction} from '@/core/utils/toolbox'
 
-export class BooksEndpoints {
+export class BooksEndpoints {  
   // eslint-disable-next-line no-unused-vars
   constructor(private readonly engineAPI: EngineAPI) {
-    bindThisToFunctions(this)
   }
 
   create(book: Partial<Book>) {
@@ -19,16 +18,16 @@ export class BooksEndpoints {
           body: cleanJSON(book)
         }
       })
-      bookPropsSchema.safeParse(res)
-      return new Book(res)
+      const bookProps = bookPropsSchema.parse(res)
+      return new Book(bookProps)
     })
   }
 
   retrieve(bookId: string) {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call({path: `/v1/books/${bookId}`})
-      bookPropsSchema.safeParse(res)
-      return new Book(res)
+      const bookProps = bookPropsSchema.parse(res)
+      return new Book(bookProps)
     })
   }
 
@@ -41,8 +40,8 @@ export class BooksEndpoints {
           body: cleanJSON(book)
         }
       })
-      bookPropsSchema.safeParse(res)
-      return new Book(res)
+      const bookProps = bookPropsSchema.parse(res)
+      return new Book(bookProps)
     })
   }
 
@@ -63,8 +62,8 @@ export class BooksEndpoints {
         path: `/v1/books/${bookId}/cancel`,
         options: {method: 'POST'}
       })
-      bookPropsSchema.safeParse(res)
-      return new Book(res)
+      const bookProps = bookPropsSchema.parse(res)
+      return new Book(bookProps)
     })
   }
 

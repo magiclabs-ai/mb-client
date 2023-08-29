@@ -1,5 +1,6 @@
 import {EngineAPI} from '@/core/models/engine-api'
 import {describe, expect, test} from 'vitest'
+import {faker} from '@faker-js/faker'
 import {fetchMocker} from '../../mocks/fetch'
 import {spreadServerFactory} from '../../factories/spread.factory'
 
@@ -25,6 +26,13 @@ describe('Engine API Spreads Endpoints', () => {
     fetchMocker.mockResponse(JSON.stringify(fakeSpread))
     const image = await engineAPI.spreads.retrieve('spreadId', 'bookId')
     expect(image).toEqual(JSON.parse(JSON.stringify(fakeSpread)))
+  })
+
+  test('retrieve image', async () => {
+    const fakeImageSpread = faker.image.dataUri()
+    fetchMocker.mockResponse(JSON.stringify(fakeImageSpread))
+    const image = await engineAPI.spreads.retrieveImage('spreadId', 'bookId')
+    expect(image).toEqual(JSON.parse(JSON.stringify(fakeImageSpread)))
   })
 
   test('update', async () => {

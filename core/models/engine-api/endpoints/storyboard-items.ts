@@ -1,12 +1,11 @@
 import {EngineAPI} from '..'
 import {StoryboardItemServerSchema} from '../../storyboard-item'
-import {bindThisToFunctions, handleAsyncFunction} from '@/core/utils/toolbox'
+import {handleAsyncFunction} from '@/core/utils/toolbox'
 import {z} from 'zod'
 
 export class StoryboardItemsEndpoints {
   // eslint-disable-next-line no-unused-vars
   constructor(private readonly engineAPI: EngineAPI) {
-    bindThisToFunctions(this)
   }
 
   list(

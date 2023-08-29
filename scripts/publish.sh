@@ -2,7 +2,7 @@
 
 version=$(sed -n 's/.*"version": "\(.*\)".*/\1/p' package.json)
 publishCommand="pnpm publish --no-git-checks --access public --tag"
-packages=("cli" "client")
+packages=("cli")
 baseDir=$PWD
 
 if [[ "$1" == "--canary" ]]; then
@@ -16,5 +16,7 @@ for item in "${packages[@]}"; do
     echo "📦 - $item@$version"
     cd $baseDir/packages/$item/dist
     sed -i "s/\"version\": \".*\"/\"version\": \"$version\"/" package.json
+    pnpm run build
+    cd dist
     eval $publishCommand
 done

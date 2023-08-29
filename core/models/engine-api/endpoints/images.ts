@@ -1,13 +1,12 @@
 import {EngineAPI} from '..'
 import {ImageServer, imageServerSchema} from '../../design-request/image'
-import {bindThisToFunctions, handleAsyncFunction} from '@/core/utils/toolbox'
 import {cleanJSON} from '@/core/utils/toolbox'
+import {handleAsyncFunction} from '@/core/utils/toolbox'
 import {z} from 'zod'
 
 export class ImagesEndpoints {
   // eslint-disable-next-line no-unused-vars
   constructor(private readonly engineAPI: EngineAPI) {
-    bindThisToFunctions(this)
   }
 
   list(bookId: string) {

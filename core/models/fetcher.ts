@@ -22,7 +22,7 @@ export class Fetcher {
     this.options = mergeNestedObject(baseOptions, options || {})
   }
 
-  async call(props: CallProps) {
+  async call<T>(props: CallProps) {
     try {
       if (props.options?.body && typeof props.options.body !== 'string') {
         props.options.body = JSON.stringify(props.options?.body)
@@ -32,9 +32,15 @@ export class Fetcher {
       const res = await fetch(this.cleanUrl((new URL(props.path, this.baseUrl)).href), options)
       if (res.status >= 200 && res.status < 300) {
         try {
-          return await res.json()
+          const result = await res.text()
+          try {
+            return JSON.parse(result) as T
+          } catch (error){
+            return result as T
+          }
         } catch (error) {
-          return {}
+          // console.log(error)
+          return undefined
         }
       } else {
         let detail = res.statusText

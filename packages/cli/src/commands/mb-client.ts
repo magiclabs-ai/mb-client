@@ -83,7 +83,7 @@ newDesignRequest.action(async (args) => {
       const isSlow = duration > 30
       creationProgressBar.stop()
       log(chalk.bold[isSlow ? 'yellow' : 'green'](
-        `${isSlow ? '🚜 ' : '🏎️ '} - Design request completed in ${duration}s`
+        `${isSlow ? '🚜' : '🏎️'} - Design request completed in ${duration}s`
       ))
       log(chalk.bold(`📋 - mb-web-demo preview: https://demo.${config.env}.magicbook.io/book/${designRequest.parentId}`))
     }

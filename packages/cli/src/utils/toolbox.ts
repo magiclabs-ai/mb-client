@@ -21,7 +21,7 @@ export function getConfig() {
   try {
     return JSON.parse(fs.readFileSync(configPath, 'utf-8')) as Config
   } catch (error) {
-    log(chalk.red.bold('❌ - No config file found. Please run the config command: mb-cli config'))
+    log(chalk.red.bold('❌ - No config file found. Please run the config command: mb config'))
   }
 }
 

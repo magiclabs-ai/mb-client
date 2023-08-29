@@ -1,12 +1,11 @@
 import {BookSize, ImageFilteringLevel} from '../../design-request'
 import {EngineAPI} from '..'
-import {bindThisToFunctions, handleAsyncFunction} from '@/core/utils/toolbox'
 import {designOptionsServerSchema} from '../../design-request/design-options'
+import {handleAsyncFunction} from '@/core/utils/toolbox'
 
 export class DesignOptionsEndpoints {
   // eslint-disable-next-line no-unused-vars
   constructor(private readonly engineAPI: EngineAPI) {
-    bindThisToFunctions(this)
   }
 
   retrieve(
