@@ -56,8 +56,12 @@ export function snakeCaseObjectKeysToCamelCase(snakeCaseObject: Record<string, u
       delete snakeCaseObject[key]
     }
     if (typeof snakeCaseObject[camelCaseKey] === 'object') {
-      snakeCaseObject[camelCaseKey] =
-       snakeCaseObjectKeysToCamelCase(snakeCaseObject[camelCaseKey] as Record<string, unknown>)
+      if (snakeCaseObject[camelCaseKey] === null) {
+        snakeCaseObject[camelCaseKey] = null
+      } else {
+        snakeCaseObject[camelCaseKey] =
+         snakeCaseObjectKeysToCamelCase(snakeCaseObject[camelCaseKey] as Record<string, unknown>)
+      }
     }
   })
   return snakeCaseObject

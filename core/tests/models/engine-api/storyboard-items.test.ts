@@ -6,10 +6,17 @@ import {storyboardItemServerFactory} from '../../factories/storyboard-item.facto
 describe('Engine API Storyboard Items Endpoints', () => {
   const engineAPI = new EngineAPI('https://api.magicbook.mock', '123')
 
+  test('retrieve Server Schemas', async () => {
+    const fakeStoryBoardItems = [storyboardItemServerFactory(), storyboardItemServerFactory()]
+    fetchMocker.mockResponse(JSON.stringify(fakeStoryBoardItems))
+    const storyboardItems = await engineAPI.storyboardItems.list({bookId: 'bookId', returnServerSchemas: true})
+    expect(storyboardItems).toStrictEqual(JSON.parse(JSON.stringify(fakeStoryBoardItems)))
+  })
+  
   test('retrieve', async () => {
     const fakeStoryBoardItems = [storyboardItemServerFactory(), storyboardItemServerFactory()]
     fetchMocker.mockResponse(JSON.stringify(fakeStoryBoardItems))
-    const storyboardItems = await engineAPI.storyboardItems.list('bookId')
+    const storyboardItems = await engineAPI.storyboardItems.list({bookId: 'bookId'})
     expect(storyboardItems).toStrictEqual(JSON.parse(JSON.stringify(fakeStoryBoardItems)))
   })
 })

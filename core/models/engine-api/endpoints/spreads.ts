@@ -1,74 +1,99 @@
-import {EngineAPI} from '..'
-import {SpreadServer, spreadServerSchema} from '../../spread'
-import {cleanJSON} from '@/core/utils/toolbox'
+import {EngineAPI, baseEndpointProps} from '..'
+import {Spread, spreadSchema, spreadServerSchema} from '../../spread'
+import {cleanJSON, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 import {handleAsyncFunction} from '@/core/utils/toolbox'
 import {z} from 'zod'
+
+type listProps = baseEndpointProps & {
+  bookId: string
+}
+
+type createProps = baseEndpointProps & {
+  bookId: string
+  spread: Spread
+}
+
+type retrieveProps = baseEndpointProps & {
+  bookId: string
+  spreadId: string
+}
+
+type updateProps = baseEndpointProps & {
+  bookId: string
+  spreadId: string
+  spread: Spread
+}
 
 export class SpreadsEndpoints {
   // eslint-disable-next-line no-unused-vars
   constructor(private readonly engineAPI: EngineAPI) {
   }
 
-  list(
-    bookId: string
-  ) {
+  list({bookId, returnServerSchemas}: listProps) {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Promise <Record<string, unknown>>>({
         path: `/v1/spreads/book/${bookId}`
       })
-      return z.array(spreadServerSchema).parse(res)
+      if (res) {
+        return returnServerSchemas
+          ? z.array(spreadServerSchema).parse(res)
+          : z.array(spreadSchema).parse(snakeCaseObjectKeysToCamelCase(res))
+      }
+      return res
     })
   }
   
-  create(
-    bookId: string,
-    spread: SpreadServer
-  ) {
+  create({bookId, spread, returnServerSchemas}: createProps) {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Promise <Record<string, unknown>>>({
         path: `/v1/spreads/book/${bookId}`,
         options: {
           method: 'POST',
           body: cleanJSON(spread)
         }
       })
-      return spreadServerSchema.parse(res)
+      if (res) {
+        return returnServerSchemas
+          ? z.array(spreadServerSchema).parse(res)
+          : z.array(spreadSchema).parse(snakeCaseObjectKeysToCamelCase(res))
+      }
+      return res
     })
   }
 
-  retrieve(
-    spreadId: string,
-    bookId: string
-  ) {
+  retrieve({bookId, spreadId, returnServerSchemas}: retrieveProps) {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Promise <Record<string, unknown>>>({
         path: `/v1/spreads/${spreadId}/book/${bookId}`
       })
-      return spreadServerSchema.parse(res)
+      if (res) {
+        return returnServerSchemas
+          ? z.array(spreadServerSchema).parse(res)
+          : z.array(spreadSchema).parse(snakeCaseObjectKeysToCamelCase(res))
+      }
+      return res
     })
   }
 
-  update(
-    spreadId: string,
-    bookId: string,
-    spread: SpreadServer
-  ) {
+  update({bookId, spreadId, spread, returnServerSchemas}: updateProps) {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Promise <Record<string, unknown>>>({
         path: `/v1/spreads/${spreadId}/book/${bookId}`,
         options: {
           method: 'PUT',
           body: cleanJSON(spread)
         }
       })
-      return spreadServerSchema.parse(res)
+      if (res) {
+        return returnServerSchemas
+          ? z.array(spreadServerSchema).parse(res)
+          : z.array(spreadSchema).parse(snakeCaseObjectKeysToCamelCase(res))
+      }
+      return res
     })
   }
 
-  delete(
-    spreadId: string,
-    bookId: string
-  ) {
+  delete(spreadId: string, bookId: string) {
     return handleAsyncFunction(async () => {
       await this.engineAPI.fetcher.call({
         path: `/v1/spreads/${spreadId}/book/${bookId}`,
@@ -78,5 +103,4 @@ export class SpreadsEndpoints {
       })
     })
   }
-
 }

@@ -24,7 +24,7 @@ import {designOptionsSchema} from './design-options'
 import {isDesignRequestSubmitted} from '../../data/design-request'
 
 export type Occasion = typeof occasions[number]
-export type Style = keyof typeof styles
+export type StyleId = keyof typeof styles
 export type BookSize = typeof bookSizes[number]
 export type CoverType = typeof coverTypes[number]
 export type PageType = typeof pageTypes[number]
@@ -48,7 +48,7 @@ export type DesignRequestProps = {
   subtitle?: string
   state?: State
   occasion?: Occasion
-  style?: Style
+  style?: StyleId
   bookSize?: BookSize
   coverType?: CoverType
   pageType?: PageType
@@ -72,7 +72,7 @@ export class DesignRequest {
   title: string
   subtitle?: string
   occasion: Occasion
-  style: Style
+  style: StyleId
   bookSize: BookSize
   coverType: CoverType
   pageType: PageType
@@ -97,7 +97,7 @@ export class DesignRequest {
     this.title = designRequestProps?.title || ''
     this.subtitle = designRequestProps?.subtitle
     this.occasion = designRequestProps?.occasion || occasions[0]
-    this.style = designRequestProps?.style || parseInt(Object.keys(styles)[0]) as Style
+    this.style = designRequestProps?.style || parseInt(Object.keys(styles)[0]) as StyleId
     this.bookSize = designRequestProps?.bookSize || bookSizes[0]
     this.coverType = designRequestProps?.coverType || coverTypes[0]
     this.pageType = designRequestProps?.pageType || pageTypes[0]

@@ -114,7 +114,8 @@ function App() {
 
   async function listEmbellishments() {
     const test = new EngineAPI('https://api.dev-sls.magicbook.io', import.meta.env.VITE_MB_CLIENT_API_KEY as string)
-    await test.embellishments.listForStyle('modern-black-sfly')
+    // await test.embellishments.listForStyle('modern-black-sfly')
+    console.log(await test.styles.list())
   }
 
   return (
