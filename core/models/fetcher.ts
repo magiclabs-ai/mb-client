@@ -29,7 +29,7 @@ export class Fetcher {
       }
       const baseOptions = {...this.options}
       const options = props.options ? mergeNestedObject(baseOptions, props.options) : baseOptions
-      const res = await fetch(this.cleanUrl((new URL(props.path, this.baseUrl)).href), options)
+      const res = await fetch(this.cleanUrl(`${this.baseUrl}${props.path}`), options)
       if (res.status >= 200 && res.status < 300) {
         try {
           const result = await res.text()
@@ -55,6 +55,6 @@ export class Fetcher {
   }
 
   cleanUrl(url: string) {
-    return url.replaceAll(' ', '').trim()
+    return url.replace(/\/\//g, '/').replaceAll(' ', '').trim()
   }
 }
