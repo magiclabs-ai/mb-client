@@ -127,13 +127,15 @@ export class DesignRequest {
   }
 
   async setGuid(guid: string) {
-    this.guid = guid
-    if (isDesignRequestSubmitted(this.state)) {
+    if (!isDesignRequestSubmitted(this.state)) {
+      throw new Error('Design request not submitted')
+    } else {
+      this.guid = guid
       this.updateDesignRequest(
         (await this.client.engineAPI.books.update(this.parentId, this.toBook())).toDesignRequestProps()
       )
+      return this.guid
     }
-    return this.guid
   }
  
   async cancel() {
@@ -178,7 +180,7 @@ export class DesignRequest {
 
   private timeoutHandler() {
     return setTimeout(async () => {
-      this.eventHandler(timeoutMessage)
+      await this.eventHandler(timeoutMessage)
     }, designRequestTimeout)
   }
 
