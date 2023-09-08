@@ -127,15 +127,13 @@ export class DesignRequest {
   }
 
   async setGuid(guid: string) {
-    if (!isDesignRequestSubmitted(this.state)) {
-      throw new Error('Design request not submitted')
-    } else {
-      this.guid = guid
+    this.guid = guid
+    if (isDesignRequestSubmitted(this.state)) {
       this.updateDesignRequest(
         (await this.client.engineAPI.books.update(this.parentId, this.toBook())).toDesignRequestProps()
       )
-      return this.guid
     }
+    return this.guid
   }
  
   async cancel() {
