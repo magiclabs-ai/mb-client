@@ -6,9 +6,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DESIGN_REQUEST_TIMEOUT: ${{secrets.DESIGN_REQUEST_TIMEOUT}}
-      WEBSOCKET_HOST: ${{secrets.WEBSOCKET_HOST}}
-      API_HOST: ${{secrets.API_HOST}}
+      DESIGN_REQUEST_TIMEOUT: ${{vars.DESIGN_REQUEST_TIMEOUT}}
+      WEBSOCKET_HOST: ${{vars.WEBSOCKET_HOST}}
+      API_HOST: ${{vars.API_HOST}}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -22,7 +22,7 @@ jobs:
           run_install: false
       - run: pnpm i
       - run: pnpm run turbo:coverage
-      - run: chmod +x ./scripts/publish.sh && ./scripts/publish.sh ${{github.event.release.prerelease && '--canary' || ''}}
+      - run: chmod +x ./scripts/publish.sh && pnpm run pub:${{github.event.release.prerelease && 'canary' || 'release'}}
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
