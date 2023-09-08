@@ -49,6 +49,15 @@ describe('Engine API Book Endpoints', () => {
     expect(book).toBeUndefined()
   })
 
+  test('delete', async () => {
+    fetchMocker.mockResponse('')
+    const book = await engineAPI.books.report('123', {
+      error: 'timeout',
+      step: 'ingesting'
+    })
+    expect(book).toBeUndefined()
+  })
+
   test('retrieveGalleon', async () => {
     const fakeGalleon = galleonFactory()
     fetchMocker.mockResponse(JSON.stringify(fakeGalleon))

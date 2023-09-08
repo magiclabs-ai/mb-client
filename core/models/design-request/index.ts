@@ -11,6 +11,8 @@ import {
   occasions,
   pageTypes,
   states,
+  statesToCloseWS,
+  statesToReport,
   styles,
   textStickerLevels,
   timeoutMessage
@@ -55,8 +57,8 @@ export type DesignRequestProps = {
 }
 export type State = typeof states[number]
 export type DesignRequestEventDetail = {
-  state: State
-  slug: string
+  state: string
+  slug: State
   progress: number
   message: string
 }
@@ -64,6 +66,7 @@ export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>
 
 export class DesignRequest {
   private webSocket: WebSocket
+  // private events: DesignRequestEvent[]
   state: State
   parentId: string
   title: string
@@ -139,7 +142,7 @@ export class DesignRequest {
     if (this.state === 'cancelled') {
       throw new Error('Design request already cancelled')
     } else if (this.state === 'ready') {
-      throw new Error('Design request already ready')
+      throw new Error('Design request already finished')
     } else if (!isDesignRequestSubmitted(this.state)) {
       throw new Error('Design request not submitted')
     } else {
@@ -163,9 +166,16 @@ export class DesignRequest {
   private async eventHandler(detail: DesignRequestEventDetail, type='MagicBook.designRequestUpdated') {
     const customEvent = new CustomEvent<DesignRequestEventDetail>(type, {detail})
     window.dispatchEvent(customEvent)
-    if (['error', 'ready', 'cancelled'].includes(detail.slug)) {
+    if (statesToCloseWS.includes(detail.slug)) {
+      if (statesToReport.includes(detail.slug)) {
+        await this.client.engineAPI.books.report(this.parentId, {
+          error: detail.slug === 'error' ? 'design' : 'timeout',
+          step: this.state
+        })
+      }
       this.webSocket.close()
     }
+    this.state = detail.slug
   }
 
   private timeoutHandler() {
@@ -178,11 +188,10 @@ export class DesignRequest {
     let timeout: ReturnType<typeof setTimeout>
     this.webSocket.onmessage = (event) => {
       const detail = JSON.parse(event.data) as DesignRequestEventDetail
-      if (this.state !== detail.state) {
+      if (this.state !== detail.slug) {
         timeout && clearTimeout(timeout)
         timeout = this.timeoutHandler()
         this.eventHandler(detail)
-        this.state = detail.state
       }
     }
     this.webSocket.onclose = () => clearTimeout(timeout)

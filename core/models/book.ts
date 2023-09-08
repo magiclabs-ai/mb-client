@@ -23,6 +23,11 @@ import {
 import {getStyleIdBySlug, snakeCaseObjectKeysToCamelCase} from '../utils/toolbox'
 import {z} from 'zod'
 
+export type BookReport = {
+  error: 'timeout'|'design'
+  step: string
+}
+
 export type BookDesignRequestProps = {
   occasion: Occasion
   style: string

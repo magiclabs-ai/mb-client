@@ -1,4 +1,4 @@
-import {Book, BookPropsSchema} from '../../book'
+import {Book, BookPropsSchema, BookReport} from '../../book'
 import {EngineAPI} from '..'
 import {bindThisToFunctions, handleAsyncFunction} from '@/core/utils/toolbox'
 import {bookCreationRequestSchema} from '../../galleon'
@@ -53,6 +53,18 @@ export class BooksEndpoints {
       })
       BookPropsSchema.safeParse(res)
       return new Book(res)
+    })
+  }
+
+  report(bookId: string, report: BookReport) {
+    return handleAsyncFunction(async () => {
+      await this.engineAPI.fetcher.call({
+        path: `/v1/books/${bookId}/report`,
+        options: {
+          method: 'POST',
+          body: cleanJSON(report)
+        }
+      })
     })
   }
 

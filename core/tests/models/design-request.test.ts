@@ -167,7 +167,7 @@ describe('Design Request', async () => {
     expect(dispatchEventSpy.mock.calls.length).toStrictEqual(3)
   })
 
-  test('submitDesignRequest with error', async () => {
+  test('submitDesignRequest with timeout error', async () => {
     const designRequest = await createDesignRequest({state: 'new'})
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
     vi.useFakeTimers()
@@ -188,7 +188,29 @@ describe('Design Request', async () => {
     ws.mock.results[0].value.onmessage({data: JSON.stringify(embellishingDetail)})
     vi.advanceTimersToNextTimer()
     const embellishingEvent = dispatchEventSpy.mock.calls[2][0] as DesignRequestEvent
-    expect(embellishingEvent['detail']['state']).toStrictEqual('error')
+    expect(embellishingEvent['detail']['slug']).toStrictEqual('timeout')
+  })
+
+  test('submitDesignRequest with design error', async () => {
+    const designRequest = await createDesignRequest({state: 'new'})
+    const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
+    fetchMocker.mockResponse(JSON.stringify(bookFactory({state: 'submitted'})))
+    const submitDesignRequest = await designRequest.submit({
+      imageDensity: 'high',
+      embellishmentLevel: 'few',
+      textStickerLevel: 'few'
+    })
+    ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'submitted'})})
+    expect(submitDesignRequest).toStrictEqual(designRequest)
+    const embellishingDetail = {
+      state: 'error',
+      slug: 'error',
+      progress: 100,
+      message: 'Design failed'
+    }
+    ws.mock.results[0].value.onmessage({data: JSON.stringify(embellishingDetail)})
+    const embellishingEvent = dispatchEventSpy.mock.calls[1][0] as DesignRequestEvent
+    expect(embellishingEvent['detail']['slug']).toStrictEqual('error')
   })
   
   test('setGuid', async () => {
@@ -202,7 +224,6 @@ describe('Design Request', async () => {
     await designRequest.setGuid(faker.string.uuid())
     expect(designRequest).toThrowError('Design request not submitted')
   })
-
 
   test.fails('cancel when dr is already cancelled', async () => {
     const designRequest = await createDesignRequest({state: 'cancelled'})

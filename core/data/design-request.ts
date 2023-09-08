@@ -6,15 +6,18 @@ export const states = [
   'submitted',
   'storyboarding',
   'deduplication',
-  'image selection',
+  'image-selection',
   'designing',
   'layouting',
   'embellishing',
   'polishing',
   'ready',
+  'timeout',
   'error',
   'cancelled'
 ] as const
+export const statesToCloseWS: ReadonlyArray<typeof states[number]> = ['error', 'timeout', 'ready', 'cancelled'] as const
+export const statesToReport: ReadonlyArray<typeof states[number]> = ['error', 'timeout'] as const
 export const isDesignRequestSubmitted = (state: string) => !['new', 'ingesting'].includes(state)
 export const occasions = [
   'baby',
@@ -203,10 +206,10 @@ export const imageFilteringLevels = ['best', 'most', 'all'] as const
 export const embellishmentLevels = ['none', 'few', 'lots'] as const
 export const textStickerLevels = ['none', 'few', 'lots'] as const
 export const timeoutMessage: DesignRequestEventDetail = {
-  state: 'error',
-  slug: 'error',
+  state: 'timeout',
+  slug: 'timeout',
   progress: 100,
-  message: 'Design failed'
+  message: 'Design timed out'
 }
 export const cancelledMessage: DesignRequestEventDetail = {
   state: 'cancelled',
