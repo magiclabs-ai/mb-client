@@ -1,6 +1,6 @@
 {
   "name": "mb-client",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "description": "",
   "keywords": [],
   "license": "ISC",
@@ -9,8 +9,8 @@
   "scripts": {
     "coverage": "vitest --config ./configs/vitest/vitest.config.ts run --coverage",
     "lint": "eslint . --ext js,jsx,ts,tsx --config ./.eslintrc.json --no-eslintrc",
-    "pub:canary": "./scripts/publish.sh --canary",
-    "pub:release": "./scripts/publish.sh",
+    "pub:canary": "pnpm run turbo:build && ./scripts/publish.sh --canary",
+    "pub:release": "pnpm run turbo:build && ./scripts/publish.sh",
     "turbo:build": "pnpm i && turbo run build",
     "turbo:coverage": "turbo run coverage"
   },
