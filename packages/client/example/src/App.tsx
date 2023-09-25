@@ -29,7 +29,6 @@ function App() {
   }
 
   useEffect(() => {
-    console.log(designRequestEventDetail, currentDesignRequest)
     if (designRequestEventDetail?.slug === 'ready' && currentDesignRequest) {
       currentDesignRequest.getJSON().then((res) => {
         console.log('designRequest.getJSON:', res)
@@ -89,15 +88,14 @@ function App() {
       embellishmentLevel: 'few',
       textStickerLevel: 'none'
     }))
-    // console.log('designRequest.setGuid:', await designRequest.setGuid(faker.string.uuid()))
   }
 
   async function cancelDesignRequest() {
     if (currentDesignRequest) {
       console.log('designRequest.cancel:', await currentDesignRequest.cancel())
     }
-    // setDesignRequest(null)
-    // setIsCreatingDesignRequest(false)
+    setDesignRequest(null)
+    setIsCreatingDesignRequest(false)
   }
 
   return (
