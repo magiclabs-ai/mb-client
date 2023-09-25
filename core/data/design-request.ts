@@ -210,13 +210,13 @@ export const imageDensities = ['low', 'medium', 'high'] as const
 export const imageFilteringLevels = ['best', 'most', 'all'] as const
 export const embellishmentLevels = ['none', 'few', 'lots'] as const
 export const textStickerLevels = ['none', 'few', 'lots'] as const
-export const timeoutMessage: DesignRequestEventDetail = {
+export const timeoutEventDetail: DesignRequestEventDetail = {
   state: 'timeout',
   slug: 'timeout',
   progress: 100,
   message: 'Design timed out'
 }
-export const cancelledMessage: DesignRequestEventDetail = {
+export const cancelledEventDetail: DesignRequestEventDetail = {
   state: 'cancelled',
   slug: 'cancelled',
   progress: 100,

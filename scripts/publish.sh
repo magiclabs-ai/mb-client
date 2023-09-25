@@ -13,9 +13,8 @@ else
 fi
 
 for item in "${packages[@]}"; do
-    echo "Package: $item@$version"
-    cd $baseDir/packages/$item
+    echo "📦 - $item@$version"
+    cd $baseDir/packages/$item/dist
     sed -i "s/\"version\": \".*\"/\"version\": \"$version\"/" package.json
-    cd dist
     eval $publishCommand
 done

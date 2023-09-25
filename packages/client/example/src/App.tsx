@@ -29,6 +29,7 @@ function App() {
   }
 
   useEffect(() => {
+    console.log(designRequestEventDetail, currentDesignRequest)
     if (designRequestEventDetail?.slug === 'ready' && currentDesignRequest) {
       currentDesignRequest.getJSON().then((res) => {
         console.log('designRequest.getJSON:', res)
@@ -82,13 +83,13 @@ function App() {
     }))
     console.log('designRequest.images.length:', designRequest.images.length)
     console.log('designRequest.getOptions:', await designRequest.getOptions())
+    setDesignRequest(designRequest)
     console.log('designRequest.submit:', await designRequest.submit({
       imageDensity: 'high',
       embellishmentLevel: 'few',
       textStickerLevel: 'none'
     }))
-    console.log('designRequest.setGuid:', await designRequest.setGuid(faker.string.uuid()))
-    setDesignRequest(designRequest)
+    // console.log('designRequest.setGuid:', await designRequest.setGuid(faker.string.uuid()))
   }
 
   async function cancelDesignRequest() {

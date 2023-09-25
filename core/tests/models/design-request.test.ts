@@ -1,6 +1,7 @@
 import {
   DesignRequest,
   DesignRequestEvent,
+  DesignRequestEventDetail,
   DesignRequestProps
 } from '@/core/models/design-request'
 import {Image, ImageServer, Images} from '@/core/models/design-request/image'
@@ -17,7 +18,8 @@ import {
   occasions,
   pageTypes,
   styles,
-  textStickerLevels
+  textStickerLevels,
+  timeoutEventDetail
 } from '@/core/data/design-request'
 import {designOptionsServerFactory} from '@/core/tests/factories/design-options.factory'
 import {faker} from '@faker-js/faker'
@@ -26,7 +28,6 @@ import {galleonFactory} from '@/core/tests/factories/galleon.factory'
 import {snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 
 describe('Design Request', async () => {
-  // let designRequest: DesignRequest
   let ws: SpyInstance<[url: string | URL, protocols?: string | string[] | undefined], WebSocket>
   const webSocketHost = 'wss://api.magicbook.mock'
   const client = new MagicBookClient('123', 'https://api.magicbook.mock', webSocketHost)
@@ -167,50 +168,38 @@ describe('Design Request', async () => {
     expect(dispatchEventSpy.mock.calls.length).toStrictEqual(3)
   })
 
-  test('submitDesignRequest with timeout error', async () => {
-    const designRequest = await createDesignRequest({state: 'new'})
+  async function eventHandlerTester(expectedState: string, eventDetail: DesignRequestEventDetail) {
+    const designRequest = await createDesignRequest({state: 'submitted'})
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
-    vi.useFakeTimers()
-    fetchMocker.mockResponse(JSON.stringify(bookFactory({state: 'submitted'})))
-    const submitDesignRequest = await designRequest.submit({
-      imageDensity: 'high',
-      embellishmentLevel: 'few',
-      textStickerLevel: 'few'
-    })
-    ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'submitted'})})
-    expect(submitDesignRequest).toStrictEqual(designRequest)
-    const embellishingDetail = {
-      state: 'embellishing',
-      slug: 'embellishing',
-      progress: 50,
-      message: 'Placing embellishments'
-    }
-    ws.mock.results[0].value.onmessage({data: JSON.stringify(embellishingDetail)})
-    vi.advanceTimersToNextTimer()
-    const embellishingEvent = dispatchEventSpy.mock.calls[2][0] as DesignRequestEvent
-    expect(embellishingEvent['detail']['slug']).toStrictEqual('timeout')
-  })
+    await designRequest.eventHandler(eventDetail)
+    const event = dispatchEventSpy.mock.calls[0][0] as DesignRequestEvent
+    expect(event['detail']['slug']).toStrictEqual(expectedState)
+    expect(designRequest.state).toStrictEqual(expectedState)
+  }
 
-  test('submitDesignRequest with design error', async () => {
-    const designRequest = await createDesignRequest({state: 'new'})
-    const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
-    fetchMocker.mockResponse(JSON.stringify(bookFactory({state: 'submitted'})))
-    const submitDesignRequest = await designRequest.submit({
-      imageDensity: 'high',
-      embellishmentLevel: 'few',
-      textStickerLevel: 'few'
-    })
-    ws.mock.results[0].value.onmessage({data: JSON.stringify({state: 'submitted'})})
-    expect(submitDesignRequest).toStrictEqual(designRequest)
-    const embellishingDetail = {
-      state: 'error',
-      slug: 'error',
-      progress: 100,
+
+  test('eventHandler with timeout event', async () => {
+    await eventHandlerTester('timeout', timeoutEventDetail)
+  })
+  
+  test('eventHandler with error event', async () => {
+    const expectedState = 'error'
+    const errorEventDetail = {
+      state: expectedState,
+      slug: expectedState,
+      progress: 0,
       message: 'Design failed'
     }
-    ws.mock.results[0].value.onmessage({data: JSON.stringify(embellishingDetail)})
-    const embellishingEvent = dispatchEventSpy.mock.calls[1][0] as DesignRequestEvent
-    expect(embellishingEvent['detail']['slug']).toStrictEqual('error')
+    await eventHandlerTester(expectedState, errorEventDetail)
+  })
+
+  test('timeoutHandler', async () => {
+    const designRequest = await createDesignRequest({state: 'submitted'})
+    const spy = vi.spyOn(designRequest, 'eventHandler')
+    vi.useFakeTimers()
+    designRequest.timeoutHandler()
+    vi.advanceTimersToNextTimer()
+    expect(spy).toHaveBeenCalledWith(timeoutEventDetail)
   })
   
   test('setGuid', async () => {

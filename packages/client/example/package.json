@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@faker-js/faker": "^8.0.1",
-    "@magiclabs.ai/magicbook-client": "file:../dist",
+    "@magiclabs.ai/magicbook-client": "0.6.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

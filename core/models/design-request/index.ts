@@ -3,7 +3,7 @@ import {Images} from './image'
 import {MagicBookClient} from '../client'
 import {
   bookSizes,
-  cancelledMessage,
+  cancelledEventDetail,
   coverTypes,
   embellishmentLevels,
   imageDensities,
@@ -15,7 +15,7 @@ import {
   statesToReport,
   styles,
   textStickerLevels,
-  timeoutMessage
+  timeoutEventDetail
 } from '@/core/data/design-request'
 import {camelCaseObjectKeysToSnakeCase, cleanJSON, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 import {designOptionsSchema} from './design-options'
@@ -150,7 +150,7 @@ export class DesignRequest {
         (await this.client.engineAPI.books.cancel(this.parentId)).toDesignRequestProps()
       )
       this.state = 'cancelled'
-      await this.eventHandler(cancelledMessage)
+      await this.eventHandler(cancelledEventDetail)
       return this
     }
   }
@@ -165,7 +165,6 @@ export class DesignRequest {
 
   private async eventHandler(detail: DesignRequestEventDetail, type='MagicBook.designRequestUpdated') {
     const customEvent = new CustomEvent<DesignRequestEventDetail>(type, {detail})
-    window.dispatchEvent(customEvent)
     if (statesToCloseWS.includes(detail.slug)) {
       this.webSocket.close()
       if (statesToReport.includes(detail.slug)) {
@@ -176,22 +175,23 @@ export class DesignRequest {
       }
     }
     this.state = detail.slug
+    window.dispatchEvent(customEvent)
   }
 
   private timeoutHandler() {
     return setTimeout(async () => {
-      await this.eventHandler(timeoutMessage)
+      await this.eventHandler(timeoutEventDetail)
     }, designRequestTimeout)
   }
 
   private async getProgress() {
     let timeout: ReturnType<typeof setTimeout>
-    this.webSocket.onmessage = (event) => {
+    this.webSocket.onmessage = async (event) => {
       const detail = JSON.parse(event.data) as DesignRequestEventDetail
       if (this.state !== detail.slug) {
         timeout && clearTimeout(timeout)
         timeout = this.timeoutHandler()
-        this.eventHandler(detail)
+        await this.eventHandler(detail)
       }
     }
     this.webSocket.onclose = () => clearTimeout(timeout)
