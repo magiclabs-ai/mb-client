@@ -9,10 +9,10 @@
   "scripts": {
     "coverage": "vitest --config ./configs/vitest/vitest.config.ts run --coverage",
     "lint": "eslint . --ext js,jsx,ts,tsx --config ./.eslintrc.json --no-eslintrc",
-    "pub:canary": "pnpm run turbo:build && ./scripts/publish.sh --canary",
-    "pub:release": "pnpm run turbo:build && ./scripts/publish.sh",
+    "pub:canary": "pnpm run build:prod && ./scripts/publish.sh --canary",
+    "pub:release": "pnpm run build:prod && ./scripts/publish.sh",
     "turbo:build": "pnpm i && turbo run build",
-    "turbo:coverage": "turbo run coverage"
+    "turbo:coverage": "./scripts/build/before.sh --watch && turbo run coverage"
   },
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
