@@ -44,6 +44,7 @@ export const DesignRequestOptions = {
 }
 export type DesignRequestProps = {
   title?: string
+  subtitle?: string
   state?: State
   occasion?: Occasion
   style?: Style
@@ -66,10 +67,10 @@ export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>
 
 export class DesignRequest {
   private webSocket: WebSocket
-  // private events: DesignRequestEvent[]
   state: State
   parentId: string
   title: string
+  subtitle?: string
   occasion: Occasion
   style: Style
   bookSize: BookSize
@@ -88,6 +89,7 @@ export class DesignRequest {
     this.webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
     this.state = designRequestProps?.state || states[0]
     this.title = designRequestProps?.title || ''
+    this.subtitle = designRequestProps?.subtitle
     this.occasion = designRequestProps?.occasion || occasions[0]
     this.style = designRequestProps?.style || parseInt(Object.keys(styles)[0]) as Style
     this.bookSize = designRequestProps?.bookSize || bookSizes[0]
@@ -211,6 +213,7 @@ export class DesignRequest {
       id: designRequest.parentId,
       guid: designRequest.guid,
       title: designRequest.title,
+      subtitle: designRequest.subtitle,
       design_request: bookDesignRequest,
       state: designRequest.state
     })

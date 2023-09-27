@@ -79,6 +79,7 @@ export const bookDesignRequestSchema = z.object({
 export const BookPropsSchema = z.object({
   id: z.string().optional(),
   title: z.string(),
+  subtitle: z.string().optional(),
   design_request: bookDesignRequestSchema,
   state: z.enum(states).optional(),
   guid: z.string().optional(),
@@ -89,6 +90,7 @@ export type BookProps = z.infer<typeof BookPropsSchema>
 export class Book {
   id: string
   title: string
+  subtitle?: string
   design_request: BookDesignRequest
   state?: State
   guid?: string
@@ -97,6 +99,7 @@ export class Book {
   constructor(props: BookProps) {
     this.id = props.id || ''
     this.title = props.title
+    this.subtitle = props.subtitle
     this.design_request = new BookDesignRequest(props.design_request)
     this.state = props.state
     this.guid = props.guid

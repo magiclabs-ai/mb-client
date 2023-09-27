@@ -61,6 +61,7 @@ function App() {
       pageType: 'sp'
     })
     designRequest.title = 'My Book'
+    designRequest.subtitle = 'Subtitle'
     console.log('designRequest:', designRequest)
     const imagesLength = 25
     await Promise.all(Array.from(Array(imagesLength).keys()).map(async () => {
