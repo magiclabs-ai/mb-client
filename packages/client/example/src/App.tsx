@@ -2,15 +2,16 @@ import {
   DesignRequest,
   DesignRequestEvent,
   DesignRequestEventDetail,
-  Image,
   MagicBookClient
 } from '@magiclabs.ai/magicbook-client'
 import {Layout} from './components/layout'
-import {faker} from '@faker-js/faker'
+import {images} from './data/images'
 import {useEffect, useState} from 'react'
 
 function App() {
-  const client = new MagicBookClient(import.meta.env.VITE_MB_CLIENT_API_KEY as string)
+  const client = new MagicBookClient(
+    import.meta.env.VITE_MB_CLIENT_API_KEY as string
+  )
   const [isCreatingDesignRequest, setIsCreatingDesignRequest] = useState<boolean>(false) 
   const [designRequestEventDetail, setDesignRequestEventDetail] = useState<DesignRequestEventDetail | null>()
   const [currentDesignRequest, setDesignRequest] = useState<DesignRequest | null>()
@@ -63,21 +64,7 @@ function App() {
     designRequest.title = 'My Book'
     designRequest.subtitle = 'Subtitle'
     console.log('designRequest:', designRequest)
-    const imagesLength = 25
-    await Promise.all(Array.from(Array(imagesLength).keys()).map(async () => {
-      const width = 1000
-      const height = faker.number.int({min: 200, max: 500})
-      const image: Image = {
-        handle: faker.string.uuid(),
-        url: faker.image.url({width, height}),
-        width,
-        height,
-        rotation: 0,
-        captureTime: faker.date.past().toISOString(),
-        cameraMake: '',
-        cameraModel: 'Sony A7R IV',
-        filename: faker.system.commonFileName('jpg')
-      }
+    await Promise.all(images.map(async (image) => {
       await designRequest.images.add(image)
       console.log('designRequest.images.add:', image)
     }))
