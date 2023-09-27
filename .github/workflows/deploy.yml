@@ -5,6 +5,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: ${{github.event.release.prerelease && 'dev' || 'prod'}}
     env:
       DESIGN_REQUEST_TIMEOUT: ${{vars.DESIGN_REQUEST_TIMEOUT}}
       WEBSOCKET_HOST: ${{vars.WEBSOCKET_HOST}}
