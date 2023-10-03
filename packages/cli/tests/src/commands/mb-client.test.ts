@@ -1,10 +1,12 @@
 import '../../../src/commands/mb-client'
 import {EventEmitter} from 'stream'
+import {ImageServer} from '../../../../client/src'
+import {MockParams} from 'vitest-fetch-mock/types'
 import {bookFactory} from '@/core/tests/factories/book.factory'
 import {describe, test, vi} from 'vitest'
 import {faker} from '@faker-js/faker'
 import {fetchMocker} from '@/core/tests/mocks/fetch'
-import {imageServerFactory} from '@/core/tests/factories/image.factory'
+import {images} from '@/core/data/images'
 import {mockProcessExit} from 'vitest-mock-process'
 import {program} from 'commander'
 
@@ -26,11 +28,10 @@ describe('mb-client', () => {
     const book = bookFactory()
     fetchMocker.mockResponses(
       [JSON.stringify(book), {status: 200}],
-      [JSON.stringify(imageServerFactory()), {status: 200}],
-      [JSON.stringify(book), {status: 200}],
+      ...images.map((image) => [JSON.stringify(new ImageServer(image)), {status: 200}] as [string, MockParams]),
       [JSON.stringify(book), {status: 200}]
     )
-    await program.parseAsync(['mb-client', 'design-request', 'new', '--image-count', '1'], {from: 'user'})
+    await program.parseAsync(['mb-client', 'design-request', 'new'], {from: 'user'})
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     eventEmitter.emit('event', {
@@ -56,11 +57,10 @@ describe('mb-client', () => {
     const book = bookFactory()
     fetchMocker.mockResponses(
       [JSON.stringify(book), {status: 200}],
-      [JSON.stringify(imageServerFactory()), {status: 200}],
-      [JSON.stringify(book), {status: 200}],
+      ...images.map((image) => [JSON.stringify(new ImageServer(image)), {status: 200}] as [string, MockParams]),
       [JSON.stringify(book), {status: 200}]
     )
-    await program.parseAsync(['mb-client', 'design-request', 'new', '--image-count', '1', '--occasion', 'baby',
+    await program.parseAsync(['mb-client', 'design-request', 'new', '--occasion', 'baby',
       '--style', '1005', '--book-size', '10x10', '--cover-type', 'sc', '--page-type', 'sp', '--image-density', 'low',
       '--image-filtering-level', 'best', '--embellishment-level', 'lots', '--text-sticker-level', 'lots']
     , {from: 'user'})

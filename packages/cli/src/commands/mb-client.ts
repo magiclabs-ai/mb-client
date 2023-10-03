@@ -1,12 +1,9 @@
 import {DesignRequestEvent, DesignRequestOptions} from '@/core/models/design-request'
-import {
-  Image,
-  MagicBookClient
-} from '@/client/src/index'
+import {MagicBookClient} from '@/client/src/index'
 import {Option, program} from 'commander'
 import {actionSetup, msToSeconds} from '../utils/toolbox'
 import {camelCaseToKebabCase, camelCaseToWords} from '@/core/utils/toolbox'
-import {faker} from '@faker-js/faker'
+import {images} from '@/core/data/images'
 import {log} from 'console'
 import chalk from 'chalk'
 import cliProgress from 'cli-progress'
@@ -20,7 +17,6 @@ Object.keys(DesignRequestOptions).forEach((key) => {
   newDesignRequest.addOption(new Option(`--${camelCaseToKebabCase(key)} <${key}>`))
 })
 
-newDesignRequest.addOption(new Option('--image-count <imageCount>').default(70))
 newDesignRequest.action(async (args) => {
   const {config} = await actionSetup()
   for (const [key, options] of Object.entries(DesignRequestOptions)) {
@@ -46,22 +42,8 @@ newDesignRequest.action(async (args) => {
   const imageUploadBar = new cliProgress.SingleBar({
     format: 'Uploaded images | {bar} | {percentage}% || {value}/{total} Images'
   }, cliProgress.Presets.shades_classic)
-  const imagesLength = parseInt(args.imageCount)
-  imageUploadBar.start(imagesLength, 0)
-  await Promise.all(Array.from(Array(imagesLength).keys()).map(async () => {
-    const width = 1000
-    const height = faker.number.int({min: 200, max: 500})
-    const image: Image = {
-      handle: faker.string.uuid(),
-      url: faker.image.url({width, height}),
-      width,
-      height,
-      rotation: 0,
-      captureTime: faker.date.past().toISOString(),
-      cameraMake: '',
-      cameraModel: 'Sony A7R IV',
-      filename: faker.system.commonFileName('jpg')
-    }
+  imageUploadBar.start(images.length, 0)
+  await Promise.all(images.map(async (image) => {
     await designRequest.images.add(image)
     imageUploadBar.increment()
   }))
