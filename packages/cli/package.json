@@ -14,10 +14,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "../../scripts/build/before.sh && tsup && ../../scripts/build/after.sh",
-    "build:dev": "../../scripts/build/before.sh --watch && tsup && ../../scripts/build/after.sh",
-    "coverage": "./scripts/before-coverage.sh && vitest run --coverage",
-    "watch": "../../scripts/build/before.sh --watch && tsup --watch"
+    "build": "../../scripts/build/before.sh && tsup && ./scripts/copy-image-sets.sh && ../../scripts/build/after.sh",
+    "build:dev": "../../scripts/build/before.sh --watch && tsup && ./scripts/copy-image-sets.sh && ../../scripts/build/after.sh",
+    "coverage": "./scripts/before-coverage.sh && vitest run --coverage"
   },
   "dependencies": {
     "@faker-js/faker": "^8.0.2",

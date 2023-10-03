@@ -1,37 +1,85 @@
-import {DesignRequestEvent, DesignRequestOptions} from '@/core/models/design-request'
-import {MagicBookClient} from '@/client/src/index'
+import {DesignRequestOptions} from '@/core/models/design-request'
+
+import {Image, ImageServer, imageServerToImage} from '@/core/models/design-request/image'
+import {MagicBookClient} from '@/core/models/client'
 import {Option, program} from 'commander'
 import {actionSetup, msToSeconds} from '../utils/toolbox'
 import {camelCaseToKebabCase, camelCaseToWords} from '@/core/utils/toolbox'
-import {images} from '@/core/data/images'
+import {fileURLToPath} from 'url'
 import {log} from 'console'
 import chalk from 'chalk'
 import cliProgress from 'cli-progress'
+import fs from 'fs'
+import os from 'os'
+import path, {dirname} from 'path'
 import prompts from 'prompts'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+const options = [...Object.entries(DesignRequestOptions)]
 
 export const mbClient = program.command('mb-client')
 const newDesignRequest = mbClient.command('design-request').command('new')
 
-newDesignRequest.addOption(new Option('--title <title>').default('My Book'))
+newDesignRequest.addOption(new Option('--title <title>'))
+
+const imageSets = fs
+  .readdirSync(path.join(__dirname, './data/image-sets'))
+  .filter((file) => file.endsWith('.json'))
+  .map((file) => file.replace('.json', ''))
+imageSets.push('custom')
+newDesignRequest.addOption(new Option('--image-set <imageSet>'))
+options.push(['imageSet', imageSets])
 Object.keys(DesignRequestOptions).forEach((key) => {
   newDesignRequest.addOption(new Option(`--${camelCaseToKebabCase(key)} <${key}>`))
 })
 
+function retrieveImageSet(imageSet: string) {
+  const imageSetPath = path.join(__dirname, `data/image-sets/${imageSet}.json`)
+  const relativePath = path.join(os.homedir(), imageSet.replace('~', '.'))
+  let file
+  if (fs.existsSync(imageSetPath)) {
+    file = fs.readFileSync(imageSetPath, 'utf8')
+  } else if (fs.existsSync(imageSet)) {
+    file = fs.readFileSync(imageSet, 'utf8')
+  } else if (fs.existsSync(relativePath)) {
+    file = fs.readFileSync(relativePath, 'utf8')
+  }  else {
+    throw new Error(`Image set ${imageSet} not found`)
+  }
+  file = JSON.parse(file)  
+  const images = file[Object.keys(file)[0]].map((image: ImageServer) => {
+    return imageServerToImage(image)
+  })
+  return images
+}
+
 newDesignRequest.action(async (args) => {
   const {config} = await actionSetup()
-  for (const [key, options] of Object.entries(DesignRequestOptions)) {
+  for (const [key, opts] of options) {
     if (!args[key]) {
       const response = await prompts({
         type: 'autocomplete',
         name: key,
         message: `Pick the ${camelCaseToWords(key)}:`,
-        choices: options.map((option) => ({title: option.toString(), value: option})),
-        initial: options[0]
+        choices: opts.map((option) => ({title: option.toString(), value: option})),
+        initial: opts[0]
       })
+      if (response[key] == 'custom') {
+        const customResponse = await prompts({
+          type: 'text',
+          name: key,
+          message: `Enter the custom ${camelCaseToWords(key)}:`
+        })
+        response[key] = customResponse[key]
+      }
       args[key] = response[key]
-    } 
+    }
   }
   args.userId = config.userId
+
+  const images = retrieveImageSet(args.imageSet)
 
   const client = new MagicBookClient(config.apiKey, config.apiHost, config.wsHost)
   log(chalk.bold('💿 - Init client'))
@@ -43,12 +91,12 @@ newDesignRequest.action(async (args) => {
     format: 'Uploaded images | {bar} | {percentage}% || {value}/{total} Images'
   }, cliProgress.Presets.shades_classic)
   imageUploadBar.start(images.length, 0)
-  await Promise.all(images.map(async (image) => {
+  await Promise.all(images.map(async (image: Image) => {
     await designRequest.images.add(image)
     imageUploadBar.increment()
   }))
   imageUploadBar.stop()
-  log(chalk.bold('🌠 - Images uploaded'))
+  log(chalk.bold('🌠 - Images added'))
   // eslint-disable-next-line prefer-const
   let startAt: Date
   const creationProgressBar = new cliProgress.SingleBar({

@@ -80,3 +80,17 @@ export class ImageServer {
     this.filename = image.filename
   }
 }
+
+export function imageServerToImage(imageServer: ImageServer): Image {
+  return {
+    handle: imageServer.handle,
+    url: imageServer.url,
+    width: imageServer.width,
+    height: imageServer.height,
+    rotation: imageServer.orientation,
+    captureTime: imageServer.taken_at || '',
+    cameraMake: imageServer.camera_make,
+    cameraModel: imageServer.camera,
+    filename: imageServer.filename
+  }
+}

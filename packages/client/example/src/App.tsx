@@ -4,7 +4,7 @@ import {
   DesignRequestEventDetail,
   MagicBookClient
 } from '@magiclabs.ai/magicbook-client'
-import {images} from '../../../../core/data/images'
+import {images} from '../../../../core/data/image-sets/00-nice-and-rome'
 import {useEffect, useState} from 'react'
 
 function App() {
