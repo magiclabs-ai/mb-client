@@ -17,7 +17,8 @@ export const config = program.command('config')
       apiHost: args.apiHost,
       wsHost: args.wsHost,
       apiKey: args.apiKey,
-      userId: args.userId
+      userId: args.userId,
+      env: args.apiHost.split('.')[1]
     }
     if (!isURL(config.apiHost)) {
       const response = await prompts({

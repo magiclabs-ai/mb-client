@@ -1,6 +1,6 @@
 import {DesignRequestOptions} from '@/core/models/design-request'
 
-import {Image, ImageServer, imageServerToImage} from '@/core/models/design-request/image'
+import {Image, ImageServer, imageServerSchema, imageServerToImage} from '@/core/models/design-request/image'
 import {MagicBookClient} from '@/core/models/client'
 import {Option, program} from 'commander'
 import {actionSetup, msToSeconds} from '../utils/toolbox'
@@ -23,6 +23,7 @@ export const mbClient = program.command('mb-client')
 const newDesignRequest = mbClient.command('design-request').command('new')
 
 newDesignRequest.addOption(new Option('--title <title>'))
+newDesignRequest.addOption(new Option('--subtitle <subtitle>'))
 
 const imageSetRelativePath = './data/image-sets/'
 const imageSets = fs
@@ -50,8 +51,12 @@ function retrieveImageSet(imageSet: string) {
     throw new Error(`Image set ${imageSet} not found`)
   }
   file = JSON.parse(file)  
-  const images = file[Object.keys(file)[0]].map((image: ImageServer) => {
-    return imageServerToImage(image)
+  const images = file[Object.keys(file)[0]].map((image: ImageServer|Image) => {
+    if (imageServerSchema.safeParse(image).success) {
+      return imageServerToImage(image as ImageServer)
+    } else {
+      return image
+    }
   })
   return images
 }
@@ -117,7 +122,7 @@ newDesignRequest.action(async (args) => {
       log(chalk.bold[isSlow ? 'yellow' : 'green'](
         `${isSlow ? '🚜 ' : '🏎️ '} - Design request completed in ${duration}s`
       ))
-      log(chalk.bold(`📋 - mb-web-demo preview: https://mb-web-demo-dev.vercel.app/book/${designRequest.parentId}`))
+      log(chalk.bold(`📋 - mb-web-demo preview: https://demo.${config.env}.magicbook.io/book/${designRequest.parentId}`))
     }
   })
   log(chalk.bold('🚀 - Submitting design request'))

@@ -1,3 +1,4 @@
+import {Config, configSchema} from '../models/config'
 import {EngineAPI} from '@/core/models/engine-api'
 import {type PackageJson} from 'type-fest'
 import {cleanJSON} from '@/core/utils/toolbox'
@@ -15,7 +16,7 @@ export const configPath = path.join(basePath, '.config.json')
 
 export async function getConfig() {
   try {
-    return JSON.parse(await fs.readFile(configPath, 'utf-8'))
+    return JSON.parse(await fs.readFile(configPath, 'utf-8')) as Config
   } catch (error) {
     log(chalk.red.bold('❌ - No config file found. Please run the config command: mb-cli config'))
   }
@@ -49,13 +50,14 @@ export async function validateArgs(fn: () => void | Promise<void>) {
 
 export async function actionSetup() {
   const config = await getConfig()
-  if (!config) {
-    process.exit(1)
-  } else {
+  if (config && configSchema.safeParse(config).success) {
     return {
       engineAPI: new EngineAPI(config.apiHost, config.apiKey),
       config
     }
+  } else {
+    log(chalk.red.bold('❌ - Please run the config command: mb-cli config'))
+    process.exit(1)
   }
 }
 
