@@ -85,5 +85,5 @@ jobs:
     - name: 'Setup CLI'
       run: cd packages/cli/dist && node index.mjs config --api-host ${{vars.API_HOST}} --ws-host ${{vars.WEBSOCKET_HOST}} --api-key ${{secrets.API_KEY}} --user-id GITHUB-ACTIONS
     - name: 'Test'
-      run: cd packages/cli/dist && node index.mjs mb-client design-request new --title TEST --occasion baby --style 6117 --book-size 8x8 --cover-type sc --page-type sp --image-density low --image-filtering-level best --embellishment-level lots --text-sticker-level few
+      run: cd packages/cli/dist && node index.mjs mb-client design-request new --title $(date +'%Y-%m-%d') --subtitle ${GITHUB_REF##*/} --occasion baby --style 6117 --book-size 8x8 --cover-type sc --page-type sp --image-density low --image-filtering-level best --embellishment-level lots --text-sticker-level few
 
