@@ -1,4 +1,5 @@
 import {Book} from '../../models/book'
+import {bookFactory} from '../factories/book.factory'
 import {describe, expect, test} from 'vitest'
 
 describe('Book', () => {
@@ -18,5 +19,17 @@ describe('Book', () => {
       }
     })
     expect(book.id).toBeDefined()
+  })
+
+  test('book to BookProps', async () => {
+    const book = bookFactory()
+    expect(book).toStrictEqual(new Book(book.toBookProps()))
+  })
+  
+  test('book to BookProps with undefined timeout', async () => {
+    const book = bookFactory()
+    book.timeout = undefined
+    expect(book).toStrictEqual(new Book(book.toBookProps()))
+    expect(book.timeout).toBeUndefined()
   })
 })

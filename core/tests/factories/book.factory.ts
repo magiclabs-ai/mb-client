@@ -31,6 +31,7 @@ export function bookFactory(props?: BookFactoryProps) {
     state: props?.state || faker.helpers.arrayElement(states),
     title: props?.title || faker.lorem.words(3),
     guid:  props?.guid || faker.string.uuid(),
+    mb_client_timeout: 60000,
     design_request: {
       occasion: props?.design_request?.occasion || faker.helpers.arrayElement(occasions),
       style: props?.design_request?.style ||

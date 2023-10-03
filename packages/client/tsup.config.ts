@@ -11,8 +11,7 @@ export default defineConfig({
   sourcemap: true,
   env: {
     API_HOST: process.env.API_HOST || '',
-    WEBSOCKET_HOST: process.env.WEBSOCKET_HOST || '',
-    DESIGN_REQUEST_TIMEOUT: process.env.DESIGN_REQUEST_TIMEOUT || ''
+    WEBSOCKET_HOST: process.env.WEBSOCKET_HOST || ''
   },
   target: 'esnext',
   outDir: 'dist'

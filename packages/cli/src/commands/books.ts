@@ -1,6 +1,6 @@
-import {BookPropsSchema} from '@/core/models/book'
 import {Option, program} from 'commander'
 import {actionSetup, handleAPIResponse, validateArgs} from '../utils/toolbox'
+import {bookPropsSchema} from '@/core/models/book'
 import {formatReturnJSON} from '@/core/utils/toolbox'
 import {log} from 'console'
 import chalk from 'chalk'
@@ -54,14 +54,14 @@ books.command('update')
         args.bookId = response.bookId
       }
       if (args.book) {
-        BookPropsSchema.parse(JSON.parse(args.book))
+        bookPropsSchema.parse(JSON.parse(args.book))
       } else {
         const response = await prompts({
           type: 'text',
           name: 'book',
           message: 'Enter the book object:'
         })
-        BookPropsSchema.parse(JSON.parse(response.book))
+        bookPropsSchema.parse(JSON.parse(response.book))
         args.book = response.book
       }
     })

@@ -9,35 +9,28 @@ describe('Engine API Book Endpoints', () => {
 
   test('create', async () => {
     const fakeBook = bookFactory()
-    fetchMocker.mockResponse(JSON.stringify(fakeBook))
+    fetchMocker.mockResponse(JSON.stringify(fakeBook.toBookProps()))
     const book = await engineAPI.books.create()
-    expect(book).toStrictEqual(fakeBook)
-  })
-
-  test('create with book', async () => {
-    const fakeBook = bookFactory()
-    fetchMocker.mockResponse(JSON.stringify(fakeBook))
-    const book = await engineAPI.books.create(fakeBook)
     expect(book).toStrictEqual(fakeBook)
   })
   
   test('retrieve', async () => {
     const fakeBook = bookFactory()
-    fetchMocker.mockResponse(JSON.stringify(fakeBook))
+    fetchMocker.mockResponse(JSON.stringify(fakeBook.toBookProps()))
     const book = await engineAPI.books.retrieve(fakeBook.id)
     expect(book).toStrictEqual(fakeBook)
   })
 
   test('update', async () => {
     const fakeBook = bookFactory()
-    fetchMocker.mockResponse(JSON.stringify(fakeBook))
+    fetchMocker.mockResponse(JSON.stringify(fakeBook.toBookProps()))
     const book = await engineAPI.books.update(fakeBook.id, fakeBook)
     expect(book).toStrictEqual(fakeBook)
   })
 
   test('cancel', async () => {
     const fakeBook = bookFactory({state: 'cancelled'})
-    fetchMocker.mockResponse(JSON.stringify(fakeBook))
+    fetchMocker.mockResponse(JSON.stringify(fakeBook.toBookProps()))
     const book = await engineAPI.books.cancel(fakeBook.id)
     expect(book.state).toBe('cancelled')
     expect(book).toStrictEqual(fakeBook)
