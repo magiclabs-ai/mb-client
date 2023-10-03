@@ -76,16 +76,17 @@ export const bookDesignRequestSchema = z.object({
   text_sticker_level: z.enum(textStickerLevels)
 })
 
-export const BookPropsSchema = z.object({
+export const bookPropsSchema = z.object({
   id: z.string().optional(),
   title: z.string(),
   subtitle: z.string().optional(),
   design_request: bookDesignRequestSchema,
   state: z.enum(states).optional(),
   guid: z.string().optional(),
-  cancelled_at: z.string().optional()
+  cancelled_at: z.string().optional(),
+  mb_client_timeout: z.number().optional()
 })
-export type BookProps = z.infer<typeof BookPropsSchema>
+export type BookProps = z.infer<typeof bookPropsSchema>
 
 export class Book {
   id: string
@@ -95,6 +96,7 @@ export class Book {
   state?: State
   guid?: string
   cancelled_at?: string
+  timeout?: number
 
   constructor(props: BookProps) {
     this.id = props.id || ''
@@ -104,6 +106,7 @@ export class Book {
     this.state = props.state
     this.guid = props.guid
     this.cancelled_at = props.cancelled_at
+    this.timeout = props.mb_client_timeout ? props.mb_client_timeout * 1000 : undefined // convert to ms
   }
 
   toDesignRequestProps() {
@@ -111,5 +114,12 @@ export class Book {
     props.style = getStyleIdBySlug(props.style as string)
     delete props.design_request
     return snakeCaseObjectKeysToCamelCase(props)
+  }
+
+  toBookProps(): BookProps {
+    return {
+      ...this,
+      mb_client_timeout: this.timeout ? this.timeout / 1000 : undefined
+    }
   }
 }

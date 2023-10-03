@@ -122,7 +122,7 @@ describe('Design Request', async () => {
     const designRequest = await createDesignRequest({state: 'new'})
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
     const wsClose = vi.spyOn(WebSocketMock.prototype, 'close')
-    fetchMocker.mockResponse(JSON.stringify(bookFactory()))
+    fetchMocker.mockResponse(JSON.stringify(bookFactory().toBookProps()))
     const submitDesignRequest = await designRequest.submit({
       imageDensity: 'high',
       embellishmentLevel: 'few',
@@ -177,7 +177,6 @@ describe('Design Request', async () => {
     expect(designRequest.state).toStrictEqual(expectedState)
   }
 
-
   test('eventHandler with timeout event', async () => {
     await eventHandlerTester('timeout', timeoutEventDetail)
   })
@@ -195,11 +194,17 @@ describe('Design Request', async () => {
 
   test('timeoutHandler', async () => {
     const designRequest = await createDesignRequest({state: 'submitted'})
+    designRequest.timeout = 60000
     const spy = vi.spyOn(designRequest, 'eventHandler')
     vi.useFakeTimers()
     designRequest.timeoutHandler()
     vi.advanceTimersToNextTimer()
     expect(spy).toHaveBeenCalledWith(timeoutEventDetail)
+  })
+
+  test.fails('timeoutHandler to throw error', async () => {
+    const designRequest = await createDesignRequest({state: 'submitted'})  
+    expect(designRequest.timeoutHandler()).toThrowError('Design request timeout not set')
   })
   
   test('setGuid', async () => {

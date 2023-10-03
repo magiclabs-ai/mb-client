@@ -19,7 +19,6 @@ import {
 } from '@/core/data/design-request'
 import {camelCaseObjectKeysToSnakeCase, cleanJSON, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 import {designOptionsSchema} from './design-options'
-import {designRequestTimeout} from '@/core/config'
 import {isDesignRequestSubmitted} from '../../data/design-request'
 
 export type Occasion = typeof occasions[number]
@@ -82,6 +81,7 @@ export class DesignRequest {
   textStickerLevel: TextStickerLevel
   images: Images
   guid?: string
+  timeout?: number
 
   // eslint-disable-next-line no-unused-vars
   constructor(parentId: string, private readonly client: MagicBookClient, designRequestProps?: DesignRequestProps) {
@@ -119,10 +119,10 @@ export class DesignRequest {
       throw new Error('Design request already submitted')
     } else {
       submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
-      this.getProgress()
       this.updateDesignRequest(
         (await this.client.engineAPI.books.update(this.parentId, this.toBook())).toDesignRequestProps()
       )
+      this.getProgress()
       this.state = states[1]
       return this
     }
@@ -181,9 +181,13 @@ export class DesignRequest {
   }
 
   private timeoutHandler() {
-    return setTimeout(async () => {
-      await this.eventHandler(timeoutEventDetail)
-    }, designRequestTimeout)
+    if (this.timeout) {
+      return setTimeout(async () => {
+        await this.eventHandler(timeoutEventDetail)
+      }, this.timeout)
+    } else {
+      throw new Error('Design request timeout not set')
+    }
   }
 
   private async getProgress() {

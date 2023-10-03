@@ -1,3 +1,4 @@
+export * from '@/core/models/book'
 export * from '@/core/models/client'
 export * from '@/core/models/design-request'
 export * from '@/core/models/design-request/image'
