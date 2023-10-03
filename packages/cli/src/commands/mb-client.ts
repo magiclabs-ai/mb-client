@@ -17,15 +17,16 @@ import prompts from 'prompts'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-const options = [...Object.entries(DesignRequestOptions)]
+const options = [...Object.entries(DesignRequestOptions) as Array<[string, Array<string | number | boolean>]>]
 
 export const mbClient = program.command('mb-client')
 const newDesignRequest = mbClient.command('design-request').command('new')
 
 newDesignRequest.addOption(new Option('--title <title>'))
 
+const imageSetRelativePath = './data/image-sets/'
 const imageSets = fs
-  .readdirSync(path.join(__dirname, './data/image-sets'))
+  .readdirSync(path.join(__dirname, imageSetRelativePath))
   .filter((file) => file.endsWith('.json'))
   .map((file) => file.replace('.json', ''))
 imageSets.push('custom')
@@ -36,7 +37,7 @@ Object.keys(DesignRequestOptions).forEach((key) => {
 })
 
 function retrieveImageSet(imageSet: string) {
-  const imageSetPath = path.join(__dirname, `data/image-sets/${imageSet}.json`)
+  const imageSetPath = path.join(__dirname, imageSetRelativePath, `${imageSet}.json`)
   const relativePath = path.join(os.homedir(), imageSet.replace('~', '.'))
   let file
   if (fs.existsSync(imageSetPath)) {

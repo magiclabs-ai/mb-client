@@ -2,10 +2,11 @@ import {
   DesignRequest,
   DesignRequestEvent,
   DesignRequestEventDetail,
+  ImageServer,
   MagicBookClient
 } from '@magiclabs.ai/magicbook-client'
-import {images} from '../../../../core/data/image-sets/00-nice-and-rome'
 import {useEffect, useState} from 'react'
+import niceAndRome from '../../../../core/data/image-sets/00-nice-and-rome.json'
 
 function App() {
   const client = new MagicBookClient(
@@ -67,8 +68,9 @@ function App() {
     designRequest.title = 'My Book TEST'
     designRequest.subtitle = 'Subtitle'
     console.log('designRequest:', designRequest)
-    await Promise.all(images.map(async (image) => {
-      await designRequest.images.add(image)
+    const images = niceAndRome['00-nice-and-rome']
+    await Promise.all(images.map(async (image: ImageServer) => {
+      await designRequest.images.add(imageServerToImage(image))
       console.log('designRequest.images.add:', image)
     }))
     console.log('designRequest.images.length:', designRequest.images.length)
