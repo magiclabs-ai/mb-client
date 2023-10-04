@@ -22,6 +22,7 @@ import {
   timeoutEventDetail
 } from '@/core/data/design-request'
 import {designOptionsServerFactory} from '@/core/tests/factories/design-options.factory'
+import {eventFactory} from '../factories/event.factory'
 import {faker} from '@faker-js/faker'
 import {fetchMocker} from '@/core/tests/mocks/fetch'
 import {galleonFactory} from '@/core/tests/factories/galleon.factory'
@@ -217,6 +218,13 @@ describe('Design Request', async () => {
     const designRequest = await createDesignRequest({state: 'new'})
     await designRequest.setGuid(faker.string.uuid())
     expect(designRequest).toThrowError('Design request not submitted')
+  })
+
+  test('logEvent', async () => {
+    const fakeEvent = eventFactory({name: 'book.viewed'})
+    const designRequest = await createDesignRequest({state: 'ready'})
+    fetchMocker.mockResponse(JSON.stringify(fakeEvent))
+    expect(await designRequest.logEvent(fakeEvent.name, fakeEvent.context)).toStrictEqual(fakeEvent)
   })
 
   test.fails('cancel when dr is already cancelled', async () => {

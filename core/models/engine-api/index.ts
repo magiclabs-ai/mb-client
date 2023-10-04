@@ -1,5 +1,6 @@
 import {BooksEndpoints} from './endpoints/books'
 import {DesignOptionsEndpoints} from './endpoints/design-options'
+import {EventsEndpoints} from './endpoints/events'
 import {Fetcher} from '../fetcher'
 import {ImagesEndpoints} from './endpoints/images'
 import {SpreadsEndpoints} from './endpoints/spreads'
@@ -23,7 +24,8 @@ export class EngineAPI {
 
   readonly books = new BooksEndpoints(this)
   readonly designOptions = new DesignOptionsEndpoints(this)
-  readonly storyboardItems = new StoryboardItemsEndpoints(this)
+  readonly events = new EventsEndpoints(this)
   readonly images = new ImagesEndpoints(this)
+  readonly storyboardItems = new StoryboardItemsEndpoints(this)
   readonly spreads = new SpreadsEndpoints(this)
 }

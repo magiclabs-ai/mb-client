@@ -94,14 +94,19 @@ After submitting you can set a GUID to the design request.
 await designRequest.setGuid('a9ccb406-015a-47df-bb59-ea171b8617ca')
 ```
 
-Finally, once the design request is complete, retrieve it in JSON format.
+Once the design request is complete, retrieve it in JSON format.
 
 ```ts
 await designRequest.getJSON()
 ```
 
-___
+When a user performs a specific action, log it by calling the `logEvent` method.
 
+```ts
+await designRequest.logEvent('book.viewed', data)
+```
+
+___
 
 ## Example
 
