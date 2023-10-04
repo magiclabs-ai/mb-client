@@ -11,7 +11,9 @@ import path from 'path'
 
 export const basePath = path.join(fileURLToPath(import.meta.url),
 /* istanbul ignore next */
-  import.meta.url.includes('index.mjs') ? '..' : '../../..')
+  import.meta.url.includes('index.mjs') ? '..' : '../../..',
+  'dist'
+)
 export const configPath = path.join(basePath, '.config.json')
 
 export async function getConfig() {

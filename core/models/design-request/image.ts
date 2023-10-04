@@ -88,7 +88,7 @@ export function imageServerToImage(imageServer: ImageServer): Image {
     width: imageServer.width,
     height: imageServer.height,
     rotation: imageServer.orientation,
-    captureTime: imageServer.taken_at || '',
+    captureTime: imageServer.taken_at,
     cameraMake: imageServer.camera_make,
     cameraModel: imageServer.camera,
     filename: imageServer.filename
