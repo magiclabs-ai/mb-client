@@ -7,6 +7,7 @@ import {mockProcessExit} from 'vitest-mock-process'
 import {program} from 'commander'
 
 mockProcessExit()
+
 vi.mock('prompts', async () => {
   return {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -15,7 +16,7 @@ vi.mock('prompts', async () => {
       imageCount: 20,
       imageFilteringLevel: 'TEST',
       isValid: typeof props.validate === 'function' 
-        ? props.validate(10) 
+        ? props.validate(10)
         : true,
       invalid: typeof props.validate === 'function' 
         ? props.validate(0) 
@@ -23,8 +24,10 @@ vi.mock('prompts', async () => {
     })
   }
 })
+
 describe('Design Options', () => {
   const logSpy = vi.spyOn(console, 'log')
+
   test('getDensities without args', async () => {
     const designOptions = designOptionsServerFactory()
     fetchMocker.mockResponse(JSON.stringify(designOptions))

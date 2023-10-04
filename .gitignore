@@ -26,3 +26,4 @@ coverage
 *.sw?
 .turbo
 *.config.json
+packages/cli/data/*

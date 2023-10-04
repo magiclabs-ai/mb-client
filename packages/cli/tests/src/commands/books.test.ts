@@ -6,20 +6,13 @@ import {formatReturnJSON} from '@/core/utils/toolbox'
 import {galleonFactory} from '@/core/tests/factories/galleon.factory'
 import {mockProcessExit} from 'vitest-mock-process'
 import {program} from 'commander'
+import prompts from 'prompts'
 
 mockProcessExit()
-vi.mock('prompts', async () => {
-  return {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    default: (props: any) => Promise.resolve({
-      bookId: 'ABC',
-      book: JSON.stringify(bookFactory()),
-      isValid: typeof props.validate === 'function' ? props.validate(bookFactory()) : true
-    })
-  }
-})
+
 describe('Books', () => {
   const logSpy = vi.spyOn(console, 'log')
+
   test('create book', async () => {
     const book = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(book.toBookProps()))
@@ -30,6 +23,7 @@ describe('Books', () => {
   test('get book without args', async () => {
     const book = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(book.toBookProps()))
+    prompts.inject([book.id])
     await program.parseAsync(['books', 'get'], {from: 'user'})
     expect(logSpy.mock.calls[1][0]).toStrictEqual(formatReturnJSON(book))
   })
@@ -44,6 +38,7 @@ describe('Books', () => {
   test('update book without args', async () => {
     const book = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(book.toBookProps()))
+    prompts.inject([book.id, JSON.stringify(book)])
     await program.parseAsync(['books', 'update'], {from: 'user'})
     expect(logSpy.mock.calls[3][0]).toStrictEqual(formatReturnJSON(book))
   })
@@ -58,6 +53,7 @@ describe('Books', () => {
   test('cancel book without args', async () => {
     const book = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(book.toBookProps()))
+    prompts.inject([book.id])
     await program.parseAsync(['books', 'cancel'], {from: 'user'})
     expect(logSpy.mock.calls[5][0]).toStrictEqual(formatReturnJSON(book))
   })
@@ -72,6 +68,7 @@ describe('Books', () => {
   test('delete book without args', async () => {
     const book = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(book.toBookProps()))
+    prompts.inject([book.id])
     await program.parseAsync(['books', 'delete'], {from: 'user'})
   })
 
@@ -84,6 +81,7 @@ describe('Books', () => {
   test('retrieve book galleon without args', async () => {
     const galleon = galleonFactory()
     fetchMocker.mockResponse(JSON.stringify(galleon))
+    prompts.inject([galleon.id])
     await program.parseAsync(['books', 'galleon'], {from: 'user'})
     expect(logSpy.mock.calls[7][0]).toStrictEqual(formatReturnJSON(galleon))
   })

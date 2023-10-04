@@ -1,4 +1,4 @@
-import {actionSetup, getPackageInfo} from '../../../src/utils/toolbox'
+import {actionSetup, getPackageInfo, retrieveImageSet} from '../../../src/utils/toolbox'
 import {configPath, getConfig, handleAPIResponse} from '@/cli/src/utils/toolbox'
 import {describe, expect, test} from 'vitest'
 import {promises as fs} from 'fs'
@@ -29,5 +29,10 @@ describe('Toolbox', () => {
   })
   test('getPackageInfo', async () => {
     expect((await getPackageInfo()).name).toBe('@magiclabs.ai/magicbook-cli')
+  })
+  test.fails('retrieveImageSet', async () => {
+    
+    expect(retrieveImageSet('test')).toThrowError('test')
+
   })
 })

@@ -27,8 +27,7 @@
     "cross-env": "^7.0.3",
     "prompts": "^2.4.2",
     "tsup": "^7.2.0",
-    "ws": "^8.13.0",
-    "zod": "^3.21.4"
+    "ws": "^8.13.0"
   },
   "devDependencies": {
     "@types/cli-progress": "^3.11.0",

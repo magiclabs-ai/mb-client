@@ -1,15 +1,12 @@
 import {DesignRequestOptions} from '@/core/models/design-request'
-import {Image, ImageServer, imageServerSchema, imageServerToImage} from '@/core/models/design-request/image'
+import {Image} from '@/core/models/design-request/image'
 import {MagicBookClient} from '@/core/models/client'
 import {Option, program} from 'commander'
-import {actionSetup, basePath, msToSeconds} from '../utils/toolbox'
+import {actionSetup, listImageSets, msToSeconds, retrieveImageSet} from '../utils/toolbox'
 import {camelCaseToKebabCase, camelCaseToWords} from '@/core/utils/toolbox'
 import {log} from 'console'
 import chalk from 'chalk'
 import cliProgress from 'cli-progress'
-import fs from 'fs'
-import os from 'os'
-import path from 'path'
 import prompts from 'prompts'
 
 const options = [...Object.entries(DesignRequestOptions) as Array<[string, Array<string | number | boolean>]>]
@@ -20,57 +17,22 @@ const newDesignRequest = mbClient.command('design-request').command('new')
 newDesignRequest.addOption(new Option('--title <title>'))
 newDesignRequest.addOption(new Option('--subtitle <subtitle>'))
 
-const imageSetRelativePath = './data/image-sets/'
-const imageSets = fs
-  .readdirSync(path.join(basePath, imageSetRelativePath))
-  .filter((file) => file.endsWith('.json'))
-  .map((file) => file.replace('.json', ''))
-imageSets.push('custom')
 newDesignRequest.addOption(new Option('--image-set <imageSet>'))
-options.push(['imageSet', imageSets])
+options.push(['imageSet', listImageSets()])
 Object.keys(DesignRequestOptions).forEach((key) => {
   newDesignRequest.addOption(new Option(`--${camelCaseToKebabCase(key)} <${key}>`))
 })
 
-// function retrieveImageSet(imageSet: string) {
-//   const imageSetPath = path.join(basePath, imageSetRelativePath, `${imageSet}.json`)
-//   const relativePath = path.join(os.homedir(), imageSet.replace('~', '.'))
-//   let file
-//   console.log('->',imageSet)
-//   if (fs.existsSync(imageSetPath)) {
-//     file = fs.readFileSync(imageSetPath, 'utf8')
-//   } else if (fs.existsSync(imageSet)) {
-//     file = fs.readFileSync(imageSet, 'utf8')
-//   } else if (fs.existsSync(relativePath)) {
-//     file = fs.readFileSync(relativePath, 'utf8')
-//   }  else {
-//     console.log(file)
-//     // throw new Error(`Image set ${imageSet} not found`)
-//     // file = '{}'
-//   }
-//   // file = JSON.parse(file)  
-//   // const images = file[Object.keys(file)[0]]?.map((image: ImageServer|Image) => {
-//   //   if (imageServerSchema.safeParse(image).success) {
-//   //     return imageServerToImage(image as ImageServer)
-//   //   } else {
-//   //     return image
-//   //   }
-//   // })
-//   // return images
-//   return []
-// }
-
 newDesignRequest.action(async (args) => {
   const {config} = await actionSetup()
   for (const [key, opts] of options) {
-    console.log(args[key])
     if (!args[key]) {
       const response = await prompts({
         type: 'autocomplete',
         name: key,
         message: `Pick the ${camelCaseToWords(key)}:`,
-        choices: opts.map((option) => ({title: option.toString(), value: option})),
-        initial: opts[0]
+        choices: opts.map((option) => ({title: option.toString(), value: option}))
+        // initial: opts[0]
       })
       if (response[key] == 'custom') {
         const customResponse = await prompts({
@@ -80,54 +42,50 @@ newDesignRequest.action(async (args) => {
         })
         response[key] = customResponse[key]
       }
-      console.log(response)
       args[key] = response[key]
     }
   }
-  // retrieveImageSet()
-  console.log(args)
-  const images = []
+  const images = retrieveImageSet(args.imageSet)
+  const client = new MagicBookClient(config.apiKey, config.apiHost, config.wsHost)
+  log(chalk.bold('💿 - Init client'))
 
-  // const client = new MagicBookClient(config.apiKey, config.apiHost, config.wsHost)
-  // log(chalk.bold('💿 - Init client'))
+  const designRequest = await client.createDesignRequest(args)
+  log(chalk.bold('🎨 - Design request created'))
 
-  // const designRequest = await client.createDesignRequest(args)
-  // log(chalk.bold('🎨 - Design request created'))
-
-  // const imageUploadBar = new cliProgress.SingleBar({
-  //   format: 'Uploaded images | {bar} | {percentage}% || {value}/{total} Images'
-  // }, cliProgress.Presets.shades_classic)
-  // imageUploadBar.start(images.length, 0)
-  // await Promise.all(images.map(async (image: Image) => {
-  //   await designRequest.images.add(image)
-  //   imageUploadBar.increment()
-  // }))
-  // imageUploadBar.stop()
-  // log(chalk.bold('🌠 - Images added'))
-  // // eslint-disable-next-line prefer-const
-  // let startAt: Date
-  // const creationProgressBar = new cliProgress.SingleBar({
-  //   format: '{title} | {bar} | {percentage}%'
-  // }, cliProgress.Presets.shades_classic)
-  // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // //@ts-ignore
-  // eventEmitter.on('event', (e: DesignRequestEvent) => {
-  //   creationProgressBar.update(e.detail.progress, {
-  //     title: e.detail.message
-  //   })
-  //   if (e.detail.progress === 100) {
-  //     const endAt = new Date()
-  //     const duration = msToSeconds(endAt.getTime() - startAt.getTime())
-  //     const isSlow = duration > 30
-  //     creationProgressBar.stop()
-  //     log(chalk.bold[isSlow ? 'yellow' : 'green'](
-  //       `${isSlow ? '🚜 ' : '🏎️ '} - Design request completed in ${duration}s`
-  //     ))
-  //     log(chalk.bold(`📋 - mb-web-demo preview: https://demo.${config.env}.magicbook.io/book/${designRequest.parentId}`))
-  //   }
-  // })
-  // log(chalk.bold('🚀 - Submitting design request'))
-  // startAt = new Date()
-  // designRequest.submit()
-  // creationProgressBar.start(100, 0, {title: 'Submitting design request'})
+  const imageUploadBar = new cliProgress.SingleBar({
+    format: 'Uploaded images | {bar} | {percentage}% || {value}/{total} Images'
+  }, cliProgress.Presets.shades_classic)
+  imageUploadBar.start(images.length, 0)
+  await Promise.all(images.map(async (image: Image) => {
+    await designRequest.images.add(image)
+    imageUploadBar.increment()
+  }))
+  imageUploadBar.stop()
+  log(chalk.bold('🌠 - Images added'))
+  // eslint-disable-next-line prefer-const
+  let startAt: Date
+  const creationProgressBar = new cliProgress.SingleBar({
+    format: '{title} | {bar} | {percentage}%'
+  }, cliProgress.Presets.shades_classic)
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
+  eventEmitter.on('event', (e: DesignRequestEvent) => {
+    creationProgressBar.update(e.detail.progress, {
+      title: e.detail.message
+    })
+    if (e.detail.progress === 100) {
+      const endAt = new Date()
+      const duration = msToSeconds(endAt.getTime() - startAt.getTime())
+      const isSlow = duration > 30
+      creationProgressBar.stop()
+      log(chalk.bold[isSlow ? 'yellow' : 'green'](
+        `${isSlow ? '🚜 ' : '🏎️ '} - Design request completed in ${duration}s`
+      ))
+      log(chalk.bold(`📋 - mb-web-demo preview: https://demo.${config.env}.magicbook.io/book/${designRequest.parentId}`))
+    }
+  })
+  log(chalk.bold('🚀 - Submitting design request'))
+  startAt = new Date()
+  designRequest.submit()
+  creationProgressBar.start(100, 0, {title: 'Submitting design request'})
 })

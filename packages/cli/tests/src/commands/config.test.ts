@@ -6,6 +6,7 @@ import {mockProcessExit} from 'vitest-mock-process'
 import {program} from 'commander'
 
 mockProcessExit()
+
 vi.mock('prompts', async () => {
   return {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -19,6 +20,7 @@ vi.mock('prompts', async () => {
     })
   }
 })
+
 describe('Config', () => {
   test('setup without args', async () => {
     await program.parseAsync(['config'], {from: 'user'})
