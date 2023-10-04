@@ -102,6 +102,15 @@ function App() {
     console.log('designRequest.submit:', await currentDesignRequest?.submit())
   }
 
+  async function bookViewed() {
+    if (currentDesignRequest) {
+      console.log('designRequest.logEvent:', await currentDesignRequest.logEvent(
+        'bookViewed', {
+          'app': 'mb-client-example'
+        }))
+    }
+  }
+
   return (
     <div className='flex flex-col items-center space-y-8'>
       <div>
