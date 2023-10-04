@@ -1,4 +1,5 @@
 import {Book, BookDesignRequestProps} from '../book'
+import {EventContext} from '../event'
 import {Images} from './image'
 import {MagicBookClient} from '../client'
 import {
@@ -163,6 +164,10 @@ export class DesignRequest {
     } else {
       throw new Error('Design request not ready')
     }
+  }
+
+  async logEvent(name: string, data?: EventContext) {
+    return await this.client.engineAPI.events.createBookEvent(this.parentId, name, data)
   }
 
   private async eventHandler(detail: DesignRequestEventDetail, type='MagicBook.designRequestUpdated') {

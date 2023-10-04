@@ -86,6 +86,15 @@ function App() {
     setIsCreatingDesignRequest(false)
   }
 
+  async function bookViewed() {
+    if (currentDesignRequest) {
+      console.log('designRequest.logEvent:', await currentDesignRequest.logEvent(
+        'bookViewed', {
+          'app': 'mb-client-example'
+        }))
+    }
+  }
+
   return (
     <Layout>
       <div className='flex justify-center h-8 mb-8'>
@@ -134,7 +143,7 @@ function App() {
             Learn more <span aria-hidden='true'>→</span>
           </a>
         </div>
-        <div className='mt-2'>
+        <div className='flex items-center justify-center mt-5 gap-x-6'>
           {currentDesignRequest &&
             <button
               onClick={cancelDesignRequest}
@@ -144,6 +153,16 @@ function App() {
             >
               Cancel design request
             </button>
+          }
+          {designRequestEventDetail?.slug === 'ready' && 
+          <button
+            onClick={bookViewed}
+            className='rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
+            hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+            focus-visible:outline-indigo-600'
+          >
+            Book viewed event
+          </button>
           }
         </div>
         <div className='fixed bottom-0 left-0 w-full backdrop-blur-sm'>
