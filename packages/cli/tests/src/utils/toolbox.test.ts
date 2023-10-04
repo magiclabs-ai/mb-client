@@ -3,6 +3,8 @@ import {configPath, getConfig, handleAPIResponse} from '@/cli/src/utils/toolbox'
 import {describe, expect, test} from 'vitest'
 import {promises as fs} from 'fs'
 import {mockProcessExit} from 'vitest-mock-process'
+import os from 'os'
+import path from 'path'
 
 mockProcessExit()
 describe('Toolbox', () => {
@@ -30,9 +32,27 @@ describe('Toolbox', () => {
   test('getPackageInfo', async () => {
     expect((await getPackageInfo()).name).toBe('@magiclabs.ai/magicbook-cli')
   })
-  test.fails('retrieveImageSet', async () => {
-    
-    expect(retrieveImageSet('test')).toThrowError('test')
-
+  test.fails('retrieveImageSet with error', async () => {
+    expect(retrieveImageSet('test')).toThrowError('Image set test not found')
+  })
+  test('retrieveImageSet giving a image set relative path', async () => {
+    const relativePath = path.join(
+      __dirname.replace(os.homedir(), '~'),
+      '../../../data/image-sets/00-nice-and-rome.json'
+    )
+    const images = retrieveImageSet(relativePath)
+    expect(images.length).toBe(20)
+  })
+  test('retrieveImageSet giving a image set path', async () => {
+    const images = retrieveImageSet('./data/image-sets/00-nice-and-rome.json')
+    expect(images.length).toBe(20)
+  })
+  test('retrieveImageSet giving only image set name', async () => {
+    const images = retrieveImageSet('00-nice-and-rome')
+    expect(images.length).toBe(20)
+  })
+  test('retrieveImageSet giving only client image set', async () => {
+    const images = retrieveImageSet('00-nice-and-rome-client')
+    expect(images.length).toBe(20)
   })
 })

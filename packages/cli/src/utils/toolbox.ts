@@ -87,7 +87,7 @@ export function retrieveImageSet(imageSet: string) {
   if (fs.existsSync(imageSetPath)) {
     file = fs.readFileSync(imageSetPath, 'utf8')
   } else if (fs.existsSync(imageSet)) {
-    file = fs.readFileSync(imageSet, 'utf8')
+    file = fs.readFileSync(imageSet, 'utf8')  
   } else if (fs.existsSync(relativePath)) {
     file = fs.readFileSync(relativePath, 'utf8')
   }  else {
