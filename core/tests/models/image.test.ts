@@ -1,5 +1,3 @@
-import {Book} from '../../models/book'
-import {bookFactory} from '../factories/book.factory'
 import {describe, expect, test} from 'vitest'
 import {imageServerFactory} from '../factories/image.factory'
 import {imageServerToImage} from '@/client/src'
