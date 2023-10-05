@@ -16,8 +16,8 @@
   "scripts": {
     "build": "../../scripts/build/before.sh && tsup && ./scripts/copy-image-sets.sh && ../../scripts/build/after.sh",
     "build:dev": "../../scripts/build/before.sh --watch && tsup && ./scripts/copy-image-sets.sh && ../../scripts/build/after.sh",
-    "coverage": "./scripts/dev-setup.sh && vitest run --coverage",
-    "setup:dev": "./scripts/dev-setup.sh"
+    "coverage": "./scripts/setup-dev.sh && vitest run --coverage",
+    "setup:dev": "./scripts/setup-dev.sh"
   },
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
