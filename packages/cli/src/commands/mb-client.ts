@@ -3,7 +3,7 @@ import {Image} from '@/core/models/design-request/image'
 import {MagicBookClient} from '@/core/models/client'
 import {Option, program} from 'commander'
 import {actionSetup, listImageSets, msToSeconds, retrieveImageSet} from '../utils/toolbox'
-import {camelCaseToKebabCase, camelCaseToWords} from '@/core/utils/toolbox'
+import {camelCaseToKebabCase, camelCaseToWords, chunkArray} from '@/core/utils/toolbox'
 import {log} from 'console'
 import chalk from 'chalk'
 import cliProgress from 'cli-progress'
@@ -56,10 +56,13 @@ newDesignRequest.action(async (args) => {
     format: 'Uploaded images | {bar} | {percentage}% || {value}/{total} Images'
   }, cliProgress.Presets.shades_classic)
   imageUploadBar.start(images.length, 0)
-  await Promise.all(images.map(async (image: Image) => {
-    await designRequest.images.add(image)
-    imageUploadBar.increment()
-  }))
+  const chunks = chunkArray(images, 200) as Array<Array<Image>>
+  for (const chunk of chunks) {
+    await Promise.all(chunk.map(async (image: Image) => {
+      await designRequest.images.add(image)
+      imageUploadBar.increment()
+    }))
+  }
   imageUploadBar.stop()
   log(chalk.bold('🌠 - Images added'))
   // eslint-disable-next-line prefer-const
