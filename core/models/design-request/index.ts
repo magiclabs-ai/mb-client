@@ -55,6 +55,7 @@ export type DesignRequestProps = {
   imageFilteringLevel?: ImageFilteringLevel
   embellishmentLevel?: EmbellishmentLevel
   textStickerLevel?: TextStickerLevel
+  userId?: string
 }
 export type State = typeof states[number]
 export type DesignRequestEventDetail = {
@@ -81,6 +82,7 @@ export class DesignRequest {
   embellishmentLevel: EmbellishmentLevel
   textStickerLevel: TextStickerLevel
   images: Images
+  userId?:string
   guid?: string
   timeout?: number
 
@@ -101,6 +103,7 @@ export class DesignRequest {
     this.embellishmentLevel = designRequestProps?.embellishmentLevel || embellishmentLevels[0]
     this.textStickerLevel = designRequestProps?.textStickerLevel || textStickerLevels[0]
     this.images = new Images(this.client, this.parentId)
+    this.userId = designRequestProps?.userId
   }
 
   private updateDesignRequest(designRequestProps: DesignRequestProps) {
