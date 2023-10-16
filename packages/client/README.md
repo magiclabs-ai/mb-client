@@ -33,7 +33,7 @@ const designRequest = await client.createDesignRequest({
 })
 ```
 
-Individual parameters can also be set directly on the design request instance: (except for userId)
+Individual parameters can also be set directly on the design request instance (except for `userId`):
 
 ```ts
 const designRequest = await client.createDesignRequest()

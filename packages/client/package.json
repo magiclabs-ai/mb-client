@@ -19,7 +19,6 @@
   "types": "./index.d.ts",
   "scripts": {
     "build": "../../scripts/build/before.sh && tsup && ../../scripts/build/after.sh",
-    "deploy": "./scripts/deploy-npm.sh",
     "watch": "../../scripts/build/before.sh --watch && tsup --watch"
   },
   "dependencies": {
