@@ -37,14 +37,15 @@ describe('Design Request', async () => {
     ws = vi.spyOn(window, 'WebSocket').mockImplementation((value) => (new WebSocketMock(value) as unknown as WebSocket))
   })
 
-  async function createDesignRequest(props?: DesignRequestProps) {
+  async function createDesignRequest(props?: Partial<DesignRequestProps>) {
     const designRequestProps: DesignRequestProps = {
       occasion: 'birthday',
       style: 5274,
       bookSize: '10x10',
       coverType: 'hc',
       pageType: 'dl',
-      title: 'My Book'
+      title: 'My Book',
+      userId: 'userId'
     }
     fetchMocker.mockResponse(JSON.stringify(bookFactory()))
     return await client.createDesignRequest({...designRequestProps, ...props})

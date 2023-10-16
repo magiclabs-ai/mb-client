@@ -1,6 +1,7 @@
 import {
   BookSize,
   CoverType,
+  DesignRequestProps,
   EmbellishmentLevel,
   ImageDensity,
   ImageFilteringLevel,
@@ -116,7 +117,7 @@ export class Book {
     const props = {...this, ...this.design_request} as unknown as Record<string, unknown>
     props.style = getStyleIdBySlug(props.style as string)
     delete props.design_request
-    return snakeCaseObjectKeysToCamelCase(props)
+    return snakeCaseObjectKeysToCamelCase(props) as DesignRequestProps
   }
 
   toBookProps(): BookProps {

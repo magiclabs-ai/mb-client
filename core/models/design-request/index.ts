@@ -55,7 +55,7 @@ export type DesignRequestProps = {
   imageFilteringLevel?: ImageFilteringLevel
   embellishmentLevel?: EmbellishmentLevel
   textStickerLevel?: TextStickerLevel
-  userId?: string
+  userId: string
 }
 export type State = typeof states[number]
 export type DesignRequestEventDetail = {
@@ -118,7 +118,7 @@ export class DesignRequest {
     return options
   }
 
-  async submit(submitDesignRequestProps?: DesignRequestProps) {
+  async submit(submitDesignRequestProps?: Partial<DesignRequestProps>) {
     if (isDesignRequestSubmitted(this.state)) {
       throw new Error('Design request already submitted')
     } else {
@@ -227,7 +227,8 @@ export class DesignRequest {
       title: designRequest.title,
       subtitle: designRequest.subtitle,
       design_request: bookDesignRequest,
-      state: designRequest.state
+      state: designRequest.state,
+      user_id: designRequest.userId
     })
   }
 }
