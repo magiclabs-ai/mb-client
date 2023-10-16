@@ -6,7 +6,7 @@ import {
   MagicBookClient
 } from '@magiclabs.ai/magicbook-client'
 import {useEffect, useState} from 'react'
-import niceAndRome from '../../../../core/data/image-sets/00-nice-and-rome-client.json'
+import niceAndRome from '../../../../core/data/image-sets/56K-Cloud-Experiences-client.json'
 
 function App() {
   const client = new MagicBookClient(
@@ -68,7 +68,7 @@ function App() {
     designRequest.title = 'My Book TEST'
     designRequest.subtitle = 'Subtitle'
     console.log('designRequest:', designRequest)
-    const images = niceAndRome['00-nice-and-rome'] as Array<Image>
+    const images = niceAndRome['56K-Cloud-Experiences'] as Array<Image>
     await Promise.all(images.map(async (image) => {
       await designRequest.images.add(image)
       console.log('designRequest.images.add:', image)
