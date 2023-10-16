@@ -35,6 +35,7 @@ newDesignRequest.action(async (args) => {
       args[key] = response[key]
     } 
   }
+  args.userId = config.userId
 
   const client = new MagicBookClient(config.apiKey, config.apiHost, config.wsHost)
   log(chalk.bold('💿 - Init client'))

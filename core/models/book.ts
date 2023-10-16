@@ -1,6 +1,7 @@
 import {
   BookSize,
   CoverType,
+  DesignRequestProps,
   EmbellishmentLevel,
   ImageDensity,
   ImageFilteringLevel,
@@ -84,7 +85,8 @@ export const bookPropsSchema = z.object({
   state: z.enum(states).optional(),
   guid: z.string().optional(),
   cancelled_at: z.string().optional(),
-  mb_client_timeout: z.number().optional()
+  mb_client_timeout: z.number().optional(),
+  user_id: z.string().optional()
 })
 export type BookProps = z.infer<typeof bookPropsSchema>
 
@@ -97,6 +99,7 @@ export class Book {
   guid?: string
   cancelled_at?: string
   timeout?: number
+  user_id?: string
 
   constructor(props: BookProps) {
     this.id = props.id || ''
@@ -107,13 +110,14 @@ export class Book {
     this.guid = props.guid
     this.cancelled_at = props.cancelled_at
     this.timeout = props.mb_client_timeout ? props.mb_client_timeout * 1000 : undefined // convert to ms
+    this.user_id = props.user_id
   }
 
   toDesignRequestProps() {
     const props = {...this, ...this.design_request} as unknown as Record<string, unknown>
     props.style = getStyleIdBySlug(props.style as string)
     delete props.design_request
-    return snakeCaseObjectKeysToCamelCase(props)
+    return snakeCaseObjectKeysToCamelCase(props) as DesignRequestProps
   }
 
   toBookProps(): BookProps {

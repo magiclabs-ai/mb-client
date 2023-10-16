@@ -22,7 +22,8 @@ export type BookFactoryProps = {
   state?: State
   title?: string
   guid?: string,
-  design_request?: BookDesignRequestProps
+  design_request?: BookDesignRequestProps,
+  user_id?: string
 }
 
 export function bookFactory(props?: BookFactoryProps) {
@@ -31,6 +32,7 @@ export function bookFactory(props?: BookFactoryProps) {
     state: props?.state || faker.helpers.arrayElement(states),
     title: props?.title || faker.lorem.words(3),
     guid:  props?.guid || faker.string.uuid(),
+    user_id: props?.user_id || faker.string.uuid(),
     mb_client_timeout: 60000,
     design_request: {
       occasion: props?.design_request?.occasion || faker.helpers.arrayElement(occasions),

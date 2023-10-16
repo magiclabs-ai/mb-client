@@ -23,6 +23,7 @@ Initiate the creation of a photo book by creating a design request. The design r
 
 ```ts
 const designRequest = await client.createDesignRequest({
+  userId: 'd72f1bbc-80c1-4338-987d-ca3eff058305' // Required value
   title: 'Australia 2023',
   occasion: 'travel',
   style: '1234',
@@ -32,7 +33,7 @@ const designRequest = await client.createDesignRequest({
 })
 ```
 
-Individual parameters can also be set directly on the design request instance:
+Individual parameters can also be set directly on the design request instance (except for `userId`):
 
 ```ts
 const designRequest = await client.createDesignRequest()

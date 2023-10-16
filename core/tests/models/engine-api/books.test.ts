@@ -10,7 +10,7 @@ describe('Engine API Book Endpoints', () => {
   test('create', async () => {
     const fakeBook = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(fakeBook.toBookProps()))
-    const book = await engineAPI.books.create()
+    const book = await engineAPI.books.create({user_id: 'test-user-id'})
     expect(book).toStrictEqual(fakeBook)
   })
   

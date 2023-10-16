@@ -10,9 +10,9 @@ export const books = program.command('books')
 
 books.command('create')
   .action(async () => {
-    const {engineAPI} = await actionSetup()
+    const {engineAPI, config} = await actionSetup()
     await handleAPIResponse(async () => {
-      const res = await engineAPI.books.create()
+      const res = await engineAPI.books.create({user_id: config.userId})
       log(chalk.bold('📕 - Book created!'))
       return formatReturnJSON(res)
     })

@@ -10,12 +10,13 @@ export class BooksEndpoints {
     bindThisToFunctions(this)
   }
 
-  create() {
+  create(book: Partial<Book>) {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call({
         path: '/v1/books',
         options: {
-          method: 'POST'
+          method: 'POST',
+          body: cleanJSON(book)
         }
       })
       bookPropsSchema.safeParse(res)

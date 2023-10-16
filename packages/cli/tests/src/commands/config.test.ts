@@ -13,6 +13,7 @@ vi.mock('prompts', async () => {
       apiHost: 'https://api.magicbook.io',
       wsHost: 'wss://socket.magicbook.io',
       apiKey: faker.string.uuid(),
+      userId: faker.string.uuid(),
       isValid: typeof props.validate === 'function' ? props.validate(faker.internet.url()) : true,
       invalid: typeof props.validate === 'function' ? props.validate(JSON.stringify({})) : true
     })
@@ -37,10 +38,11 @@ describe('Config', () => {
     const fakeConfig = {
       apiHost: 'https://api.magicbook.io',
       wsHost: 'wss://socket.magicbook.io',
-      apiKey: faker.string.uuid()
+      apiKey: faker.string.uuid(),
+      userId: faker.string.uuid()
     }
     await program.parseAsync(['config', '--api-host', fakeConfig.apiHost, '--ws-host', fakeConfig.wsHost, '--api-key',
-      fakeConfig.apiKey], {from: 'user'})
+      fakeConfig.apiKey, '--user-id', fakeConfig.userId], {from: 'user'})
     const config = await getConfig()
     expect(config).toStrictEqual(fakeConfig)
   })

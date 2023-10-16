@@ -13,13 +13,28 @@ describe('Client', () => {
       style: 1005,
       bookSize: '10x10',
       coverType: 'hc',
-      pageType: 'dl'
+      pageType: 'dl',
+      userId: 'userId'
     }
-    fetchMocker.mockResponse(JSON.stringify(bookFactory(designRequestProps)))
-    const designRequest = await client.createDesignRequest(designRequestProps)
+    fetchMocker.mockResponse(JSON.stringify(bookFactory()))
+    const designRequest = await client.createDesignRequest({...designRequestProps})
     Object.keys(designRequestProps).forEach((k) => {
       const key = k as keyof DesignRequestProps
       expect(designRequest[key]).toStrictEqual(designRequestProps[key])
     })
+  })
+  test.fails('createDesignRequest', async () => {
+    const client = new MagicBookClient('123')
+    const designRequestProps = {
+      title: 'My Book',
+      occasion: 'baby',
+      style: 1005,
+      bookSize: '10x10',
+      coverType: 'hc',
+      pageType: 'dl'
+    } as DesignRequestProps
+    fetchMocker.mockResponse(JSON.stringify(bookFactory()))
+    const designRequest = await client.createDesignRequest({...designRequestProps})
+    expect(designRequest).toThrowError('userId is required')
   })
 })
