@@ -59,9 +59,10 @@ function App() {
       style: 5144,
       bookSize: '10x10',
       coverType: 'hc',
-      pageType: 'sp'
+      pageType: 'sp',
+      userId: 'MB-EXAMPLE'
     })
-    designRequest.title = 'My Book'
+    designRequest.title = 'My Book TEST'
     designRequest.subtitle = 'Subtitle'
     console.log('designRequest:', designRequest)
     await Promise.all(images.map(async (image) => {
