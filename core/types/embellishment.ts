@@ -258,11 +258,11 @@ export const embellishmentFrameSchema = embellishmentBaseSchema.extend({
 })
 export type EmbellishmentFrame = z.infer<typeof embellishmentFrameSchema>
 
-export const embellishmentBackgroundListServerSchema = embellishmentBaseSchema.extend({
+export const embellishmentBackgroundListServerSchema = embellishmentBaseServerSchema.extend({
   type: z.literal('background'),
   rotatable: z.boolean()
 })
-export type embellishmentBackgroundListServer = z.infer<typeof embellishmentBackgroundListServerSchema>
+export type EmbellishmentBackgroundListServer = z.infer<typeof embellishmentBackgroundListServerSchema>
 
 export const embellishmentBackgroundServerSchema = embellishmentBackgroundListServerSchema.extend({
   colors: z.record(z.unknown()),
@@ -286,7 +286,6 @@ const embellishmentServerSchemasArray: Array<z.AnyZodObject> = [
   embellishmentBackgroundServerSchema,
   embellishmentFrameServerSchema,
   embellishmentTextStickerServerSchema,
-  embellishmentTextStickerServerSchema,
   embellishmentBandServerSchema,
   embellishmentStripServerSchema,
   embellishmentPageCornerServerSchema,
@@ -306,7 +305,6 @@ export const embellishmentServerSchemas = z.union(
 const embellishmentSchemasArray: Array<z.AnyZodObject> = [
   embellishmentBackgroundSchema,
   embellishmentFrameSchema,
-  embellishmentTextStickerSchema,
   embellishmentTextStickerSchema,
   embellishmentBandSchema,
   embellishmentStripSchema,
@@ -349,7 +347,7 @@ embellishmentListSchemasArray.push(embellishmentBackgroundListSchema) // add bas
 
 export const embellishmentListServerSchemas = z.union(
   [
-    ...embellishmentListSchemasArray
+    ...embellishmentListServerSchemasArray
   ] as unknown as readonly [ZodTypeAny, ZodTypeAny, ...ZodTypeAny[]]
 )
 export type EmbellishmentListServer = z.infer<typeof embellishmentListServerSchemas>

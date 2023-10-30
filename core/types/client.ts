@@ -10,7 +10,7 @@ export class MagicBookClient {
   public constructor(
     private readonly apiKey: string,
     private readonly apiHost=defaultApiHost,
-    readonly webSocketHost=defaultWebSocketHost
+    readonly webSocketHost=defaultWebSocketHost,
   ) {
     this.engineAPI = new EngineAPI(this.apiHost, this.apiKey)
   }

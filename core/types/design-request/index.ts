@@ -118,8 +118,11 @@ export class DesignRequest {
 
   async getOptions(imageCount?: number) {
     const options = designOptionsSchema.parse(snakeCaseObjectKeysToCamelCase(
-      await this.client.engineAPI.designOptions.retrieve(this.bookSize, imageCount || this.images.length,
-        this.imageFilteringLevel)
+      await this.client.engineAPI.designOptions.retrieve({
+        bookSize: this.bookSize,
+        imageCount: imageCount || this.images.length,
+        imageFilteringLevel: this.imageFilteringLevel
+      })
     ))
     return options
   }

@@ -1,7 +1,7 @@
 import {Option, program} from 'commander'
 import {actionSetup, handleAPIResponse, validateArgs} from '../utils/toolbox'
 import {formatReturnJSON} from '@/core/utils/toolbox'
-import {imageServerSchema} from '@/core/models/design-request/image'
+import {imageServerSchema} from '@/core/types/design-request/image'
 import {log} from 'console'
 import chalk from 'chalk'
 import prompts from 'prompts'

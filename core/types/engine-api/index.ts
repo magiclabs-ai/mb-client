@@ -44,14 +44,16 @@ export type baseUpdateEndpointProps<T> = baseEndpointProps & {
 
 export class EngineAPI {
   fetcher: Fetcher
+  returnServerSchemas: boolean
 
-  constructor(baseUrl: string, apiKey: string) {
+  constructor(baseUrl: string, apiKey: string, returnServerSchemas?: boolean) {
     const options = {
       headers: {
         'Authorization': `API-Key ${apiKey}`
       }
     }
     this.fetcher = new Fetcher(baseUrl, options)
+    this.returnServerSchemas = returnServerSchemas || false
   }
 
   readonly books = new BooksEndpoints(this)

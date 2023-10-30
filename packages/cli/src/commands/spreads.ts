@@ -2,7 +2,7 @@ import {Option, program} from 'commander'
 import {actionSetup, handleAPIResponse, validateArgs} from '../utils/toolbox'
 import {formatReturnJSON} from '@/core/utils/toolbox'
 import {log} from 'console'
-import {spreadServerSchema} from '@/core/models/spread'
+import {spreadServerSchema} from '@/core/types/spread'
 import chalk from 'chalk'
 import prompts from 'prompts'
 

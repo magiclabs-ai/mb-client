@@ -1,6 +1,6 @@
 import {Option, program} from 'commander'
 import {actionSetup, handleAPIResponse, validateArgs} from '../utils/toolbox'
-import {bookPropsSchema} from '@/core/models/book'
+import {bookPropsSchema} from '@/core/types/book'
 import {formatReturnJSON} from '@/core/utils/toolbox'
 import {log} from 'console'
 import chalk from 'chalk'
