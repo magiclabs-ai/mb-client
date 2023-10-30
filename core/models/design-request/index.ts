@@ -67,9 +67,7 @@ export type DesignRequestEventDetail = {
 export type DesignRequestEvent = CustomEvent<DesignRequestEventDetail>
 
 export class DesignRequest {
-  private webSocket: WebSocket
   state: State
-  parentId: string
   title: string
   subtitle?: string
   occasion: Occasion
@@ -82,14 +80,18 @@ export class DesignRequest {
   embellishmentLevel: EmbellishmentLevel
   textStickerLevel: TextStickerLevel
   images: Images
+  private webSocket?: WebSocket
   userId?:string
   guid?: string
   timeout?: number
 
-  // eslint-disable-next-line no-unused-vars
-  constructor(parentId: string, private readonly client: MagicBookClient, designRequestProps?: DesignRequestProps) {
-    this.parentId = parentId
-    this.webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
+  constructor(
+    // eslint-disable-next-line no-unused-vars
+    private readonly parentId: string,
+    // eslint-disable-next-line no-unused-vars
+    private readonly client: MagicBookClient,
+    designRequestProps?: DesignRequestProps
+  ) {
     this.state = designRequestProps?.state || states[0]
     this.title = designRequestProps?.title || ''
     this.subtitle = designRequestProps?.subtitle
@@ -176,7 +178,7 @@ export class DesignRequest {
   private async eventHandler(detail: DesignRequestEventDetail, type='MagicBook.designRequestUpdated') {
     const customEvent = new CustomEvent<DesignRequestEventDetail>(type, {detail})
     if (statesToCloseWS.includes(detail.slug)) {
-      this.webSocket.close()
+      this.webSocket?.close()
       if (statesToReport.includes(detail.slug)) {
         await this.client.engineAPI.books.report(this.parentId, {
           error: detail.slug === 'error' ? 'design' : 'timeout',
@@ -199,6 +201,7 @@ export class DesignRequest {
   }
 
   private async getProgress() {
+    this.webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
     let timeout: ReturnType<typeof setTimeout>
     this.webSocket.onmessage = async (event) => {
       const detail = JSON.parse(event.data) as DesignRequestEventDetail
