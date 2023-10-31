@@ -125,6 +125,7 @@ export class DesignRequest {
       throw new Error('Design request already submitted')
     } else {
       submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
+      this.webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
       this.updateDesignRequest(
         (await this.client.engineAPI.books.update(this.parentId, this.toBook())).toDesignRequestProps()
       )
@@ -201,17 +202,18 @@ export class DesignRequest {
   }
 
   private async getProgress() {
-    this.webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
-    let timeout: ReturnType<typeof setTimeout>
-    this.webSocket.onmessage = async (event) => {
-      const detail = JSON.parse(event.data) as DesignRequestEventDetail
-      if (this.state !== detail.slug) {
-        timeout && clearTimeout(timeout)
-        timeout = this.timeoutHandler()
-        await this.eventHandler(detail)
+    if (this.webSocket) {
+      let timeout: ReturnType<typeof setTimeout>
+      this.webSocket.onmessage = async (event) => {
+        const detail = JSON.parse(event.data) as DesignRequestEventDetail
+        if (this.state !== detail.slug) {
+          timeout && clearTimeout(timeout)
+          timeout = this.timeoutHandler()
+          await this.eventHandler(detail)
+        }
       }
+      this.webSocket.onclose = () => clearTimeout(timeout)
     }
-    this.webSocket.onclose = () => clearTimeout(timeout)
   }
 
   private toBook() {
