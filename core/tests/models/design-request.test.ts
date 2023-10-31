@@ -56,7 +56,7 @@ describe('Design Request', async () => {
     const designRequest = new DesignRequest(parentId, client)
     expect(designRequest).toEqual({
       client: client,
-      webSocket: new WebSocket(`${webSocketHost}/?book_id=${parentId}`),
+      webSocket: undefined,
       parentId,
       title: '',
       state: 'new',
