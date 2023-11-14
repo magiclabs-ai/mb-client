@@ -124,7 +124,10 @@ describe('Design Request', async () => {
     const designRequest = await createDesignRequest({state: 'new'})
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
     const wsClose = vi.spyOn(WebSocketMock.prototype, 'close')
-    fetchMocker.mockResponse(JSON.stringify(bookFactory().toBookProps()))
+    fetchMocker.mockResponses(
+      [JSON.stringify(bookFactory().toBookProps()), {status: 200}],
+      [JSON.stringify(bookFactory().toBookProps()), {status: 200}]
+    )
     const submitDesignRequest = await designRequest.submit({
       imageDensity: 'high',
       embellishmentLevel: 'few',
@@ -219,6 +222,12 @@ describe('Design Request', async () => {
     const designRequest = await createDesignRequest({state: 'new'})
     await designRequest.setGuid(faker.string.uuid())
     expect(designRequest).toThrowError('Design request not submitted')
+  })
+
+  test('getProgress without ws', async () => {
+    const designRequest = await createDesignRequest({state: 'ready'})
+    designRequest.webSocket = undefined
+    await designRequest.getProgress()
   })
 
   test('logEvent', async () => {

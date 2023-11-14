@@ -46,6 +46,17 @@ export class BooksEndpoints {
     })
   }
 
+  design(bookId: string) {
+    return handleAsyncFunction(async () => {
+      const res = await this.engineAPI.fetcher.call({
+        path: `/v1/books/${bookId}/design`,
+        options: {method: 'POST'}
+      })
+      bookPropsSchema.safeParse(res)
+      return new Book(res)
+    })
+  }
+
   cancel(bookId: string) {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call({

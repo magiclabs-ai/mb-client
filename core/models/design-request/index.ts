@@ -4,6 +4,7 @@ import {Images} from './image'
 import {MagicBookClient} from '../client'
 import {
   bookSizes,
+  canResubmitDesignRequest,
   cancelledEventDetail,
   coverTypes,
   embellishmentLevels,
@@ -121,13 +122,14 @@ export class DesignRequest {
   }
 
   async submit(submitDesignRequestProps?: Partial<DesignRequestProps>) {
-    if (isDesignRequestSubmitted(this.state)) {
-      throw new Error('Design request already submitted')
+    if (canResubmitDesignRequest(this.state)) {
+      throw new Error('You need to wait for the current design request to finish before submitting a new one')
     } else {
       submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
       this.webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
+      await this.client.engineAPI.books.update(this.parentId, this.toBook())
       this.updateDesignRequest(
-        (await this.client.engineAPI.books.update(this.parentId, this.toBook())).toDesignRequestProps()
+        (await this.client.engineAPI.books.design(this.parentId)).toDesignRequestProps()
       )
       this.getProgress()
       this.state = states[1]
