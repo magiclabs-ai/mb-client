@@ -118,7 +118,7 @@ describe('Design Request', async () => {
     const designRequest = await createDesignRequest({state: 'submitted'})
     const designRequestJSON = await designRequest.submit()
     expect(designRequestJSON)
-      .toThrowError('You need to wait for the current design request to finish before submitting a new one')
+      .toThrowError('You need to wait for the current design request to be ready before submitting a new one')
   })
 
   test('submitDesignRequest', async () => {
