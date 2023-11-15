@@ -110,8 +110,7 @@ export class DesignRequest {
   }
 
   private updateDesignRequest(designRequestProps: Partial<DesignRequestProps>) {
-    const simpleProps = {...designRequestProps}
-    Object.assign(this, simpleProps)
+    Object.assign(this, designRequestProps)
   }
 
   async getOptions(imageCount?: number) {
