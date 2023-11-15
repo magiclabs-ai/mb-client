@@ -69,7 +69,7 @@ describe('Design Request', async () => {
       imageFilteringLevel: imageFilteringLevels[0],
       embellishmentLevel: embellishmentLevels[0],
       textStickerLevel: textStickerLevels[0],
-      images: new Images(client, parentId)
+      images: new Images(client, parentId, 'new')
     })
   })
 
@@ -88,6 +88,24 @@ describe('Design Request', async () => {
     }
     fetchMocker.mockResponse(JSON.stringify(new ImageServer(image)))
     expect(await designRequest.images.add(image)).toStrictEqual(1)
+  })
+
+  test.fails('addImage when design request is creating', async () => {
+    const designRequest = await createDesignRequest({state: 'layouting'})
+    const image: Image = {
+      handle: 'imageId',
+      url: 'imageURL',
+      width: 1000,
+      height: 500,
+      rotation: 0,
+      captureTime: '2021-01-01T00:00:00.000Z',
+      cameraMake: 'cameraMake', 
+      cameraModel: 'cameraModel',
+      filename: 'filename'
+    }
+    expect(await designRequest.images.add(image)).toThrowError(
+      'You need to wait for the current design request to be ready before adding new images.'
+    )
   })
 
   test.fails('getJSON while dr is not ready', async () => {
@@ -114,17 +132,21 @@ describe('Design Request', async () => {
     expect(designRequestOptions).toStrictEqual(snakeCaseObjectKeysToCamelCase(designOptions))
   })
 
-  test.fails('submitDesignRequest while dr is not new', async () => {
-    const designRequest = await createDesignRequest({state: 'ready'})
+  test.fails('submitDesignRequest while dr cannot be resubmitted', async () => {
+    const designRequest = await createDesignRequest({state: 'submitted'})
     const designRequestJSON = await designRequest.submit()
-    expect(designRequestJSON).toThrowError('Design request already submitted')
+    expect(designRequestJSON)
+      .toThrowError('You need to wait for the current design request to be ready before submitting a new one')
   })
 
   test('submitDesignRequest', async () => {
     const designRequest = await createDesignRequest({state: 'new'})
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent')
     const wsClose = vi.spyOn(WebSocketMock.prototype, 'close')
-    fetchMocker.mockResponse(JSON.stringify(bookFactory().toBookProps()))
+    fetchMocker.mockResponses(
+      [JSON.stringify(bookFactory().toBookProps()), {status: 200}],
+      [JSON.stringify(bookFactory().toBookProps()), {status: 200}]
+    )
     const submitDesignRequest = await designRequest.submit({
       imageDensity: 'high',
       embellishmentLevel: 'few',
@@ -138,8 +160,6 @@ describe('Design Request', async () => {
       progress: 0,
       message: 'Reviewing design preferences'
     }
-    ws.mock.results[0].value.onmessage({data: JSON.stringify(submittedDetail)})
-    expect(dispatchEventSpy.mock.calls.length).toStrictEqual(1)
     expect(ws).toHaveBeenCalledWith(`${webSocketHost}/?book_id=${designRequest.parentId}`)
     expect(submitDesignRequest).toStrictEqual(designRequest)
     ws.mock.results[0].value.onmessage({data: JSON.stringify(submittedDetail)})
@@ -154,6 +174,8 @@ describe('Design Request', async () => {
     const embellishingEvent = dispatchEventSpy.mock.calls[1][0] as DesignRequestEvent
     expect(embellishingEvent.type).toStrictEqual('MagicBook.designRequestUpdated')
     expect(embellishingEvent['detail']).toStrictEqual(embellishingDetail)
+    expect(dispatchEventSpy.mock.calls.length).toStrictEqual(2)
+    ws.mock.results[0].value.onmessage({data: JSON.stringify(embellishingDetail)})
     expect(dispatchEventSpy.mock.calls.length).toStrictEqual(2)
     expect(wsClose).not.toHaveBeenCalled()
     const readyDetail = {
@@ -219,6 +241,12 @@ describe('Design Request', async () => {
     const designRequest = await createDesignRequest({state: 'new'})
     await designRequest.setGuid(faker.string.uuid())
     expect(designRequest).toThrowError('Design request not submitted')
+  })
+
+  test('getProgress without ws', async () => {
+    const designRequest = await createDesignRequest({state: 'ready'})
+    designRequest.webSocket = undefined
+    await designRequest.getProgress()
   })
 
   test('logEvent', async () => {

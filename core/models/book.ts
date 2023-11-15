@@ -86,13 +86,15 @@ export const bookPropsSchema = z.object({
   guid: z.string().optional(),
   cancelled_at: z.string().optional(),
   mb_client_timeout: z.number().optional(),
-  user_id: z.string().optional()
+  user_id: z.string().optional(),
+  revision: z.number().optional()
 })
 export type BookProps = z.infer<typeof bookPropsSchema>
 
 export class Book {
   id: string
   title: string
+  revision?: number
   subtitle?: string
   design_request: BookDesignRequest
   state?: State
@@ -111,12 +113,14 @@ export class Book {
     this.cancelled_at = props.cancelled_at
     this.timeout = props.mb_client_timeout ? props.mb_client_timeout * 1000 : undefined // convert to ms
     this.user_id = props.user_id
+    this.revision = props.revision
   }
 
   toDesignRequestProps() {
     const props = {...this, ...this.design_request} as unknown as Record<string, unknown>
     props.style = getStyleIdBySlug(props.style as string)
     delete props.design_request
+    delete props.revision
     return snakeCaseObjectKeysToCamelCase(props) as DesignRequestProps
   }
 

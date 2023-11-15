@@ -28,6 +28,13 @@ describe('Engine API Book Endpoints', () => {
     expect(book).toStrictEqual(fakeBook)
   })
 
+  test('design', async () => {
+    const fakeBook = bookFactory()
+    fetchMocker.mockResponse(JSON.stringify(fakeBook.toBookProps()))
+    const book = await engineAPI.books.design(fakeBook.id)
+    expect(book).toStrictEqual(fakeBook)
+  })
+
   test('cancel', async () => {
     const fakeBook = bookFactory({state: 'cancelled'})
     fetchMocker.mockResponse(JSON.stringify(fakeBook.toBookProps()))

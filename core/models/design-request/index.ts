@@ -4,6 +4,7 @@ import {Images} from './image'
 import {MagicBookClient} from '../client'
 import {
   bookSizes,
+  canSubmitDesignRequest,
   cancelledEventDetail,
   coverTypes,
   embellishmentLevels,
@@ -87,7 +88,7 @@ export class DesignRequest {
 
   constructor(
     // eslint-disable-next-line no-unused-vars
-    private readonly parentId: string,
+    readonly parentId: string,
     // eslint-disable-next-line no-unused-vars
     private readonly client: MagicBookClient,
     designRequestProps?: DesignRequestProps
@@ -104,12 +105,15 @@ export class DesignRequest {
     this.imageFilteringLevel = designRequestProps?.imageFilteringLevel || imageFilteringLevels[0]
     this.embellishmentLevel = designRequestProps?.embellishmentLevel || embellishmentLevels[0]
     this.textStickerLevel = designRequestProps?.textStickerLevel || textStickerLevels[0]
-    this.images = new Images(this.client, this.parentId)
+    this.images = new Images(this.client, this.parentId, this.state)
     this.userId = designRequestProps?.userId
-  }
+  } 
 
-  private updateDesignRequest(designRequestProps: DesignRequestProps) {
+  private updateDesignRequest(designRequestProps: Partial<DesignRequestProps>) {
     Object.assign(this, designRequestProps)
+    if (designRequestProps.state) {
+      this.images.designRequestState = designRequestProps.state
+    }
   }
 
   async getOptions(imageCount?: number) {
@@ -121,16 +125,16 @@ export class DesignRequest {
   }
 
   async submit(submitDesignRequestProps?: Partial<DesignRequestProps>) {
-    if (isDesignRequestSubmitted(this.state)) {
-      throw new Error('Design request already submitted')
+    if (!canSubmitDesignRequest(this.state)) {
+      throw new Error('You need to wait for the current design request to be ready before submitting a new one')
     } else {
-      submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
+      submitDesignRequestProps && this.updateDesignRequest(submitDesignRequestProps)
       this.webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
+      await this.client.engineAPI.books.update(this.parentId, this.toBook())
       this.updateDesignRequest(
-        (await this.client.engineAPI.books.update(this.parentId, this.toBook())).toDesignRequestProps()
+        (await this.client.engineAPI.books.design(this.parentId)).toDesignRequestProps()
       )
       this.getProgress()
-      this.state = states[1]
       return this
     }
   }
@@ -155,10 +159,10 @@ export class DesignRequest {
     } else if (!isDesignRequestSubmitted(this.state)) {
       throw new Error('Design request not submitted')
     } else {
-      this.updateDesignRequest(
-        (await this.client.engineAPI.books.cancel(this.parentId)).toDesignRequestProps()
-      )
-      this.state = 'cancelled'
+      this.updateDesignRequest({
+        ...(await this.client.engineAPI.books.cancel(this.parentId)).toDesignRequestProps(),
+        state: 'cancelled'
+      })
       await this.eventHandler(cancelledEventDetail)
       return this
     }
@@ -187,7 +191,7 @@ export class DesignRequest {
         })
       }
     }
-    this.state = detail.slug
+    this.updateDesignRequest({state: detail.slug})
     window.dispatchEvent(customEvent)
   }
 
@@ -206,7 +210,7 @@ export class DesignRequest {
       let timeout: ReturnType<typeof setTimeout>
       this.webSocket.onmessage = async (event) => {
         const detail = JSON.parse(event.data) as DesignRequestEventDetail
-        if (this.state !== detail.slug) {
+        if (this.state !== detail.slug || detail.slug === 'submitted') {
           timeout && clearTimeout(timeout)
           timeout = this.timeoutHandler()
           await this.eventHandler(detail)
@@ -217,11 +221,13 @@ export class DesignRequest {
   }
 
   private toBook() {
+    const designRequest = {
+      ...this,
+      images: this.images['images']
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const designRequest = {...this} as Record<string, any>
-    delete designRequest['client']
-    delete designRequest['images']['client']
-    delete designRequest['webSocket']
+    } as Record<string, any>
+    delete designRequest.client
+    delete designRequest.webSocket
     const styleSlug = styles[this.style].slug
     const bookDesignRequest = 
       camelCaseObjectKeysToSnakeCase(cleanJSON(designRequest)) as BookDesignRequestProps

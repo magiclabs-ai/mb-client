@@ -79,6 +79,7 @@ window.addEventListener('Magicbook.designRequestUpdated', async ((designRequestE
 ```
 
 Submit the design request. Again, the argument object can receive additional or updated design parameters.
+You can submit multiple design requests by calling this function after receiving the **"ready"** event from the previous one.
 
 ```ts
 await designRequest.submit({

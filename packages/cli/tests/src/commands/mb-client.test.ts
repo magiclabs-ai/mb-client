@@ -27,6 +27,7 @@ describe('mb-client', () => {
     fetchMocker.mockResponses(
       [JSON.stringify(book), {status: 200}],
       [JSON.stringify(imageServerFactory()), {status: 200}],
+      [JSON.stringify(book), {status: 200}],
       [JSON.stringify(book), {status: 200}]
     )
     await program.parseAsync(['mb-client', 'design-request', 'new', '--image-count', '1'], {from: 'user'})
@@ -56,6 +57,7 @@ describe('mb-client', () => {
     fetchMocker.mockResponses(
       [JSON.stringify(book), {status: 200}],
       [JSON.stringify(imageServerFactory()), {status: 200}],
+      [JSON.stringify(book), {status: 200}],
       [JSON.stringify(book), {status: 200}]
     )
     await program.parseAsync(['mb-client', 'design-request', 'new', '--image-count', '1', '--occasion', 'baby',
