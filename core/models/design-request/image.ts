@@ -14,14 +14,14 @@ export type Image = {
 }
 
 export class Images {
-  private images: Array<Image> = []
+  private images: Array<Image>
   private parentId: string
   length: number
 
   // eslint-disable-next-line no-unused-vars
-  constructor(private client: MagicBookClient, parentId: string, existingImages?: Array<Image>) {
+  constructor(private client: MagicBookClient, parentId: string) {
     this.parentId = parentId
-    this.images = existingImages || []
+    this.images = []
     this.length = this.images.length
   }
 
