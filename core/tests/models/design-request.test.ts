@@ -114,10 +114,11 @@ describe('Design Request', async () => {
     expect(designRequestOptions).toStrictEqual(snakeCaseObjectKeysToCamelCase(designOptions))
   })
 
-  test.fails('submitDesignRequest while dr is not new', async () => {
-    const designRequest = await createDesignRequest({state: 'ready'})
+  test.fails('submitDesignRequest while dr cannot be resubmitted', async () => {
+    const designRequest = await createDesignRequest({state: 'submitted'})
     const designRequestJSON = await designRequest.submit()
-    expect(designRequestJSON).toThrowError('Design request already submitted')
+    expect(designRequestJSON)
+      .toThrowError('You need to wait for the current design request to finish before submitting a new one')
   })
 
   test('submitDesignRequest', async () => {

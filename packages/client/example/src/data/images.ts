@@ -222,3 +222,84 @@ export const images: Array<Image> = [
     'handle': 'IMG_7038.jpg'
   }
 ]
+
+export const additionalImages: Array<Image> = [
+  {
+    'url': 'https://mb-sls-engine-shared.s3.amazonaws.com/sample-imagesets/00-yir-2019-lr/IMG_2356.jpg',
+    'width': 750,
+    'height': 1000,
+    'rotation': 0,
+    'captureTime': '2018-11-07 19:57:48',
+    'cameraModel': 'iPhone XS Max',
+    'cameraMake': 'Apple',
+    'filename': 'sample-imagesets/00-yir-2019-lr/IMG_2356.jpg',
+    'handle': 'IMG_2356.jpg'
+  },
+  {
+    // eslint-disable-next-line max-len
+    'url': 'https://mb-sls-engine-shared.s3.amazonaws.com/sample-imagesets/00-yir-2019-lr/8af09cab-1acd-48f1-a0b9-5c273d4f0957 - Copy.JPG',
+    'width': 567,
+    'height': 1000,
+    'rotation': 0,
+    'captureTime': '2018-11-04 22:58:04',
+    'cameraModel': 'N/A',
+    'cameraMake': 'N/A',
+    'filename': 'sample-imagesets/00-yir-2019-lr/8af09cab-1acd-48f1-a0b9-5c273d4f0957 - Copy.JPG',
+    'handle': '8af09cab-1acd-48f1-a0b9-5c273d4f0957 - Copy.JPG'
+  },
+  {
+    'url': 'https://mb-sls-engine-shared.s3.amazonaws.com/sample-imagesets/00-yir-2019-lr/IMG_0596.jpg',
+    'width': 1000,
+    'height': 750,
+    'rotation': 270,
+    'captureTime': '2018-07-01 00:41:54',
+    'cameraModel': 'iPhone 8 Plus',
+    'cameraMake': 'Apple',
+    'filename': 'sample-imagesets/00-yir-2019-lr/IMG_0596.jpg',
+    'handle': 'IMG_0596.jpg'
+  },
+  {
+    'url': 'https://mb-sls-engine-shared.s3.amazonaws.com/sample-imagesets/00-yir-2019-lr/IMG_2632.jpg',
+    'width': 1000,
+    'height': 750,
+    'rotation': 180,
+    'captureTime': '2018-12-09 10:13:50',
+    'cameraModel': 'iPhone XS Max',
+    'cameraMake': 'Apple',
+    'filename': 'sample-imagesets/00-yir-2019-lr/IMG_2632.jpg',
+    'handle': 'IMG_2632.jpg'
+  },
+  {
+    'url': 'https://mb-sls-engine-shared.s3.amazonaws.com/sample-imagesets/00-yir-2019-lr/IMG_8337.jpg',
+    'width': 1000,
+    'height': 750,
+    'rotation': 180,
+    'captureTime': '2018-03-18 01:07:56',
+    'cameraModel': 'iPhone 8 Plus',
+    'cameraMake': 'Apple',
+    'filename': 'sample-imagesets/00-yir-2019-lr/IMG_8337.jpg',
+    'handle': 'IMG_8337.jpg'
+  },
+  {
+    'url': 'https://mb-sls-engine-shared.s3.amazonaws.com/sample-imagesets/00-yir-2019-lr/9c436bfe-e0ed-483c-9094-89b723ee017c.JPG',
+    'width': 750,
+    'height': 1000,
+    'rotation': 0,
+    'captureTime': '2018-11-04 22:58:04',
+    'cameraModel': 'N/A',
+    'cameraMake': 'N/A',
+    'filename': 'sample-imagesets/00-yir-2019-lr/9c436bfe-e0ed-483c-9094-89b723ee017c.JPG',
+    'handle': '9c436bfe-e0ed-483c-9094-89b723ee017c.JPG'
+  },
+  {
+    'url': 'https://mb-sls-engine-shared.s3.amazonaws.com/sample-imagesets/00-yir-2019-lr/IMG_0970.jpg',
+    'width': 1000,
+    'height': 750,
+    'rotation': 0,
+    'captureTime': '2018-07-29 16:45:21',
+    'cameraModel': 'iPhone 8 Plus',
+    'cameraMake': 'Apple',
+    'filename': 'sample-imagesets/00-yir-2019-lr/IMG_0970.jpg',
+    'handle': 'IMG_0970.jpg'
+  }
+]

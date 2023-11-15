@@ -19,7 +19,7 @@ export const states = [
 export const statesToCloseWS: ReadonlyArray<typeof states[number]> = ['error', 'timeout', 'ready', 'cancelled'] as const
 export const statesToReport: ReadonlyArray<typeof states[number]> = ['error', 'timeout'] as const
 export const isDesignRequestSubmitted = (state: string) => !['new', 'ingesting'].includes(state)
-export const canResubmitDesignRequest = (state: string) => ['ready'].includes(state)
+export const canResubmitDesignRequest = (state: string) => ['new', 'ingesting', 'ready'].includes(state)
 export const occasions = [
   'baby',
   'birthday',
@@ -183,7 +183,7 @@ export const styles = {
   6116: {slug: 'boho-baby-sfly'},
   6117: {slug: 'simply-gallery-sfly'},
   6118: {slug: 'this-is-love-sfly'},
-  6120: {slug: 'wedding-gallery-sfly'},
+  6120: {slug: 'wedding-photo-album-sfly'},
   6121: {slug: 'watercolorwashes-sfly'},
   6124: {slug: 'graduation-photo-album-sfly'},
   6125: {slug: 'modern-year-in-review-photo-album-sfly'},

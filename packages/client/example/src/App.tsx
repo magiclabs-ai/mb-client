@@ -5,7 +5,7 @@ import {
   MagicBookClient
 } from '@magiclabs.ai/magicbook-client'
 import {Layout} from './components/layout'
-import {images} from './data/images'
+import {additionalImages, images} from './data/images'
 import {useEffect, useState} from 'react'
 
 function App() {
@@ -44,7 +44,7 @@ function App() {
     if (isCreatingDesignRequest) {
       addMagicBookEventListener()
     } else {
-      setDesignRequestEventDetail(null)
+      // setDesignRequestEventDetail(null)
       removeMagicBookEventListener()
     }
     return () => {
@@ -60,10 +60,15 @@ function App() {
       bookSize: '10x10',
       coverType: 'hc',
       pageType: 'sp',
-      userId: 'MB-EXAMPLE'
+      userId: 'MB-EXAMPLE',
+      imageDensity: 'high',
+      embellishmentLevel: 'few',
+      textStickerLevel: 'none'
     })
     designRequest.title = 'My Book TEST'
     designRequest.subtitle = 'Subtitle'
+    // designRequest.toBook()
+    // console.log(designRequest)
     console.log('designRequest:', designRequest)
     await Promise.all(images.map(async (image) => {
       await designRequest.images.add(image)
@@ -72,11 +77,7 @@ function App() {
     console.log('designRequest.images.length:', designRequest.images.length)
     console.log('designRequest.getOptions:', await designRequest.getOptions())
     setDesignRequest(designRequest)
-    console.log('designRequest.submit:', await designRequest.submit({
-      imageDensity: 'high',
-      embellishmentLevel: 'few',
-      textStickerLevel: 'none'
-    }))
+    console.log('designRequest.submit:', await designRequest.submit())
   }
 
   async function cancelDesignRequest() {
@@ -94,6 +95,14 @@ function App() {
           'app': 'mb-client-example'
         }))
     }
+  }
+
+  async function addImagesAndSubmit() {
+    console.log(currentDesignRequest)
+    await Promise.all(additionalImages.map(async (image) => {
+      console.log('designRequest.images.add:', await currentDesignRequest?.images.add(image))
+    }))
+    console.log('designRequest.submit:', await currentDesignRequest?.submit())
   }
 
   return (
@@ -136,6 +145,15 @@ function App() {
               focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed'
           >
               Create design request
+          </button>
+          <button
+            onClick={addImagesAndSubmit}
+            // disabled={isCreatingDesignRequest}
+            className='rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
+              hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+              focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed'
+          >
+              Add 2 more images
           </button>
           <a 
             href='https://www.npmjs.com/package/@magiclabs.ai/magicbook-client'

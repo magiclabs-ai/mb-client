@@ -109,8 +109,9 @@ export class DesignRequest {
     this.userId = designRequestProps?.userId
   }
 
-  private updateDesignRequest(designRequestProps: DesignRequestProps) {
-    Object.assign(this, designRequestProps)
+  private updateDesignRequest(designRequestProps: Partial<DesignRequestProps>) {
+    const simpleProps = {...designRequestProps}
+    Object.assign(this, simpleProps)
   }
 
   async getOptions(imageCount?: number) {
@@ -122,10 +123,10 @@ export class DesignRequest {
   }
 
   async submit(submitDesignRequestProps?: Partial<DesignRequestProps>) {
-    if (canResubmitDesignRequest(this.state)) {
+    if (!canResubmitDesignRequest(this.state)) {
       throw new Error('You need to wait for the current design request to finish before submitting a new one')
     } else {
-      submitDesignRequestProps && Object.assign(this, submitDesignRequestProps)
+      submitDesignRequestProps && this.updateDesignRequest(submitDesignRequestProps)
       this.webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
       await this.client.engineAPI.books.update(this.parentId, this.toBook())
       this.updateDesignRequest(
@@ -219,11 +220,13 @@ export class DesignRequest {
   }
 
   private toBook() {
+    const designRequest = {
+      ...this,
+      images: this.images['images']
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const designRequest = {...this} as Record<string, any>
-    delete designRequest['client']
-    delete designRequest['images']['client']
-    delete designRequest['webSocket']
+    } as Record<string, any>
+    delete designRequest.client
+    delete designRequest.webSocket
     const styleSlug = styles[this.style].slug
     const bookDesignRequest = 
       camelCaseObjectKeysToSnakeCase(cleanJSON(designRequest)) as BookDesignRequestProps
