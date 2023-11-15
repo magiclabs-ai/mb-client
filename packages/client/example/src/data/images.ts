@@ -281,6 +281,7 @@ export const additionalImages: Array<Image> = [
     'handle': 'IMG_8337.jpg'
   },
   {
+    // eslint-disable-next-line max-len
     'url': 'https://mb-sls-engine-shared.s3.amazonaws.com/sample-imagesets/00-yir-2019-lr/9c436bfe-e0ed-483c-9094-89b723ee017c.JPG',
     'width': 750,
     'height': 1000,
