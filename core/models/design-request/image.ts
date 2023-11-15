@@ -31,7 +31,7 @@ export class Images {
 
   async add(image: Image): Promise<number> {
     if (!canResubmitDesignRequest(this.designRequestState)) {
-      throw new Error('You need to wait for the current design request to be finished before adding new images.')
+      throw new Error('You need to wait for the current design request to be ready before adding new images.')
     } else {
       this.images.push(image)
       this.length = this.images.length

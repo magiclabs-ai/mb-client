@@ -126,7 +126,7 @@ export class DesignRequest {
 
   async submit(submitDesignRequestProps?: Partial<DesignRequestProps>) {
     if (!canResubmitDesignRequest(this.state)) {
-      throw new Error('You need to wait for the current design request to finish before submitting a new one')
+      throw new Error('You need to wait for the current design request to be ready before submitting a new one')
     } else {
       submitDesignRequestProps && this.updateDesignRequest(submitDesignRequestProps)
       this.webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
