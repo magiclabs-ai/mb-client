@@ -105,12 +105,15 @@ export class DesignRequest {
     this.imageFilteringLevel = designRequestProps?.imageFilteringLevel || imageFilteringLevels[0]
     this.embellishmentLevel = designRequestProps?.embellishmentLevel || embellishmentLevels[0]
     this.textStickerLevel = designRequestProps?.textStickerLevel || textStickerLevels[0]
-    this.images = new Images(this.client, this.parentId)
+    this.images = new Images(this.client, this.parentId, this.state)
     this.userId = designRequestProps?.userId
-  }
+  } 
 
   private updateDesignRequest(designRequestProps: Partial<DesignRequestProps>) {
     Object.assign(this, designRequestProps)
+    if (designRequestProps.state) {
+      this.images.designRequestState = designRequestProps.state
+    }
   }
 
   async getOptions(imageCount?: number) {
@@ -132,7 +135,7 @@ export class DesignRequest {
         (await this.client.engineAPI.books.design(this.parentId)).toDesignRequestProps()
       )
       this.getProgress()
-      this.state = states[1]
+      this.updateDesignRequest({state: states[1]})
       return this
     }
   }
@@ -157,10 +160,10 @@ export class DesignRequest {
     } else if (!isDesignRequestSubmitted(this.state)) {
       throw new Error('Design request not submitted')
     } else {
-      this.updateDesignRequest(
-        (await this.client.engineAPI.books.cancel(this.parentId)).toDesignRequestProps()
-      )
-      this.state = 'cancelled'
+      this.updateDesignRequest({
+        ...(await this.client.engineAPI.books.cancel(this.parentId)).toDesignRequestProps(),
+        state: 'cancelled'
+      })
       await this.eventHandler(cancelledEventDetail)
       return this
     }
@@ -189,7 +192,7 @@ export class DesignRequest {
         })
       }
     }
-    this.state = detail.slug
+    this.updateDesignRequest({state: detail.slug})
     window.dispatchEvent(customEvent)
   }
 

@@ -69,7 +69,7 @@ describe('Design Request', async () => {
       imageFilteringLevel: imageFilteringLevels[0],
       embellishmentLevel: embellishmentLevels[0],
       textStickerLevel: textStickerLevels[0],
-      images: new Images(client, parentId)
+      images: new Images(client, parentId, 'new')
     })
   })
 

@@ -1,4 +1,6 @@
 import {MagicBookClient} from '../client'
+import {State} from '.'
+import {canResubmitDesignRequest} from '@/core/data/design-request'
 import {z} from 'zod'
 
 export type Image = {
@@ -17,21 +19,28 @@ export class Images {
   private parentId: string
   private images: Array<Image>
   length: number
+  designRequestState: State
 
   // eslint-disable-next-line no-unused-vars
-  constructor(private readonly client: MagicBookClient, parentId: string) {
+  constructor(private readonly client: MagicBookClient, parentId: string, designRequestState: State) {
     this.parentId = parentId
     this.images = []
     this.length = this.images.length
+    this.designRequestState = designRequestState
   }
 
   async add(image: Image): Promise<number> {
-    this.images.push(image)
-    this.length = this.images.length
-    await this.client.engineAPI.images.addToBook(this.parentId, new ImageServer(image))
-    return new Promise<number>((resolve) => {
-      resolve(this.length)
-    })
+    if (!canResubmitDesignRequest(this.designRequestState)) {
+      throw new Error('You need to wait for the current design request to be finished before adding new images.')
+    } else {
+      this.images.push(image)
+      this.length = this.images.length
+      await this.client.engineAPI.images.addToBook(this.parentId, new ImageServer(image))
+      return new Promise<number>((resolve) => {
+        resolve(this.length)
+      })
+    }
+
   }
 }
 
