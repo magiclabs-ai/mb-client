@@ -42,7 +42,8 @@ describe('Config', () => {
       apiHost: 'https://api.fake.magicbook.io',
       wsHost: 'wss://socket.fake.magicbook.io',
       env: 'fake',
-      apiKey: faker.string.uuid()
+      apiKey: faker.string.uuid(),
+      userId: faker.string.uuid()
     }
     await program.parseAsync(['config', '--api-host', fakeConfig.apiHost, '--ws-host', fakeConfig.wsHost, '--api-key',
       fakeConfig.apiKey, '--user-id', fakeConfig.userId], {from: 'user'})

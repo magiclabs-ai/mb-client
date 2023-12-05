@@ -32,7 +32,7 @@ describe('Spreads', () => {
     fetchMocker.mockResponse(JSON.stringify(spread))
     prompts.inject(['book.id', JSON.stringify(spread)])
     await program.parseAsync(['spreads', 'create'], {from: 'user'})
-    expect(logSpy.mock.calls[2][0]).toStrictEqual('❌ - SyntaxError: Unexpected token u in JSON at position 0')
+    expect(logSpy.mock.calls[2][0]).toStrictEqual('❌ - SyntaxError: "undefined" is not valid JSON')
   })
 
   test('create spread', async () => {

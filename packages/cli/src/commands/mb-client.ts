@@ -47,6 +47,7 @@ newDesignRequest.action(async (args) => {
   }
   const images = retrieveImageSet(args.imageSet)
   const client = new MagicBookClient(config.apiKey, config.apiHost, config.wsHost)
+  args.userId = config.userId
   log(chalk.bold('💿 - Init client'))
 
   const designRequest = await client.createDesignRequest(args)

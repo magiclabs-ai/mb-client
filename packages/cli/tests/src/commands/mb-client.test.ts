@@ -21,6 +21,7 @@ describe('MB Client', () => {
     fetchMocker.mockResponses(
       [JSON.stringify(book), {status: 200}],
       ...images.map((image) => [JSON.stringify(new ImageServer(image)), {status: 200}] as [string, MockParams]),
+      [JSON.stringify(book), {status: 200}],
       [JSON.stringify(book), {status: 200}]
     )
     prompts.inject(['baby', '1005', '10x10', 'sc', 'sp', 'low', 'best', 'lots', 'lots', 'custom',
@@ -32,6 +33,7 @@ describe('MB Client', () => {
     fetchMocker.mockResponses(
       [JSON.stringify(book), {status: 200}],
       ...images.map((image) => [JSON.stringify(new ImageServer(image)), {status: 200}] as [string, MockParams]),
+      [JSON.stringify(book), {status: 200}],
       [JSON.stringify(book), {status: 200}]
     )
     await program.parseAsync(['mb-client', 'design-request', 'new', '--occasion', 'baby',
@@ -68,6 +70,7 @@ describe('MB Client', () => {
     fetchMocker.mockResponses(
       [JSON.stringify(book), {status: 200}],
       ...images.map((image) => [JSON.stringify(new ImageServer(image)), {status: 200}] as [string, MockParams]),
+      [JSON.stringify(book), {status: 200}],
       [JSON.stringify(book), {status: 200}]
     )
     prompts.inject(['baby', '1005', '10x10', 'sc', 'sp', 'low', 'best', 'lots', 'lots', '00-nice-and-rome-client'])
