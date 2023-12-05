@@ -6,6 +6,7 @@ import {mockProcessExit} from 'vitest-mock-process'
 import {program} from 'commander'
 
 mockProcessExit()
+
 vi.mock('prompts', async () => {
   return {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -19,6 +20,7 @@ vi.mock('prompts', async () => {
     })
   }
 })
+
 describe('Config', () => {
   test('setup without args', async () => {
     await program.parseAsync(['config'], {from: 'user'})
@@ -28,6 +30,7 @@ describe('Config', () => {
     const fakeConfig = {
       apiHost: 'fake.url',
       wsHost: 'fake.url',
+      env: 'fake',
       apiKey: faker.string.uuid()
     }
     await program.parseAsync(['config', '--api-host', fakeConfig.apiHost, '--ws-host', fakeConfig.wsHost, '--api-key',
@@ -36,8 +39,9 @@ describe('Config', () => {
   
   test('setup', async () => {
     const fakeConfig = {
-      apiHost: 'https://api.magicbook.io',
-      wsHost: 'wss://socket.magicbook.io',
+      apiHost: 'https://api.fake.magicbook.io',
+      wsHost: 'wss://socket.fake.magicbook.io',
+      env: 'fake',
       apiKey: faker.string.uuid(),
       userId: faker.string.uuid()
     }

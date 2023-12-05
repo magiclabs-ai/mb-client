@@ -15,14 +15,12 @@ jobs:
     - name: 'Install Node'
       uses: actions/setup-node@v3
       with:
-        node-version: '18.x'
+        node-version: '20.x'
     - uses: pnpm/action-setup@v2
       name: Install pnpm
       with:
         version: 8
-        run_install: false
-    - name: 'Install Deps'
-      run: pnpm install
+        run_install: true
     - name: Run ESLint
       run: pnpm run lint
   test:
@@ -36,16 +34,14 @@ jobs:
     - name: 'Install Node'
       uses: actions/setup-node@v3
       with:
-        node-version: '18.x'
+        node-version: '20.x'
     - name: Install xsel  
       run: sudo apt-get install -y xsel
     - uses: pnpm/action-setup@v2
       name: Install pnpm
       with:
         version: 8
-        run_install: false
-    - name: 'Install Deps'
-      run: pnpm install
+        run_install: true
     - name: 'Test'
       run: pnpm run turbo:coverage
     - name: 'Report Core Coverage'
@@ -74,16 +70,15 @@ jobs:
     - name: 'Install Node'
       uses: actions/setup-node@v3
       with:
-        node-version: '18.x'
+        node-version: '20.x'
     - uses: pnpm/action-setup@v2
       name: Install pnpm
       with:
         version: 8
         run_install: false
     - name: 'Install Deps'
-      run: cd packages/cli && pnpm install && pnpm run build
+      run: cd packages/cli && pnpm install && pnpm run setup:dev
     - name: 'Setup CLI'
       run: cd packages/cli/dist && node index.mjs config --api-host ${{vars.API_HOST}} --ws-host ${{vars.WEBSOCKET_HOST}} --api-key ${{secrets.API_KEY}} --user-id GITHUB-ACTIONS
     - name: 'Test'
-      run: cd packages/cli/dist && node index.mjs mb-client design-request new --title TEST --occasion baby --style 6117 --book-size 8x8 --cover-type sc --page-type sp --image-density low --image-filtering-level best --embellishment-level lots --text-sticker-level few
-
+      run: cd packages/cli/dist && node index.mjs mb-client design-request new --title $(date +'%Y-%m-%d') --subtitle ${GITHUB_REF##*/} --occasion baby --style 6117 --book-size 8x8 --cover-type sc --page-type sp --image-density low --image-filtering-level best --embellishment-level lots --text-sticker-level few --image-set 00-nice-and-rome

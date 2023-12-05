@@ -5,20 +5,17 @@ import {formatReturnJSON} from '@/core/utils/toolbox'
 import {mockProcessExit} from 'vitest-mock-process'
 import {program} from 'commander'
 import {storyboardItemServerFactory} from '@/core/tests/factories/storyboard-item.factory'
+import prompts from 'prompts'
 
 mockProcessExit()
-vi.mock('prompts', async () => {
-  return {
-    default: () => Promise.resolve({
-      bookId: 'ABC'
-    })
-  }
-})
+
 describe('Storyboard Items', () => {
   const logSpy = vi.spyOn(console, 'log')
+
   test('get without args', async () => {
     const storyboardItems = [storyboardItemServerFactory(), storyboardItemServerFactory()]
     fetchMocker.mockResponse(JSON.stringify(storyboardItems))
+    prompts.inject(['book.id'])
     await program.parseAsync(['storyboard-items', 'list'], {from: 'user'})
     expect(logSpy.mock.calls[0][0]).toStrictEqual(formatReturnJSON(storyboardItems))
   })

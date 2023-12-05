@@ -1,5 +1,6 @@
 import {assign, camelCaseObjectKeysToSnakeCase, camelCaseToKebabCase,
   camelCaseToSnakeCase,
+  chunkArray,
   formatReturnJSON,
   handleAsyncFunction,
   isURL,
@@ -73,5 +74,10 @@ describe('Toolbox', () => {
   test('camelCaseToWords', async () => {
     const res = camelCaseToWords('helloWorld')
     expect(res).toBe('hello world')
+  })
+  test('chunkArray', async () => {
+    const array = Array(100).fill(0).map((_, i) => i)
+    const res = chunkArray(array, 50)
+    expect(res.length).toBe(2)
   })
 })

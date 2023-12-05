@@ -15,6 +15,9 @@ export default defineConfig({
     API_HOST: process.env.API_HOST || '',
     WEBSOCKET_HOST: process.env.WEBSOCKET_HOST || ''
   },
+  esbuildOptions(options) {
+    options.assetNames = '../../core/data/image-sets/'
+  },
   banner: {
     js: `
       import WebSocket from 'ws'

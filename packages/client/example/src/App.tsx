@@ -2,10 +2,11 @@ import {
   DesignRequest,
   DesignRequestEvent,
   DesignRequestEventDetail,
+  Image,
   MagicBookClient
 } from '@magiclabs.ai/magicbook-client'
-import {additionalImages, images} from './data/images'
 import {useEffect, useState} from 'react'
+import niceAndRome from '../../../../core/data/image-sets/56K-Cloud-Experiences-client.json'
 
 function App() {
   const client = new MagicBookClient(
@@ -67,6 +68,7 @@ function App() {
     designRequest.title = 'My Book TEST'
     designRequest.subtitle = 'Subtitle'
     console.log('designRequest:', designRequest)
+    const images = niceAndRome['56K-Cloud-Experiences'] as Array<Image>
     await Promise.all(images.map(async (image) => {
       await designRequest.images.add(image)
       console.log('designRequest.images.add:', image)
@@ -98,6 +100,15 @@ function App() {
       console.log('designRequest.images.add:', await currentDesignRequest?.images.add(image))
     }))
     console.log('designRequest.submit:', await currentDesignRequest?.submit())
+  }
+
+  async function bookViewed() {
+    if (currentDesignRequest) {
+      console.log('designRequest.logEvent:', await currentDesignRequest.logEvent(
+        'bookViewed', {
+          'app': 'mb-client-example'
+        }))
+    }
   }
 
   return (

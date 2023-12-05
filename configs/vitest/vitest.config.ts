@@ -22,7 +22,7 @@ export default defineConfig({
     coverage: {
       all: true,
       include: ['core/**/*.ts'],
-      exclude: ['core/tests/mocks/**/*.ts'],
+      exclude: ['core/tests/mocks/**/*.ts', 'core/data/**/*.ts'],
       provider: 'istanbul',
       reporter: ['text', 'json-summary', 'json', 'html']
     }

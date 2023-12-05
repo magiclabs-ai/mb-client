@@ -5,25 +5,17 @@ import {formatReturnJSON} from '@/core/utils/toolbox'
 import {imageServerFactory} from '@/core/tests/factories/image.factory'
 import {mockProcessExit} from 'vitest-mock-process'
 import {program} from 'commander'
+import prompts from 'prompts'
 
 mockProcessExit()
-vi.mock('prompts', async () => {
-  return {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    default: (props: any) => Promise.resolve({
-      bookId: 'ABC',
-      imageId: 'DEF',
-      image: JSON.stringify(imageServerFactory()),
-      isValid: typeof props.validate === 'function' ? props.validate(JSON.stringify(imageServerFactory())) : true
-    })
-  }
-})
+
 describe('Images', () => {
   const logSpy = vi.spyOn(console, 'log')
 
   test('list images without args', async () => {
     const images = [imageServerFactory(), imageServerFactory()]
     fetchMocker.mockResponse(JSON.stringify(images))
+    prompts.inject(['book.id'])
     await program.parseAsync(['images', 'list'], {from: 'user'})
     expect(logSpy.mock.calls[0][0]).toStrictEqual(formatReturnJSON(images))
   })
@@ -31,13 +23,14 @@ describe('Images', () => {
   test('list images', async () => {
     const images = [imageServerFactory(), imageServerFactory()]
     fetchMocker.mockResponse(JSON.stringify(images))
-    await program.parseAsync(['images', 'list', '--book-id', 'book.id'], {from: 'user'})
+    await program.parseAsync(['images', 'list', '--book-id', '123'], {from: 'user'})
     expect(logSpy.mock.calls[1][0]).toStrictEqual(formatReturnJSON(images))
   })
 
   test('create image without args', async () => {
     const image = imageServerFactory()
     fetchMocker.mockResponse(JSON.stringify(image))
+    prompts.inject(['book.id', JSON.stringify(image)])
     await program.parseAsync(['images', 'create'],
       {from: 'user'})
     expect(logSpy.mock.calls[2][0]).toStrictEqual(formatReturnJSON(image))
@@ -61,6 +54,7 @@ describe('Images', () => {
   test('get image without args', async () => {
     const image = imageServerFactory()
     fetchMocker.mockResponse(JSON.stringify(image))
+    prompts.inject(['book.id', 'image.id'])
     await program.parseAsync(['images', 'get'], {from: 'user'})
     expect(logSpy.mock.calls[4][0]).toStrictEqual(formatReturnJSON(image))
   })
@@ -75,6 +69,7 @@ describe('Images', () => {
   test('update image without args', async () => {
     const image = imageServerFactory()
     fetchMocker.mockResponse(JSON.stringify(image))
+    prompts.inject(['book.id', 'image.id', JSON.stringify(image)])
     await program.parseAsync(['images', 'update'], {from: 'user'})
     expect(logSpy.mock.calls[6][0]).toStrictEqual(formatReturnJSON(image))
   })
@@ -89,6 +84,7 @@ describe('Images', () => {
 
   test('delete image without args', async () => {
     fetchMocker.mockResponse(JSON.stringify({}))
+    prompts.inject(['book.id', 'image.id'])
     await program.parseAsync(['images', 'delete'], {from: 'user'})
   })
 
