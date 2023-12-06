@@ -1,5 +1,5 @@
-import {DesignRequestProps} from '@/core/models/design-request'
-import {MagicBookClient} from '@/core/models/client'
+import {DesignRequestProps} from '@/core/types/design-request'
+import {MagicBookClient} from '@/core/types/client'
 import {bookFactory} from '@/core/tests/factories/book.factory'
 import {describe, expect, test} from 'vitest'
 import {fetchMocker} from '@/core/tests/mocks/fetch'

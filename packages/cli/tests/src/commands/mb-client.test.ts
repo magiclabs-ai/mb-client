@@ -1,6 +1,6 @@
 import '../../../src/commands/mb-client'
 import {EventEmitter} from 'stream'
-import {ImageServer} from '@/core/models/design-request/image'
+import {ImageServer} from '@/core/types/design-request/image'
 import {MockParams} from 'vitest-fetch-mock/types'
 import {bookFactory} from '@/core/tests/factories/book.factory'
 import {describe, test, vi} from 'vitest'

@@ -43,8 +43,8 @@ describe('Toolbox', () => {
     expect(snakeCaseToCamelCase('hello_world_test')).toBe('helloWorldTest')
   })
   test('snakeCaseObjectKeysToCamelCase', () => {
-    const snakeCaseObject = {hello_world: 'helloWorld', hello_world_test: 'helloWorldTest'}
-    const camelCaseObject = {helloWorld: 'helloWorld', helloWorldTest: 'helloWorldTest'}
+    const snakeCaseObject = {hello_world: null, hello_world_test: 'helloWorldTest'}
+    const camelCaseObject = {helloWorld: null, helloWorldTest: 'helloWorldTest'}
     expect(snakeCaseObjectKeysToCamelCase(snakeCaseObject)).toStrictEqual(camelCaseObject)
   })
   test('handleAsyncFunction succeed', async () => {

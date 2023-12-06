@@ -1,34 +1,28 @@
 import {
   EngineAPI,
-  baseEndpointProps,
-  paginatedResponseSchema,
-  paginatedResponseServerSchema
+  BaseEndpointProps
 } from '..'
-import {fontListSchema, fontListServerSchema} from '../../font'
+import {fontSchema} from '../../font'
 import {handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 import {z} from 'zod'
+import { paginatedResponseSchema } from '../pagination'
 
-const fontPaginatedServerSchema = paginatedResponseServerSchema(fontListServerSchema)
-const fontPaginatedSchema = paginatedResponseSchema(fontListSchema)
+const fontPaginatedSchema = paginatedResponseSchema(fontSchema)
 
-type FontListReturnType<T extends baseEndpointProps> = T['returnServerSchemas'] extends true
-  ? z.infer<typeof fontPaginatedServerSchema>
-  : z.infer<typeof fontPaginatedSchema>
+type FontListReturnType = z.infer<typeof fontPaginatedSchema>
 
 export class FontsEndpoints {
   // eslint-disable-next-line no-unused-vars
   constructor(private readonly engineAPI: EngineAPI) {
   }
 
-  list<T extends baseEndpointProps>(props?: T): Promise<FontListReturnType<T>> {
+  list<T extends BaseEndpointProps>(props?: T): Promise<FontListReturnType> {
     return handleAsyncFunction(async () => {
-      const res = (await this.engineAPI.fetcher.call<Promise <Record<string, unknown>>>({
-        path: `/v1/fonts${props?.qs ? `?${props.qs}` : ''}`
+      const res = (await this.engineAPI.fetcher.call({
+        path: `/v1/fonts`,
+        qs: props?.qs
       })) as Record<string, unknown>
-      return (props?.returnServerSchemas
-        ? fontPaginatedServerSchema.parse(res)
-        : fontPaginatedSchema.parse(snakeCaseObjectKeysToCamelCase(res))
-      ) as FontListReturnType<T>
+      return fontPaginatedSchema.parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
 }

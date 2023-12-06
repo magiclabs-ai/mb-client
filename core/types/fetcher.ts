@@ -2,6 +2,7 @@ import {mergeNestedObject} from '../utils/toolbox'
 
 export type CallProps = {
   path: string
+  qs?: string
   options?: RequestInit
   apiKey?: string
 }
@@ -29,18 +30,14 @@ export class Fetcher {
       }
       const baseOptions = {...this.options}
       const options = props.options ? mergeNestedObject(baseOptions, props.options) : baseOptions
-      const res = await fetch(this.cleanUrl(`${this.baseUrl}${props.path}`), options)
-      if (res.status >= 200 && res.status < 300) {
+      const qs = props.qs ? `?${props.qs}` : ''
+      const res = await fetch(this.cleanUrl(`${this.baseUrl}${props.path}${qs}`), options)
+      if (res.status >= 200 && res.status < 300 && res.ok) {
+        const result = await res.text()
         try {
-          const result = await res.text()
-          try {
-            return JSON.parse(result) as T
-          } catch (error){
-            return result as T
-          }
-        } catch (error) {
-          // console.log(error)
-          return undefined
+          return JSON.parse(result) as T
+        } catch (error){
+          return result as T
         }
       } else {
         let detail = res.statusText

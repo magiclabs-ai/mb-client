@@ -1,8 +1,8 @@
-import {Book, BookDesignRequestProps} from '@/core/models/book'
+import {Book, BookDesignRequestProps} from '@/core/types/book'
 import {
   State,
   Style
-} from '@/core/models/design-request'
+} from '@/core/types/design-request'
 import {
   bookSizes,
   coverTypes,

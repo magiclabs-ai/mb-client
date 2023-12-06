@@ -1,27 +1,31 @@
-import {EngineAPI, baseEndpointProps} from '..'
-import {Spread, spreadSchema, spreadServerSchema} from '../../spread'
+import {EngineAPI, BaseEndpointProps, BaseUpdateEndpointProps} from '..'
+import {SpreadServer, spreadSchema} from '../../spread'
 import {cleanJSON, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 import {handleAsyncFunction} from '@/core/utils/toolbox'
 import {z} from 'zod'
 
-type listProps = baseEndpointProps & {
+type ListProps = BaseEndpointProps & {
   bookId: string
 }
 
-type createProps = baseEndpointProps & {
+type CreateProps = BaseEndpointProps & {
   bookId: string
-  spread: Spread
+  spread: Partial<SpreadServer>
 }
 
-type retrieveProps = baseEndpointProps & {
+type RetrieveProps = BaseEndpointProps & {
   bookId: string
   spreadId: string
 }
 
-type updateProps = baseEndpointProps & {
+type UpdateProps = BaseUpdateEndpointProps<Partial<SpreadServer>> & {
   bookId: string
   spreadId: string
-  spread: Spread
+}
+
+type DeleteProps = BaseEndpointProps & {
+  bookId: string
+  spreadId: string
 }
 
 export class SpreadsEndpoints {
@@ -29,77 +33,62 @@ export class SpreadsEndpoints {
   constructor(private readonly engineAPI: EngineAPI) {
   }
 
-  list({bookId, returnServerSchemas}: listProps) {
+  list({bookId, qs}: ListProps) {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call<Promise <Record<string, unknown>>>({
-        path: `/v1/spreads/book/${bookId}`
-      })
-      if (res) {
-        return returnServerSchemas
-          ? z.array(spreadServerSchema).parse(res)
-          : z.array(spreadSchema).parse(snakeCaseObjectKeysToCamelCase(res))
-      }
-      return res
+      const res = (await this.engineAPI.fetcher.call({
+        path: `/v1/spreads/book/${bookId}`,
+        qs
+      })) as Record<string, unknown>
+      return z.array(spreadSchema).parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
   
-  create({bookId, spread, returnServerSchemas}: createProps) {
+  create({bookId, spread, qs}: CreateProps) {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call<Promise <Record<string, unknown>>>({
+      const res = (await this.engineAPI.fetcher.call({
         path: `/v1/spreads/book/${bookId}`,
         options: {
           method: 'POST',
           body: cleanJSON(spread)
-        }
-      })
-      if (res) {
-        return returnServerSchemas
-          ? z.array(spreadServerSchema).parse(res)
-          : z.array(spreadSchema).parse(snakeCaseObjectKeysToCamelCase(res))
-      }
-      return res
+        },
+        qs
+      })) as Record<string, unknown>
+      return spreadSchema.parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
 
-  retrieve({bookId, spreadId, returnServerSchemas}: retrieveProps) {
+  retrieve({bookId, spreadId, qs}: RetrieveProps) {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call<Promise <Record<string, unknown>>>({
-        path: `/v1/spreads/${spreadId}/book/${bookId}`
-      })
-      if (res) {
-        return returnServerSchemas
-          ? z.array(spreadServerSchema).parse(res)
-          : z.array(spreadSchema).parse(snakeCaseObjectKeysToCamelCase(res))
-      }
-      return res
+      const res = (await this.engineAPI.fetcher.call({
+        path: `/v1/spreads/${spreadId}/book/${bookId}`,
+        qs
+      })) as Record<string, unknown>
+      return spreadSchema.parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
 
-  update({bookId, spreadId, spread, returnServerSchemas}: updateProps) {
+  update({bookId, spreadId, payload, qs}: UpdateProps) {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call<Promise <Record<string, unknown>>>({
+      const res = (await this.engineAPI.fetcher.call({
         path: `/v1/spreads/${spreadId}/book/${bookId}`,
         options: {
           method: 'PUT',
-          body: cleanJSON(spread)
-        }
-      })
-      if (res) {
-        return returnServerSchemas
-          ? z.array(spreadServerSchema).parse(res)
-          : z.array(spreadSchema).parse(snakeCaseObjectKeysToCamelCase(res))
-      }
-      return res
+          body: cleanJSON(payload)
+        },
+        qs
+      })) as Record<string, unknown>
+      return spreadSchema.parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
 
-  delete(spreadId: string, bookId: string) {
+  delete({bookId, spreadId, qs}: DeleteProps) {
     return handleAsyncFunction(async () => {
       await this.engineAPI.fetcher.call({
         path: `/v1/spreads/${spreadId}/book/${bookId}`,
         options: {
           method: 'DELETE'
-        }
+        },
+        qs
       })
     })
   }

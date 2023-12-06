@@ -35,7 +35,10 @@ export class Images {
     } else {
       this.images.push(image)
       this.length = this.images.length
-      await this.client.engineAPI.images.addToBook(this.parentId, new ImageServer(image))
+      await this.client.engineAPI.images.addToBook({
+        bookId: this.parentId,
+        image: new ImageServer(image)
+      })
       return new Promise<number>((resolve) => {
         resolve(this.length)
       })

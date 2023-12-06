@@ -8,7 +8,7 @@ import prompts from 'prompts'
 
 export const designOptions = program.command('design-options')
 
-designOptions.command('get-densities')
+designOptions.command('retrieve-densities')
   .addOption(new Option('--book-size <bookSize>'))
   .addOption(new Option('--image-count <imageCount>'))
   .addOption(new Option('--image-filtering-level <imageFilteringLevel>'))
@@ -46,7 +46,7 @@ designOptions.command('get-densities')
       }
     })
     isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.designOptions.retrieve(args.bookSize, args.imageCount, args.imageFilteringLevel)
+      const res = await engineAPI.designOptions.retrieve(args)
       log(chalk.bold('🎛️ - Densities retrieved!'))
       return formatReturnJSON(res)
     })

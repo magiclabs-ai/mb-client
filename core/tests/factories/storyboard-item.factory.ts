@@ -1,10 +1,7 @@
 import {
   StoryboardItem,
-  StoryboardItemSchema,
-  StoryboardItemServer,
-  StoryboardItemServerSchema
-} from '@/core/models/storyboard-item'
-import {camelCaseObjectKeysToSnakeCase} from '@/core/utils/toolbox'
+  StoryboardItemSchema
+} from '@/core/types/storyboard-item'
 import {faker} from '@faker-js/faker'
 
 export type StoryboardItemFactoryProps = {
@@ -43,10 +40,4 @@ export function storyboardItemFactory(props?: StoryboardItemFactoryProps): Story
       height: faker.number.int({min: 1, max: 100})
     }
   })
-}
-
-export function storyboardItemServerFactory(props?: StoryboardItemFactoryProps): StoryboardItemServer {
-  return StoryboardItemServerSchema.parse(
-    camelCaseObjectKeysToSnakeCase(storyboardItemFactory(props))
-  )
 }

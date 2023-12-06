@@ -3,57 +3,30 @@ import {DesignOptionsEndpoints} from './endpoints/design-options'
 import {EmbellishmentsEndpoints} from './endpoints/embellishments'
 import {EventsEndpoints} from './endpoints/events'
 import {Fetcher} from '../fetcher'
-import {FontsEndpoints} from './endpoints/fonts'
 import {ImagesEndpoints} from './endpoints/images'
 import {SpreadsEndpoints} from './endpoints/spreads'
 import {StoryboardItemsEndpoints} from './endpoints/storyboard-items'
+import { FontsEndpoints } from './endpoints/fonts'
 import {StylesEndpoints} from './endpoints/styles'
-import {z} from 'zod'
 
-export function paginatedResponseServerSchema(arrayOf: z.ZodSchema) {
-  return z.object({
-    // next: z.string().nullable(),
-    count: z.number().optional(),
-    next_cursor: z.string().nullable(),
-    previous: z.string().optional(),
-    // previous_cursor: z.string().optional(),
-    results: z.array(arrayOf)
-  })
-}
-// export type PaginatedResponseServerSchema = z.infer<typeof paginatedResponseServerSchema>
-
-export function paginatedResponseSchema(arrayOf: z.ZodSchema) {
-  return z.object({
-    // next: z.string().nullable(),
-    count: z.number().optional(),
-    nextCursor: z.string().nullable(),
-    previous: z.string().optional(),
-    // previousCursor: z.string().optional(),
-    results: z.array(arrayOf)
-  })
-}
-
-export type baseEndpointProps = {
-  returnServerSchemas?: boolean
+export type BaseEndpointProps = {
   qs?: string
 }
 
-export type baseUpdateEndpointProps<T> = baseEndpointProps & {
+export type BaseUpdateEndpointProps<T> = BaseEndpointProps & {
   payload: T
 }
 
 export class EngineAPI {
   fetcher: Fetcher
-  returnServerSchemas: boolean
 
-  constructor(baseUrl: string, apiKey: string, returnServerSchemas?: boolean) {
+  constructor(baseUrl: string, apiKey: string) {
     const options = {
       headers: {
         'Authorization': `API-Key ${apiKey}`
       }
     }
     this.fetcher = new Fetcher(baseUrl, options)
-    this.returnServerSchemas = returnServerSchemas || false
   }
 
   readonly books = new BooksEndpoints(this)

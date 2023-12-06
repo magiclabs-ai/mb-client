@@ -2,6 +2,7 @@
 import {defineConfig} from 'vitest/config'
 import path from 'path'
 
+console.log(path.resolve(__dirname, '../../core'))
 export default defineConfig({
   resolve: {
     alias: [

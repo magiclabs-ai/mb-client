@@ -3,9 +3,9 @@ import {
   DesignRequestEvent,
   DesignRequestEventDetail,
   DesignRequestProps
-} from '@/core/models/design-request'
-import {Image, ImageServer, Images} from '@/core/models/design-request/image'
-import {MagicBookClient} from '@/core/models/client'
+} from '@/core/types/design-request'
+import {Image, ImageServer, Images} from '@/core/types/design-request/image'
+import {MagicBookClient} from '@/core/types/client'
 import {SpyInstance, beforeEach, describe, expect, test, vi} from 'vitest'
 import {WebSocketMock} from '@/core/tests/mocks/websocket'
 import {bookFactory} from '@/core/tests/factories/book.factory'

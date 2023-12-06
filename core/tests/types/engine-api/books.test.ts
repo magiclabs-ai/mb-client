@@ -1,67 +1,82 @@
-import {EngineAPI} from '@/core/models/engine-api'
+import {EngineAPI} from '@/core/types/engine-api'
 import {bookFactory} from '../../factories/book.factory'
 import {describe, expect, test} from 'vitest'
 import {fetchMocker} from '../../mocks/fetch'
 import {galleonFactory} from '../../factories/galleon.factory'
+import { engineAPI } from '../../shared'
 
 describe('Engine API Book Endpoints', () => {
-  const engineAPI = new EngineAPI('https://api.magicbook.mock', '123')
 
   test('create', async () => {
     const fakeBook = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(fakeBook.toBookProps()))
-    const book = await engineAPI.books.create({user_id: 'test-user-id'})
+    const book = await engineAPI.books.create({book: fakeBook})
     expect(book).toStrictEqual(fakeBook)
   })
   
   test('retrieve', async () => {
     const fakeBook = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(fakeBook.toBookProps()))
-    const book = await engineAPI.books.retrieve(fakeBook.id)
+    const book = await engineAPI.books.retrieve({bookId: fakeBook.id})
     expect(book).toStrictEqual(fakeBook)
   })
 
   test('update', async () => {
     const fakeBook = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(fakeBook.toBookProps()))
-    const book = await engineAPI.books.update(fakeBook.id, fakeBook)
+    const book = await engineAPI.books.update({
+      bookId: fakeBook.id,
+      payload: fakeBook
+    })
     expect(book).toStrictEqual(fakeBook)
+  })
+
+  test('delete', async () => {
+    fetchMocker.mockResponse('')
+    const book = await engineAPI.books.delete({
+      bookId: '123'
+    })
+    expect(book).toBeUndefined()
   })
 
   test('design', async () => {
     const fakeBook = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(fakeBook.toBookProps()))
-    const book = await engineAPI.books.design(fakeBook.id)
+    const book = await engineAPI.books.design({
+      bookId: fakeBook.id
+    })
     expect(book).toStrictEqual(fakeBook)
   })
 
   test('cancel', async () => {
     const fakeBook = bookFactory({state: 'cancelled'})
     fetchMocker.mockResponse(JSON.stringify(fakeBook.toBookProps()))
-    const book = await engineAPI.books.cancel(fakeBook.id)
+    const book = await engineAPI.books.cancel({
+      bookId: fakeBook.id
+    })
     expect(book.state).toBe('cancelled')
     expect(book).toStrictEqual(fakeBook)
-  })
-
-  test('delete', async () => {
-    fetchMocker.mockResponse('')
-    const book = await engineAPI.books.delete('123')
-    expect(book).toBeUndefined()
-  })
-
-  test('delete', async () => {
-    fetchMocker.mockResponse('')
-    const book = await engineAPI.books.report('123', {
-      error: 'timeout',
-      step: 'ingesting'
-    })
-    expect(book).toBeUndefined()
   })
 
   test('retrieveGalleon', async () => {
     const fakeGalleon = galleonFactory()
     fetchMocker.mockResponse(JSON.stringify(fakeGalleon))
-    const galleon = await engineAPI.books.retrieveGalleon('123')
+    const galleon = await engineAPI.books.retrieveGalleon({
+      bookId: '123'
+    })
     expect(galleon).toStrictEqual(fakeGalleon)
+  })
+
+  test('report', async () => {
+    const fakeBook = bookFactory()
+    fetchMocker.mockResponse(JSON.stringify(fakeBook.toBookProps()))
+    const book = await engineAPI.books.report({
+      bookId: fakeBook.id,
+      report: {
+        error: 'timeout',
+        step: 'ingesting'
+      }
+    })
+    expect(book).toStrictEqual(undefined)
   })
 })

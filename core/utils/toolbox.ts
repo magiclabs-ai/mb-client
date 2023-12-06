@@ -1,5 +1,4 @@
 import {styles} from '../data/design-request'
-import {z} from 'zod'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function assign(obj: Record<string, any>, fields: Array<string>, value: unknown) {
@@ -110,15 +109,4 @@ export function chunkArray(array: Array<unknown>, chunkSize: number) {
     chunks.push(chunk)
   }
   return chunks
-}
-
-export function serverOrClientSchema(
-  res: Record<string, unknown>,
-  schema: z.ZodSchema,
-  serverSchema: z.ZodSchema,
-  returnServerSchema?: boolean
-) {
-  return returnServerSchema
-    ? serverSchema.parse(res)
-    : schema.parse(snakeCaseObjectKeysToCamelCase(res))
 }

@@ -14,10 +14,9 @@ function App() {
   const client = new MagicBookClient(
     import.meta.env.VITE_MB_CLIENT_API_KEY as string
   )
-  client.engineAPI.returnServerSchemas = true
 
   async function listEmbellishments() {
-    console.log(await client.engineAPI.embellishments.lis223t({styleSlug: '2020-what-a-year-sfly'}))
+    console.log(await client.engineAPI.embellishments.list({styleSlug: '2020-what-a-year-sfly'}))
   }
 
   return (

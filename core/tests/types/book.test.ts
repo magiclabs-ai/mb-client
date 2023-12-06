@@ -1,4 +1,4 @@
-import {Book} from '../../models/book'
+import {Book} from '../../types/book'
 import {bookFactory} from '../factories/book.factory'
 import {describe, expect, test} from 'vitest'
 

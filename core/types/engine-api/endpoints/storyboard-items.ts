@@ -1,9 +1,9 @@
-import {EngineAPI, baseEndpointProps} from '..'
-import {StoryboardItemSchema, StoryboardItemServerSchema} from '../../storyboard-item'
+import {EngineAPI, BaseEndpointProps} from '..'
+import {StoryboardItem, StoryboardItemSchema} from '../../storyboard-item'
 import {handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 import {z} from 'zod'
 
-type listProps = baseEndpointProps & {
+type listProps = BaseEndpointProps & {
   bookId: string
 }
 export class StoryboardItemsEndpoints {
@@ -11,17 +11,12 @@ export class StoryboardItemsEndpoints {
   constructor(private readonly engineAPI: EngineAPI) {
   }
 
-  list({bookId, returnServerSchemas}: listProps) {
+  list(props: listProps): Promise<Array<StoryboardItem>> {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call<Promise <Record<string, unknown>>>({
-        path: `/v1/storyboarditems/book/${bookId}`
-      })
-      if (res) {
-        return returnServerSchemas
-          ? z.array(StoryboardItemServerSchema).parse(res)
-          : z.array(StoryboardItemSchema).parse(snakeCaseObjectKeysToCamelCase(res))
-      }
-      return res
+      let res = (await this.engineAPI.fetcher.call<Promise <Record<string, unknown>>>({
+        path: `/v1/storyboarditems/book/${props.bookId}`
+      })) as Record<string, unknown>
+      return z.array(StoryboardItemSchema).parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
 

@@ -1,4 +1,4 @@
-import {Fetcher, baseOptions} from '@/core/models/fetcher'
+import {Fetcher, baseOptions} from '@/core/types/fetcher'
 import {describe, expect, test} from 'vitest'
 import {fetchMocker} from '@/core/tests/mocks/fetch'
 
@@ -6,6 +6,9 @@ describe('Fetcher', () => {
   const fetcher = new Fetcher('https://api.fake-server.com')
   test('init without options', async () => {
     expect(fetcher.options).toBe(baseOptions)
+  })
+  test('call with qs', async () => {
+    await fetcher.call({path:'/books', qs: 'test=1'})
   })
   test.fails('fail call', async () => {
     fetchMocker.mockReject(() => Promise.reject('Something went wrong. Please try again.'))
@@ -36,7 +39,7 @@ describe('Fetcher', () => {
     expect(res).toThrowError('400 Detail error')
   })
   test.fails('fail call when status code is > 300', async () => {
-    fetchMocker.mockResponse({status: 400, statusText: 'Error 400'})
+    fetchMocker.mockResponse(undefined as unknown as string, {status: 400, statusText: 'Error 400'})
     const res = await fetcher.call({path:'/books'})
     expect(res).toThrowError('Error 400')
   })

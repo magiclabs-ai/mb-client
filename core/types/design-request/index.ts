@@ -117,13 +117,13 @@ export class DesignRequest {
   }
 
   async getOptions(imageCount?: number) {
-    const options = designOptionsSchema.parse(snakeCaseObjectKeysToCamelCase(
+    const options = designOptionsSchema.parse(
       await this.client.engineAPI.designOptions.retrieve({
         bookSize: this.bookSize,
         imageCount: imageCount || this.images.length,
         imageFilteringLevel: this.imageFilteringLevel
       })
-    ))
+    )
     return options
   }
 
@@ -133,9 +133,12 @@ export class DesignRequest {
     } else {
       submitDesignRequestProps && this.updateDesignRequest(submitDesignRequestProps)
       this.webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
-      await this.client.engineAPI.books.update(this.parentId, this.toBook())
+      await this.client.engineAPI.books.update({
+        bookId: this.parentId,
+        payload: this.toBook()
+      })
       this.updateDesignRequest(
-        (await this.client.engineAPI.books.design(this.parentId)).toDesignRequestProps()
+        (await this.client.engineAPI.books.design({bookId: this.parentId})).toDesignRequestProps()
       )
       this.getProgress()
       return this
@@ -148,7 +151,10 @@ export class DesignRequest {
     } else {
       this.guid = guid
       this.updateDesignRequest(
-        (await this.client.engineAPI.books.update(this.parentId, this.toBook())).toDesignRequestProps()
+        (await this.client.engineAPI.books.update({
+          bookId: this.parentId,
+          payload: this.toBook()
+        })).toDesignRequestProps()
       )
       return this.guid
     }
@@ -163,7 +169,9 @@ export class DesignRequest {
       throw new Error('Design request not submitted')
     } else {
       this.updateDesignRequest({
-        ...(await this.client.engineAPI.books.cancel(this.parentId)).toDesignRequestProps(),
+        ...(await this.client.engineAPI.books.cancel({
+          bookId: this.parentId
+        })).toDesignRequestProps(),
         state: 'cancelled'
       })
       await this.eventHandler(cancelledEventDetail)
@@ -173,14 +181,20 @@ export class DesignRequest {
 
   async getJSON() {
     if (this.state === 'ready') {
-      return await this.client.engineAPI.books.retrieveGalleon(this.parentId)
+      return await this.client.engineAPI.books.retrieveGalleon({
+       bookId: this.parentId
+      })
     } else {
       throw new Error('Design request not ready')
     }
   }
 
   async logEvent(name: string, data?: EventContext) {
-    return await this.client.engineAPI.events.createBookEvent(this.parentId, name, data)
+    return await this.client.engineAPI.events.createBookEvent({
+      bookId: this.parentId,
+      name,
+      data
+    })
   }
 
   private async eventHandler(detail: DesignRequestEventDetail, type='MagicBook.designRequestUpdated') {
@@ -188,9 +202,12 @@ export class DesignRequest {
     if (statesToCloseWS.includes(detail.slug)) {
       this.webSocket?.close()
       if (statesToReport.includes(detail.slug)) {
-        await this.client.engineAPI.books.report(this.parentId, {
+        await this.client.engineAPI.books.report({
+          bookId: this.parentId,
+          report: {
           error: detail.slug === 'error' ? 'design' : 'timeout',
           step: this.state
+          }
         })
       }
     }

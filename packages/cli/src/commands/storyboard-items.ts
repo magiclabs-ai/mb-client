@@ -22,7 +22,7 @@ storyboardItems.command('list')
       }
     })
     isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.storyboardItems.list(args.bookId)
+      const res = await engineAPI.storyboardItems.list({bookId: args.bookId})
       log(chalk.bold('🎚️ - Storyboard items retrieved!'))
       return formatReturnJSON(res)
     })

@@ -18,7 +18,7 @@ export class MagicBookClient {
   async createDesignRequest(designRequestProps: DesignRequestProps)
   : Promise<DesignRequest> {
     if (designRequestProps.userId) {
-      const book = await this.engineAPI.books.create(camelCaseObjectKeysToSnakeCase({...designRequestProps}))
+      const book = await this.engineAPI.books.create({book: camelCaseObjectKeysToSnakeCase({...designRequestProps})})
       return new DesignRequest(book.id, this, designRequestProps)
     } else {
       throw new Error('userId is required')

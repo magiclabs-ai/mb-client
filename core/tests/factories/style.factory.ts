@@ -1,15 +1,29 @@
-import {Style} from 'util'
-import {StyleServer, styleSchema, styleServerSchema} from '@/core/models/style'
-import {camelCaseObjectKeysToSnakeCase} from '@/core/utils/toolbox'
+import {Style, StyleBase, styleBaseSchema, styleSchema} from '@/core/types/style'
+import {StyleFont} from '@/client/src'
 import {faker} from '@faker-js/faker'
 
-export type StyleFactoryProps = {
+export type StyleBaseFactoryProps = {
   active?: boolean
   name?: string
   slug?: string
+}
+
+export function styleBaseFactory(props?: StyleBaseFactoryProps): StyleBase {
+  faker.seed()
+  const name = faker.lorem.words(3)
+  return styleBaseSchema.parse({
+    active: props?.active || false,
+    name: props?.name || name,
+    slug: props?.slug || faker.helpers.slugify(name)
+  })
+}
+
+export type StyleFactoryProps = StyleBaseFactoryProps & {
   position?: number
-  layoutConstraints?: unknown[]
-  colors?: string[]
+  layoutConstraints?: Record<string, unknown>
+  colors?: Record<string, unknown>,
+  fonts: Array<StyleFont>
+  compatibleBackground: Array<unknown>
 }
 
 export function styleFactory(props?: StyleFactoryProps): Style {
@@ -20,13 +34,9 @@ export function styleFactory(props?: StyleFactoryProps): Style {
     name: props?.name || name,
     slug: props?.slug || faker.helpers.slugify(name),
     position: props?.position || 1,
-    layoutConstraints: props?.layoutConstraints || [],
-    colors: props?.colors || []
+    layoutConstraints: props?.layoutConstraints || {},
+    colors: props?.colors || {},
+    compatibleBackground: props?.compatibleBackground || [],
+    fonts: props?.fonts || []
   })
-}
-
-export function styleServerFactory(props?: StyleFactoryProps): StyleServer {
-  return styleServerSchema.parse(
-    camelCaseObjectKeysToSnakeCase(styleFactory(props))
-  )
 }
