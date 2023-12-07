@@ -27,7 +27,10 @@ export function storyboardItemFactory(props?: StoryboardItemFactoryProps): Story
       id: faker.string.uuid(),
       url: faker.internet.url(),
       category: faker.lorem.word(),
-      aestheticScore: faker.number.int({min: 1, max: 100}),
+      aesthetics: {
+        score: faker.number.int({min: 1, max: 100}),
+        scoreWithoutDistance: faker.number.int({min: 1, max: 100}),
+      },
       faces: [],
       roi: {
         x: faker.number.int({min: 1, max: 100}),
