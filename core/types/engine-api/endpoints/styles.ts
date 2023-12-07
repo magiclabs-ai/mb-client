@@ -27,7 +27,7 @@ export class StylesEndpoints {
   constructor(private readonly engineAPI: EngineAPI) {
   }
 
-  list<T extends BaseEndpointProps>(props?: T): Promise<StyleListReturnType | undefined> {
+  list<T extends BaseEndpointProps>(props?: T): Promise<StyleListReturnType> {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: '/v1/styles',
@@ -37,7 +37,7 @@ export class StylesEndpoints {
     })
   }
 
-  retrieve<T extends RetrieveProps>({styleSlug, qs}: T): Promise<StyleReturnType | undefined> {
+  retrieve<T extends RetrieveProps>({styleSlug, qs}: T): Promise<StyleReturnType> {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/styles/${styleSlug}`,
@@ -47,7 +47,7 @@ export class StylesEndpoints {
     })
   }
 
-  update<T extends UpdateProps>({styleSlug, payload, qs}: T): Promise<StyleReturnType | undefined> {
+  update<T extends UpdateProps>({styleSlug, payload, qs}: T): Promise<StyleReturnType> {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/styles/${styleSlug}`,
