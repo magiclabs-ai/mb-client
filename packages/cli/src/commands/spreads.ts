@@ -32,7 +32,6 @@ spreads.command('create')
   .addOption(new Option('--book-id <bookId>'))
   .addOption(new Option('--spread <spread>'))
   .action(async (args) => {
-    // console.log('ARGS: ', args)
     const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {

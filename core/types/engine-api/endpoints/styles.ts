@@ -1,12 +1,12 @@
 import {
-  EngineAPI,
   BaseEndpointProps,
   BaseUpdateEndpointProps,
+  EngineAPI
 } from '..'
 import {Style, styleBaseSchema, styleSchema} from '../../style'
 import {cleanJSON, handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
+import {paginatedResponseSchema} from '../pagination'
 import {z} from 'zod'
-import { paginatedResponseSchema } from '../pagination'
 
 const stylePaginatedSchema = paginatedResponseSchema(styleBaseSchema)
 
@@ -29,34 +29,34 @@ export class StylesEndpoints {
 
   list<T extends BaseEndpointProps>(props?: T): Promise<StyleListReturnType | undefined> {
     return handleAsyncFunction(async () => {
-      const res = (await this.engineAPI.fetcher.call({
-        path: `/v1/styles`,
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
+        path: '/v1/styles',
         qs: props?.qs
-      })) as Record<string, unknown>
+      })
       return stylePaginatedSchema.parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
 
   retrieve<T extends RetrieveProps>({styleSlug, qs}: T): Promise<StyleReturnType | undefined> {
     return handleAsyncFunction(async () => {
-      const res = (await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/styles/${styleSlug}`,
         qs
-      })) as Record<string, unknown>
+      })
       return styleSchema.parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
 
   update<T extends UpdateProps>({styleSlug, payload, qs}: T): Promise<StyleReturnType | undefined> {
     return handleAsyncFunction(async () => {
-      const res = (await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/styles/${styleSlug}`,
         qs,
         options: {
           method: 'PUT',
           body: cleanJSON(payload)
         }
-      })) as Record<string, unknown>
+      })
       return styleSchema.parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }

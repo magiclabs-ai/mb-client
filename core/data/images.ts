@@ -1,4 +1,4 @@
-import {Image} from '@magiclabs.ai/magicbook-client'
+import {Image} from '../types/design-request/image'
 
 export const images: Array<Image> = [
   {

@@ -19,7 +19,7 @@ import {
   textStickerLevels,
   timeoutEventDetail
 } from '@/core/data/design-request'
-import {camelCaseObjectKeysToSnakeCase, cleanJSON, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
+import {camelCaseObjectKeysToSnakeCase, cleanJSON} from '@/core/utils/toolbox'
 import {designOptionsSchema} from './design-options'
 import {isDesignRequestSubmitted} from '../../data/design-request'
 
@@ -182,7 +182,7 @@ export class DesignRequest {
   async getJSON() {
     if (this.state === 'ready') {
       return await this.client.engineAPI.books.retrieveGalleon({
-       bookId: this.parentId
+        bookId: this.parentId
       })
     } else {
       throw new Error('Design request not ready')
@@ -205,8 +205,8 @@ export class DesignRequest {
         await this.client.engineAPI.books.report({
           bookId: this.parentId,
           report: {
-          error: detail.slug === 'error' ? 'design' : 'timeout',
-          step: this.state
+            error: detail.slug === 'error' ? 'design' : 'timeout',
+            step: this.state
           }
         })
       }

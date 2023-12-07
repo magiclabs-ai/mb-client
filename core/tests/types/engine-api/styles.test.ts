@@ -1,9 +1,9 @@
 import {describe, expect, test} from 'vitest'
+import {engineAPI} from '../../shared'
 import {fetchMocker} from '../../mocks/fetch'
 import {paginationFactory} from '../../factories/pagination.factory'
-import { engineAPI } from '../../shared'
-import { styleBaseFactory, styleFactory } from '../../factories/style.factory'
-import { styleBaseSchema} from '@/core/types/style'
+import {styleBaseFactory, styleFactory} from '../../factories/style.factory'
+import {styleBaseSchema} from '@/core/types/style'
 
 
 describe('Engine API Styles Endpoints', () => {

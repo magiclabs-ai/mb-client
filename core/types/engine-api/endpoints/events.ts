@@ -1,21 +1,22 @@
-import { baseEndpointProps } from '@/client/dist'
+import {BaseEndpointProps} from '../index'
 import {EngineAPI} from '..'
 import {EventContext, eventSchema} from '../../event'
 import {cleanJSON, handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
-import { paginatedResponseSchema } from '../pagination'
+import {paginatedResponseSchema} from '../pagination'
 
-type ListBookEventsProps = baseEndpointProps & {
+type ListBookEventsProps = BaseEndpointProps & {
   bookId: string
 }
+
 const eventPaginatedSchema = paginatedResponseSchema(eventSchema)
 
-type CreateBookEventProps = baseEndpointProps & {
+type CreateBookEventProps = BaseEndpointProps & {
   bookId: string
   name: string
   data?: EventContext
 }
 
-type DeleteBookEventProps = baseEndpointProps & {
+type DeleteBookEventProps = BaseEndpointProps & {
   bookId: string
   name: string
 }
@@ -27,10 +28,10 @@ export class EventsEndpoints {
 
   listBookEvents({bookId, qs}: ListBookEventsProps) {
     return handleAsyncFunction(async () => {
-      const res = (await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/events/book/${bookId}`,
         qs
-      })) as Record<string, unknown>
+      })
       return eventPaginatedSchema.parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
@@ -41,21 +42,21 @@ export class EventsEndpoints {
         name
       }
       data && (body['context'] = data)
-      const res = (await this.engineAPI.fetcher.call<Promise <Record<string, unknown>>>({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/events/book/${bookId}`,
         options: {
           method: 'POST',
           body: cleanJSON(body)
         },
         qs
-      })) as Record<string, unknown>
+      })
       return eventSchema.parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
 
   deleteBookEvent({name, bookId, qs}: DeleteBookEventProps) {
     return handleAsyncFunction(async () => {
-      await this.engineAPI.fetcher.call({
+      await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/events/book/${bookId}/name/${name}`,
         options: {
           method: 'DELETE'

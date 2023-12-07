@@ -32,7 +32,6 @@ newDesignRequest.action(async (args) => {
         name: key,
         message: `Pick the ${camelCaseToWords(key)}:`,
         choices: opts.map((option) => ({title: option.toString(), value: option}))
-        // initial: opts[0]
       })
       if (response[key] == 'custom') {
         const customResponse = await prompts({

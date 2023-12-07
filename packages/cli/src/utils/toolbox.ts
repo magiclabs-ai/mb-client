@@ -90,7 +90,7 @@ export function retrieveImageSet(imageSet: string) {
     file = fs.readFileSync(imageSet, 'utf8')  
   } else if (fs.existsSync(relativePath)) {
     file = fs.readFileSync(relativePath, 'utf8')
-  }  else {
+  } else {
     throw new Error(`Image set ${imageSet} not found`)
   }
   file = JSON.parse(file)  

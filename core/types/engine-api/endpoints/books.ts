@@ -1,5 +1,5 @@
-import {Book, BookReport, bookPropsSchema} from '../../book'
-import {EngineAPI, BaseEndpointProps, BaseUpdateEndpointProps} from '..'
+import {BaseEndpointProps, BaseUpdateEndpointProps, EngineAPI} from '..'
+import {Book, BookProps, BookReport, bookPropsSchema} from '../../book'
 import {bookCreationRequestSchema} from '../../galleon'
 import {cleanJSON} from '@/core/utils/toolbox'
 import {handleAsyncFunction} from '@/core/utils/toolbox'
@@ -35,7 +35,7 @@ export class BooksEndpoints {
 
   create({book, qs}: CreateProps) {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: '/v1/books',
         options: {
           method: 'POST',
@@ -43,14 +43,13 @@ export class BooksEndpoints {
         },
         qs
       })
-      const bookProps = bookPropsSchema.parse(res)
-      return new Book(bookProps)
+      return new Book(res as BookProps)
     })
   }
 
   retrieve({bookId, qs}: RetrieveProps) {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/books/${bookId}`,
         qs
       })
@@ -61,7 +60,7 @@ export class BooksEndpoints {
 
   update({bookId, payload, qs}: UpdateProps) {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/books/${bookId}`,
         options: {
           method: 'PUT',
@@ -77,7 +76,7 @@ export class BooksEndpoints {
 
   delete({bookId, qs}: DeleteProps) {
     return handleAsyncFunction(async () => {
-      await this.engineAPI.fetcher.call({
+      await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/books/${bookId}`,
         options: {method: 'DELETE'},
         qs
@@ -87,7 +86,7 @@ export class BooksEndpoints {
 
   design({bookId, qs}: DesignProps) {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/books/${bookId}/design`,
         options: {method: 'POST'},
         qs
@@ -99,7 +98,7 @@ export class BooksEndpoints {
 
   cancel({bookId, qs}: CancelProps) {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/books/${bookId}/cancel`,
         options: {method: 'POST'},
         qs
@@ -111,7 +110,7 @@ export class BooksEndpoints {
 
   retrieveGalleon({bookId, qs}: RetrieveGalleonProps) {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/books/${bookId}/format/galleon`,
         qs
       })
@@ -121,7 +120,7 @@ export class BooksEndpoints {
 
   report({bookId, report, qs}: ReportProps) {
     return handleAsyncFunction(async () => {
-      await this.engineAPI.fetcher.call({
+      await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/books/${bookId}/report`,
         options: {
           method: 'POST',

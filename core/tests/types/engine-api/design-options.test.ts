@@ -1,8 +1,8 @@
 import {describe, expect, test} from 'vitest'
 import {designOptionsFactory, designOptionsServerFactory} from '../../factories/design-options.factory'
 import {designOptionsSchema} from '@/client/src'
-import {fetchMocker} from '../../mocks/fetch'
 import {engineAPI} from '../../shared'
+import {fetchMocker} from '../../mocks/fetch'
 import {snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 
 describe('Engine API Design Options Endpoints', () => {

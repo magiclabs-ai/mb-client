@@ -1,11 +1,11 @@
 import {
-  EngineAPI,
-  BaseEndpointProps
+  BaseEndpointProps,
+  EngineAPI
 } from '..'
 import {fontSchema} from '../../font'
 import {handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
+import {paginatedResponseSchema} from '../pagination'
 import {z} from 'zod'
-import { paginatedResponseSchema } from '../pagination'
 
 const fontPaginatedSchema = paginatedResponseSchema(fontSchema)
 
@@ -18,10 +18,10 @@ export class FontsEndpoints {
 
   list<T extends BaseEndpointProps>(props?: T): Promise<FontListReturnType> {
     return handleAsyncFunction(async () => {
-      const res = (await this.engineAPI.fetcher.call({
-        path: `/v1/fonts`,
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
+        path: '/v1/fonts',
         qs: props?.qs
-      })) as Record<string, unknown>
+      })
       return fontPaginatedSchema.parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }

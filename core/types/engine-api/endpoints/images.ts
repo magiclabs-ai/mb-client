@@ -1,4 +1,4 @@
-import {EngineAPI, BaseEndpointProps, BaseUpdateEndpointProps} from '..'
+import {BaseEndpointProps, BaseUpdateEndpointProps, EngineAPI} from '..'
 import {ImageServer, imageServerSchema} from '../../design-request/image'
 import {cleanJSON} from '@/core/utils/toolbox'
 import {handleAsyncFunction} from '@/core/utils/toolbox'
@@ -35,7 +35,7 @@ export class ImagesEndpoints {
 
   list({bookId, qs}: ListProps) {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/images/book/${bookId}`,
         qs
       })
@@ -45,7 +45,7 @@ export class ImagesEndpoints {
 
   addToBook({bookId, image, qs}: AddToBookProps) {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/images/book/${bookId}`,
         options: {
           method: 'POST',
@@ -59,7 +59,7 @@ export class ImagesEndpoints {
   
   retrieve({bookId, imageId, qs}: RetrieveProps) {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/images/${imageId}/book/${bookId}/`,
         qs
       })
@@ -69,7 +69,7 @@ export class ImagesEndpoints {
   
   update({bookId, imageId, payload, qs}: UpdateProps) {
     return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/images/${imageId}/book/${bookId}/`,
         options: {
           method: 'PUT',
@@ -83,7 +83,7 @@ export class ImagesEndpoints {
   
   delete({bookId, imageId, qs}: DeleteProps) {
     return handleAsyncFunction(async () => {
-      await this.engineAPI.fetcher.call({
+      await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/images/${imageId}/book/${bookId}/`,
         options: {
           method: 'DELETE'

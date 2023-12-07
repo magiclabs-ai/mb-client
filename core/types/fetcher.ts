@@ -23,7 +23,7 @@ export class Fetcher {
     this.options = mergeNestedObject(baseOptions, options || {})
   }
 
-  async call<T>(props: CallProps) {
+  async call<T>(props: CallProps): Promise<T> {
     try {
       if (props.options?.body && typeof props.options.body !== 'string') {
         props.options.body = JSON.stringify(props.options?.body)

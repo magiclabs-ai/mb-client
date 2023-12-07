@@ -1,9 +1,8 @@
-import {EngineAPI} from '@/core/types/engine-api'
 import {bookFactory} from '../../factories/book.factory'
 import {describe, expect, test} from 'vitest'
+import {engineAPI} from '../../shared'
 import {fetchMocker} from '../../mocks/fetch'
 import {galleonFactory} from '../../factories/galleon.factory'
-import { engineAPI } from '../../shared'
 
 describe('Engine API Book Endpoints', () => {
 

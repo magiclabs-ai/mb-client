@@ -4,7 +4,7 @@ export const fontRoles = ['title', 'subtitle', 'caption'] as const
 
 export const fontSchema = z.object({
   slug: z.string(),
-  family: z.string(),
+  family: z.string()
 })
 export type Font = z.infer<typeof fontSchema>
 

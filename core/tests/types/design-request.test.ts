@@ -154,7 +154,7 @@ describe('Design Request', async () => {
     })
     expect(ws).toHaveBeenCalledWith(`${webSocketHost}/?book_id=${designRequest.parentId}`)
     expect(submitDesignRequest).toStrictEqual(designRequest)
-    const submittedDetail =  {
+    const submittedDetail = {
       state: 'submitted',
       slug: 'submitted',
       progress: 0,

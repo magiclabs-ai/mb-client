@@ -1,4 +1,4 @@
-import {EngineAPI, BaseEndpointProps, BaseUpdateEndpointProps} from '..'
+import {BaseEndpointProps, BaseUpdateEndpointProps, EngineAPI} from '..'
 import {SpreadServer, spreadSchema} from '../../spread'
 import {cleanJSON, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 import {handleAsyncFunction} from '@/core/utils/toolbox'
@@ -35,55 +35,55 @@ export class SpreadsEndpoints {
 
   list({bookId, qs}: ListProps) {
     return handleAsyncFunction(async () => {
-      const res = (await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/spreads/book/${bookId}`,
         qs
-      })) as Record<string, unknown>
+      })
       return z.array(spreadSchema).parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
   
   create({bookId, spread, qs}: CreateProps) {
     return handleAsyncFunction(async () => {
-      const res = (await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/spreads/book/${bookId}`,
         options: {
           method: 'POST',
           body: cleanJSON(spread)
         },
         qs
-      })) as Record<string, unknown>
+      })
       return spreadSchema.parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
 
   retrieve({bookId, spreadId, qs}: RetrieveProps) {
     return handleAsyncFunction(async () => {
-      const res = (await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/spreads/${spreadId}/book/${bookId}`,
         qs
-      })) as Record<string, unknown>
+      })
       return spreadSchema.parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
 
   update({bookId, spreadId, payload, qs}: UpdateProps) {
     return handleAsyncFunction(async () => {
-      const res = (await this.engineAPI.fetcher.call({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/spreads/${spreadId}/book/${bookId}`,
         options: {
           method: 'PUT',
           body: cleanJSON(payload)
         },
         qs
-      })) as Record<string, unknown>
+      })
       return spreadSchema.parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
 
   delete({bookId, spreadId, qs}: DeleteProps) {
     return handleAsyncFunction(async () => {
-      await this.engineAPI.fetcher.call({
+      await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/spreads/${spreadId}/book/${bookId}`,
         options: {
           method: 'DELETE'

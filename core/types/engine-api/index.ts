@@ -3,10 +3,10 @@ import {DesignOptionsEndpoints} from './endpoints/design-options'
 import {EmbellishmentsEndpoints} from './endpoints/embellishments'
 import {EventsEndpoints} from './endpoints/events'
 import {Fetcher} from '../fetcher'
+import {FontsEndpoints} from './endpoints/fonts'
 import {ImagesEndpoints} from './endpoints/images'
 import {SpreadsEndpoints} from './endpoints/spreads'
 import {StoryboardItemsEndpoints} from './endpoints/storyboard-items'
-import { FontsEndpoints } from './endpoints/fonts'
 import {StylesEndpoints} from './endpoints/styles'
 
 export type BaseEndpointProps = {

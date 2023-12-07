@@ -1,16 +1,21 @@
 import {
-  EngineAPI,
   BaseEndpointProps,
-  BaseUpdateEndpointProps
+  BaseUpdateEndpointProps,
+  EngineAPI
 } from '..'
+import {
+  camelCaseObjectKeysToSnakeCase,
+  cleanJSON,
+  handleAsyncFunction,
+  snakeCaseObjectKeysToCamelCase
+} from '@/core/utils/toolbox'
 import {
   embellishmentListSchemas,
   embellishmentSchemas,
-  embellishmentUpdateSchemas,
+  embellishmentUpdateSchemas
 } from '../../embellishment'
-import {camelCaseObjectKeysToSnakeCase, cleanJSON, handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
+import {paginatedResponseSchema} from '../pagination'
 import {z} from 'zod'
-import { paginatedResponseSchema } from '../pagination'
 
 type EmbellishmentListForStyleProps = BaseEndpointProps & {
   styleSlug: string
@@ -37,34 +42,36 @@ export class EmbellishmentsEndpoints {
 
   list({styleSlug, qs}: EmbellishmentListForStyleProps): Promise<EmbellishmentListReturnType> {
     return handleAsyncFunction(async () => {
-      const res = (await this.engineAPI.fetcher.call<Promise <Record<string, unknown>>>({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/embellishments/style/${styleSlug}`,
         qs
-      })) as Record<string, unknown>
+      })
       return embellishmentPaginatedSchema.parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
 
-  retrieve<T extends EmbellishmentForStyleProps>({styleSlug, embellishmentId, qs}: T): Promise<EmbellishmentReturnType> {
+  retrieve<T extends EmbellishmentForStyleProps>
+  ({styleSlug, embellishmentId, qs}: T): Promise<EmbellishmentReturnType> {
     return handleAsyncFunction(async () => {
-      const res = (await this.engineAPI.fetcher.call<Promise <Record<string, unknown>>>({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/embellishments/${embellishmentId}/style/${styleSlug}`,
         qs
-      })) as Record<string, unknown>
+      })
       return embellishmentSchemas.parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
 
-  update<T extends UpdateEmbellishmentProps<z.infer<typeof embellishmentUpdateSchemas>>>({styleSlug, embellishmentId, payload}: T):
+  update<T extends UpdateEmbellishmentProps<z.infer<typeof embellishmentUpdateSchemas>>>
+  ({styleSlug, embellishmentId, payload}: T):
    Promise<EmbellishmentReturnType> {
     return handleAsyncFunction(async () => {
-      const res = (await this.engineAPI.fetcher.call<Promise <Record<string, unknown>>>({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/embellishments/${embellishmentId}/style/${styleSlug}`,
         options: {
           method: 'PUT',
           body: cleanJSON(camelCaseObjectKeysToSnakeCase({...payload}))
         }
-      })) as Record<string, unknown>
+      })
       return embellishmentSchemas.parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }

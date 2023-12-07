@@ -85,7 +85,7 @@ export const bookPropsSchema = z.object({
   state: z.enum(states).optional(),
   guid: z.string().optional(),
   cancelled_at: z.string().optional(),
-  mb_client_timeout: z.number().optional(),
+  mb_client_timeout: z.string().optional(),
   user_id: z.string().optional(),
   revision: z.number().optional()
 })
@@ -111,7 +111,7 @@ export class Book {
     this.state = props.state
     this.guid = props.guid
     this.cancelled_at = props.cancelled_at
-    this.timeout = props.mb_client_timeout ? props.mb_client_timeout * 1000 : undefined // convert to ms
+    this.timeout = props.mb_client_timeout ? parseInt(props.mb_client_timeout) * 1000 : undefined // convert to ms
     this.user_id = props.user_id
     this.revision = props.revision
   }
@@ -127,7 +127,7 @@ export class Book {
   toBookProps(): BookProps {
     return {
       ...this,
-      mb_client_timeout: this.timeout ? this.timeout / 1000 : undefined
+      mb_client_timeout: this.timeout ? (this.timeout / 1000).toString() : undefined
     }
   }
 }

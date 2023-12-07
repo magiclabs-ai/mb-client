@@ -1,9 +1,9 @@
 import {describe, expect, test} from 'vitest'
+import {engineAPI} from '../../shared'
 import {fetchMocker} from '../../mocks/fetch'
+import {fontFactory} from '../../factories/font.factory'
+import {fontSchema} from '@/core/types/font'
 import {paginationFactory} from '../../factories/pagination.factory'
-import { fontFactory } from '../../factories/font.factory'
-import { fontSchema } from '@/core/types/font'
-import { engineAPI } from '../../shared'
 
 
 describe('Engine API Fonts Endpoints', () => {

@@ -1,4 +1,4 @@
-import {EngineAPI, BaseEndpointProps} from '..'
+import {BaseEndpointProps, EngineAPI} from '..'
 import {StoryboardItem, StoryboardItemSchema} from '../../storyboard-item'
 import {handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 import {z} from 'zod'
@@ -13,9 +13,9 @@ export class StoryboardItemsEndpoints {
 
   list(props: listProps): Promise<Array<StoryboardItem>> {
     return handleAsyncFunction(async () => {
-      let res = (await this.engineAPI.fetcher.call<Promise <Record<string, unknown>>>({
+      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/storyboarditems/book/${props.bookId}`
-      })) as Record<string, unknown>
+      })
       return z.array(StoryboardItemSchema).parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }

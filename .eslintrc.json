@@ -9,7 +9,7 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended"
   ],
-  "ignorePatterns": ["dist", "types", "package-lock.json", "react-example"],
+  "ignorePatterns": ["dist", "package-lock.json", "react-example"],
   "overrides": [
     {
       "files": ["**/*.ts", "**/*.tsx"],
@@ -53,6 +53,7 @@
       "error",
       "never"
     ],
+    "no-multi-spaces": ["error"],
     "no-unused-vars": "error",
     "comma-dangle": "error",
     "object-curly-spacing": ["error", "never"],

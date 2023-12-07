@@ -54,14 +54,14 @@ books.command('update')
         args.bookId = response.bookId
       }
       if (args.book) {
-        args.book = bookPropsSchema.parse(JSON.parse(args.book))
+        args.book = bookPropsSchema.partial().parse(JSON.parse(args.book))
       } else {
         const response = await prompts({
           type: 'text',
           name: 'book',
           message: 'Enter the book object:'
         })
-        bookPropsSchema.parse(JSON.parse(response.book))
+        bookPropsSchema.partial().parse(JSON.parse(response.book))
         args.book = response.book
       }
     })

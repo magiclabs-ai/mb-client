@@ -93,7 +93,7 @@ export function cleanJSON(obj: unknown) {
 }
 
 export function getStyleIdBySlug(slug: string): number | undefined {
-  for (const id  in styles) {
+  for (const id in styles) {
     const style = styles[id as unknown as keyof typeof styles]
     if (style.slug === slug) {
       return parseInt(id)

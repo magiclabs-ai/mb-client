@@ -18,7 +18,10 @@ export const StoryboardItemImageSchema = z.object({
   id: z.string(),
   url: z.string(),
   category: z.string(),
-  aestheticScore: z.number(),
+  aesthetics: z.object({
+    score: z.number(),
+    scoreWithoutDistance: z.number()
+  }),
   faces: z.array(StoryboardItemImageFaceSchema),
   roi: z.object({
     x: z.number(),

@@ -1,4 +1,4 @@
-import { ZodSchema, z } from "zod";
+import {ZodSchema, z} from 'zod'
 
 export function paginatedResponseSchema<T extends ZodSchema>(arrayOf: T) {
   return z.object({

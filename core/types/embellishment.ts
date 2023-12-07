@@ -176,7 +176,9 @@ export const embellishmentSchemas = z.union(
 export type Embellishment = z.infer<typeof embellishmentSchemas>
 
 export const embellishmentUpdateSchemas = z.union(
-  [...embellishmentSchemasArray.map((schema) => schema.optional())] as unknown as readonly [ZodTypeAny, ZodTypeAny, ...ZodTypeAny[]]
+  [
+    ...embellishmentSchemasArray.map((schema) => schema.partial().optional())
+  ] as unknown as readonly [ZodTypeAny, ZodTypeAny, ...ZodTypeAny[]]
 )
 export type EmbellishmentUpdate = z.infer<typeof embellishmentUpdateSchemas>
 

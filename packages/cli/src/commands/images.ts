@@ -14,13 +14,11 @@ images.command('list')
     const {engineAPI} = await actionSetup()
     const {isValid} = await validateArgs(async () => {
       if (!args.bookId) {
-        // console.log('args', args)
         const response = await prompts({
           type: 'text',
           name: 'bookId',
           message: 'Enter the book id:'
         })
-        // console.log('response', response)
         args.bookId = response.bookId
       }
     })

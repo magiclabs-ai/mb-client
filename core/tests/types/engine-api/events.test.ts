@@ -1,9 +1,9 @@
 import {describe, expect, test} from 'vitest'
+import {engineAPI} from '../../shared'
 import {eventFactory} from '../../factories/event.factory'
+import {eventSchema} from '@/core/types/event'
 import {fetchMocker} from '../../mocks/fetch'
-import { engineAPI } from '../../shared'
-import { paginationFactory } from '../../factories/pagination.factory'
-import { eventSchema } from '@/core/types/event'
+import {paginationFactory} from '../../factories/pagination.factory'
 
 describe('Engine API Design Options Endpoints', () => {
 

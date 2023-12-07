@@ -13,7 +13,7 @@ export const config = program.command('config')
   .addOption(new Option('--api-key <apiKey>'))
   .addOption(new Option('--user-id <userId>'))
   .action(async (args) => {
-    const config  = {
+    const config = {
       apiHost: args.apiHost,
       wsHost: args.wsHost,
       apiKey: args.apiKey,

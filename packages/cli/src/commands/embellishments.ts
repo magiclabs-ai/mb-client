@@ -1,6 +1,6 @@
 import {Option, program} from 'commander'
 import {actionSetup, handleAPIResponse, validateArgs} from '../utils/toolbox'
-import {embellishmentSchemas} from '@/core/types/embellishment'
+import {embellishmentUpdateSchemas} from '@/core/types/embellishment'
 import {formatReturnJSON} from '@/core/utils/toolbox'
 import {log} from 'console'
 import chalk from 'chalk'
@@ -86,15 +86,14 @@ embellishments.command('update')
         args.styleSlug = response.styleSlug
       }
       if (args.embellishment) {
-        embellishmentSchemas.parse(JSON.parse(args.embellishment))
+        args.embellishment = embellishmentUpdateSchemas.parse(JSON.parse(args.embellishment))
       } else {
         const response = await prompts({
           type: 'text',
           name: 'embellishment',
           message: 'Enter the embellishment object:'
         })
-        embellishmentSchemas.parse(JSON.parse(response.embellishment))
-        args.embellishment = response.embellishment
+        args.embellishment = embellishmentUpdateSchemas.parse(JSON.parse(response.embellishment))
       }
     })
     isValid && await handleAPIResponse(async () => {
