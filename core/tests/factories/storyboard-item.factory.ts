@@ -29,7 +29,7 @@ export function storyboardItemFactory(props?: StoryboardItemFactoryProps): Story
       category: faker.lorem.word(),
       aesthetics: {
         score: faker.number.int({min: 1, max: 100}),
-        scoreWithoutDistance: faker.number.int({min: 1, max: 100}),
+        scoreWithoutDistance: faker.number.int({min: 1, max: 100})
       },
       faces: [],
       roi: {
