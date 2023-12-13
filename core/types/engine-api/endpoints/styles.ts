@@ -12,22 +12,24 @@ const stylePaginatedSchema = paginatedResponseSchema(styleBaseSchema)
 
 type StyleListReturnType = z.infer<typeof stylePaginatedSchema>
 
-type UpdateProps = BaseUpdateEndpointProps<Style> & {
+export type ListStylesProps = BaseEndpointProps
+
+export type UpdateStyleProps = BaseUpdateEndpointProps<Partial<Style>> & {
   styleSlug: string
 }
 
-type RetrieveProps = BaseEndpointProps & {
+export type RetrieveStyleProps = BaseEndpointProps & {
   styleSlug: string
 }
 
-type StyleReturnType = z.infer<typeof styleSchema>
+export type StyleReturnType = z.infer<typeof styleSchema>
   
 export class StylesEndpoints {
   // eslint-disable-next-line no-unused-vars
   constructor(private readonly engineAPI: EngineAPI) {
   }
 
-  list<T extends BaseEndpointProps>(props?: T): Promise<StyleListReturnType> {
+  list<T extends ListStylesProps>(props?: T): Promise<StyleListReturnType> {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: '/v1/styles',
@@ -37,7 +39,7 @@ export class StylesEndpoints {
     })
   }
 
-  retrieve<T extends RetrieveProps>({styleSlug, qs}: T): Promise<StyleReturnType> {
+  retrieve<T extends RetrieveStyleProps>({styleSlug, qs}: T): Promise<StyleReturnType> {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/styles/${styleSlug}`,
@@ -47,7 +49,7 @@ export class StylesEndpoints {
     })
   }
 
-  update<T extends UpdateProps>({styleSlug, payload, qs}: T): Promise<StyleReturnType> {
+  update<T extends UpdateStyleProps>({styleSlug, payload, qs}: T): Promise<StyleReturnType> {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/styles/${styleSlug}`,

@@ -8,3 +8,10 @@ export function paginatedResponseSchema<T extends ZodSchema>(arrayOf: T) {
     results: z.array(arrayOf)
   })
 }
+
+export type PaginatedResponse<T> = {
+  count: number
+  nextCursor: string | null
+  previousCursor?: string
+  results: Array<T>
+}
