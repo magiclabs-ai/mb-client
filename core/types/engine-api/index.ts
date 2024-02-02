@@ -23,7 +23,7 @@ export class EngineAPI {
   constructor(baseUrl: string, apiKey: string) {
     const options = {
       headers: {
-        'Authorization': `API-Key ${apiKey}`
+        Authorization: `API-Key ${apiKey}`
       }
     }
     this.fetcher = new Fetcher(baseUrl, options)

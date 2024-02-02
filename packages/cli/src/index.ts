@@ -12,18 +12,13 @@ import {mbClient} from './commands/mb-client'
 import {spreads} from './commands/spreads'
 import {storyboardItems} from './commands/storyboard-items'
 import {styles} from './commands/styles'
-
-(async () => {
+;(async () => {
   const packageInfo = await getPackageInfo()
   const program = new Command()
     .name('mb')
     .description('MagicBook Command Line Interface')
-    .version(
-      packageInfo.version || '1.0.0',
-      '-v, --version',
-      'display the version number'
-    )
-  
+    .version(packageInfo.version || '1.0.0', '-v, --version', 'display the version number')
+
   program
     .addCommand(books)
     .addCommand(config)

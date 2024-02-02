@@ -5,7 +5,7 @@ import {z} from 'zod'
 type PaginationFactoryProps = {
   count?: number
   schema: z.ZodSchema
-  factory: () => Record<string, unknown> 
+  factory: () => Record<string, unknown>
 }
 
 export function paginationFactory(props: PaginationFactoryProps) {

@@ -46,14 +46,10 @@ describe('Embellishments Items', () => {
   test('retrieve embellishment', async () => {
     const embellishment = embellishmentTextStickerFactory()
     fetchMocker.mockResponse(JSON.stringify(embellishment))
-    await program.parseAsync([
-      'embellishments',
-      'retrieve',
-      '--embellishment-id',
-      'embellishment.id',
-      '--style-slug',
-      'style.slug'
-    ], {from: 'user'})
+    await program.parseAsync(
+      ['embellishments', 'retrieve', '--embellishment-id', 'embellishment.id', '--style-slug', 'style.slug'],
+      {from: 'user'}
+    )
     expect(JSON.parse(logSpy.mock.calls[3][0])).toStrictEqual(snakeCaseObjectKeysToCamelCase(embellishment))
   })
 
@@ -68,17 +64,19 @@ describe('Embellishments Items', () => {
   test('update embellishment', async () => {
     const embellishment = embellishmentTextStickerFactory()
     fetchMocker.mockResponse(JSON.stringify(embellishment))
-    await program.parseAsync([
-      'embellishments',
-      'update',
-      '--embellishment-id',
-      'embellishment.id',
-      '--style-slug',
-      'style.slug',
-      '--embellishment',
-      JSON.stringify(embellishment)
-    ], {from: 'user'})
+    await program.parseAsync(
+      [
+        'embellishments',
+        'update',
+        '--embellishment-id',
+        'embellishment.id',
+        '--style-slug',
+        'style.slug',
+        '--embellishment',
+        JSON.stringify(embellishment)
+      ],
+      {from: 'user'}
+    )
     expect(JSON.parse(logSpy.mock.calls[5][0])).toStrictEqual(snakeCaseObjectKeysToCamelCase(embellishment))
   })
-
 })

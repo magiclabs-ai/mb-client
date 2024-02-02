@@ -33,8 +33,7 @@ describe('Events', () => {
     const event = eventFactory()
     fetchMocker.mockResponse(JSON.stringify(event))
     prompts.inject(['book.id', 'event.name', JSON.stringify(event)])
-    await program.parseAsync(['events', 'create'],
-      {from: 'user'})
+    await program.parseAsync(['events', 'create'], {from: 'user'})
     expect(JSON.parse(logSpy.mock.calls[2][0])).toStrictEqual(event)
   })
 
@@ -42,16 +41,7 @@ describe('Events', () => {
     const event = eventFactory()
     fetchMocker.mockResponse(JSON.stringify(event))
     await program.parseAsync(
-      [
-        'events',
-        'create',
-        '--book-id',
-        'book.id',
-        '--name',
-        'event.name',
-        '--event',
-        JSON.stringify(event)
-      ],
+      ['events', 'create', '--book-id', 'book.id', '--name', 'event.name', '--event', JSON.stringify(event)],
       {
         from: 'user'
       }

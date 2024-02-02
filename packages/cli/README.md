@@ -13,11 +13,13 @@ npm install -g @magiclabs.ai/magicbook-cli@latest
 ## Usage
 
 Use the config command to set your credentials.
+
 ```bash
 mb config
 ```
 
 Use `mb [command] --help` for more information about a command.
+
 ```bash
 mb --help
 ```

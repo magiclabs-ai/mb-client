@@ -35,12 +35,7 @@ describe('Styles Items', () => {
   test('retrieve style', async () => {
     const fakeStyle = styleFactory()
     fetchMocker.mockResponse(JSON.stringify(fakeStyle))
-    await program.parseAsync([
-      'styles',
-      'retrieve',
-      '--style-slug',
-      'style.slug'
-    ], {from: 'user'})
+    await program.parseAsync(['styles', 'retrieve', '--style-slug', 'style.slug'], {from: 'user'})
     expect(JSON.parse(logSpy.mock.calls[2][0])).toStrictEqual(snakeCaseObjectKeysToCamelCase(fakeStyle))
   })
 
@@ -55,15 +50,9 @@ describe('Styles Items', () => {
   test('update style', async () => {
     const fakeStyle = styleFactory()
     fetchMocker.mockResponse(JSON.stringify(fakeStyle))
-    await program.parseAsync([
-      'styles',
-      'update',
-      '--style-slug',
-      'style.slug',
-      '--style',
-      JSON.stringify(fakeStyle)
-    ], {from: 'user'})
+    await program.parseAsync(['styles', 'update', '--style-slug', 'style.slug', '--style', JSON.stringify(fakeStyle)], {
+      from: 'user'
+    })
     expect(JSON.parse(logSpy.mock.calls[4][0])).toStrictEqual(snakeCaseObjectKeysToCamelCase(fakeStyle))
   })
-
 })

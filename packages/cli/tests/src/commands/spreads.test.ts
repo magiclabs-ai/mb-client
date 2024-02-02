@@ -18,7 +18,7 @@ describe('Spreads', () => {
     prompts.inject(['book.id'])
     await program.parseAsync(['spreads', 'list'], {from: 'user'})
     expect(JSON.parse(logSpy.mock.calls[0][0])).toStrictEqual(
-      spreads.map(spread => snakeCaseObjectKeysToCamelCase(spread))
+      spreads.map((spread) => snakeCaseObjectKeysToCamelCase(spread))
     )
   })
 
@@ -27,7 +27,7 @@ describe('Spreads', () => {
     fetchMocker.mockResponse(JSON.stringify(spreads))
     await program.parseAsync(['spreads', 'list', '--book-id', 'book.id'], {from: 'user'})
     expect(JSON.parse(logSpy.mock.calls[1][0])).toStrictEqual(
-      spreads.map(spread => snakeCaseObjectKeysToCamelCase(spread))
+      spreads.map((spread) => snakeCaseObjectKeysToCamelCase(spread))
     )
   })
 
@@ -42,8 +42,9 @@ describe('Spreads', () => {
   test('create spread', async () => {
     const spread = spreadServerFactory()
     fetchMocker.mockResponse(JSON.stringify(spread))
-    await program.parseAsync(['spreads', 'create', '--book-id', 'book.id', '--spread', JSON.stringify(spread)],
-      {from: 'user'})
+    await program.parseAsync(['spreads', 'create', '--book-id', 'book.id', '--spread', JSON.stringify(spread)], {
+      from: 'user'
+    })
     expect(JSON.parse(logSpy.mock.calls[3][0])).toEqual(snakeCaseObjectKeysToCamelCase(spread))
   })
 
@@ -58,14 +59,9 @@ describe('Spreads', () => {
   test('retrieve spread', async () => {
     const spread = spreadServerFactory()
     fetchMocker.mockResponse(JSON.stringify(spread))
-    await program.parseAsync([
-      'spreads',
-      'retrieve',
-      '--book-id',
-      'book.id',
-      '--spread-id',
-      'spread.id'
-    ], {from: 'user'})
+    await program.parseAsync(['spreads', 'retrieve', '--book-id', 'book.id', '--spread-id', 'spread.id'], {
+      from: 'user'
+    })
     expect(JSON.parse(logSpy.mock.calls[5][0])).toStrictEqual(snakeCaseObjectKeysToCamelCase(spread))
   })
 
@@ -80,8 +76,10 @@ describe('Spreads', () => {
   test('update spread', async () => {
     const spread = spreadServerFactory()
     fetchMocker.mockResponse(JSON.stringify(spread))
-    await program.parseAsync(['spreads', 'update', '--book-id', 'book.id', '--spread-id',
-      'spread.id', '--spread', JSON.stringify(spread)], {from: 'user'})
+    await program.parseAsync(
+      ['spreads', 'update', '--book-id', 'book.id', '--spread-id', 'spread.id', '--spread', JSON.stringify(spread)],
+      {from: 'user'}
+    )
     expect(JSON.parse(logSpy.mock.calls[7][0])).toStrictEqual(snakeCaseObjectKeysToCamelCase(spread))
   })
 

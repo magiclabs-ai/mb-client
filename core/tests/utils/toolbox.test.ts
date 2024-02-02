@@ -1,4 +1,7 @@
-import {assign, camelCaseObjectKeysToSnakeCase, camelCaseToKebabCase,
+import {
+  assign,
+  camelCaseObjectKeysToSnakeCase,
+  camelCaseToKebabCase,
   camelCaseToSnakeCase,
   chunkArray,
   formatReturnJSON,
@@ -6,7 +9,8 @@ import {assign, camelCaseObjectKeysToSnakeCase, camelCaseToKebabCase,
   isURL,
   mergeNestedObject,
   snakeCaseObjectKeysToCamelCase,
-  snakeCaseToCamelCase} from '@/core/utils/toolbox'
+  snakeCaseToCamelCase
+} from '@/core/utils/toolbox'
 import {camelCaseToWords, getStyleIdBySlug} from '../../utils/toolbox'
 import {describe, expect, test} from 'vitest'
 import {faker} from '@faker-js/faker'
@@ -22,8 +26,9 @@ describe('Toolbox', () => {
   test('mergeNestedObject', () => {
     const initialObject = {item: {item: {name: 'itemName'}}}
     const objectToMerge = {item: {item: {item: 'test'}}}
-    expect(mergeNestedObject(initialObject, objectToMerge))
-      .toStrictEqual({item: {item: {name: 'itemName', item: 'test'}}})
+    expect(mergeNestedObject(initialObject, objectToMerge)).toStrictEqual({
+      item: {item: {name: 'itemName', item: 'test'}}
+    })
   })
   test('camelCaseToKebabCase', () => {
     expect(camelCaseToKebabCase('helloWorld')).toBe('hello-world')
@@ -48,11 +53,13 @@ describe('Toolbox', () => {
     expect(snakeCaseObjectKeysToCamelCase(snakeCaseObject)).toStrictEqual(camelCaseObject)
   })
   test('handleAsyncFunction succeed', async () => {
-    const res = await handleAsyncFunction(async () => new Promise(resolve => resolve('success')))
+    const res = await handleAsyncFunction(async () => new Promise((resolve) => resolve('success')))
     expect(res).toBe('success')
   })
   test.fails('handleAsyncFunction fails', async () => {
-    const res = await handleAsyncFunction(async () => {throw new Error('error')})
+    const res = await handleAsyncFunction(async () => {
+      throw new Error('error')
+    })
     expect(res).toThrowError('error')
   })
   test('isURL function', async () => {
@@ -76,7 +83,9 @@ describe('Toolbox', () => {
     expect(res).toBe('hello world')
   })
   test('chunkArray', async () => {
-    const array = Array(100).fill(0).map((_, i) => i)
+    const array = Array(100)
+      .fill(0)
+      .map((_, i) => i)
     const res = chunkArray(array, 50)
     expect(res.length).toBe(2)
   })

@@ -4,14 +4,13 @@ import {designOptionsSchema} from '../../design-request/design-options'
 import {handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 
 type RetrieveProps = BaseEndpointProps & {
-  bookSize: BookSize,
-  imageCount: number,
+  bookSize: BookSize
+  imageCount: number
   imageFilteringLevel: ImageFilteringLevel
 }
 export class DesignOptionsEndpoints {
   // eslint-disable-next-line no-unused-vars
-  constructor(private readonly engineAPI: EngineAPI) {
-  }
+  constructor(private readonly engineAPI: EngineAPI) {}
 
   retrieve(props: RetrieveProps) {
     return handleAsyncFunction(async () => {
@@ -23,5 +22,4 @@ export class DesignOptionsEndpoints {
       return designOptionsSchema.parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
-
 }

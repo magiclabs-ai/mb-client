@@ -1,7 +1,6 @@
 import {styleFontSchema} from './font'
 import {z} from 'zod'
 
-
 export const styleBaseSchema = z.object({
   active: z.boolean(),
   name: z.string(),
@@ -33,8 +32,34 @@ export const whitespaceSchema = z.object({
   max: z.number()
 })
 
-export const layoutConstraintsClasses = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-  'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'] as const
+export const layoutConstraintsClasses = [
+  'A',
+  'B',
+  'C',
+  'D',
+  'E',
+  'F',
+  'G',
+  'H',
+  'I',
+  'J',
+  'K',
+  'L',
+  'M',
+  'N',
+  'O',
+  'P',
+  'Q',
+  'R',
+  'S',
+  'T',
+  'U',
+  'V',
+  'W',
+  'X',
+  'Y',
+  'Z'
+] as const
 export const layoutConstraintSchema = z.object({
   whitespace: whitespaceSchema,
   iWhitespace: whitespaceSchema,

@@ -8,7 +8,8 @@ import prompts from 'prompts'
 
 export const images = program.command('images')
 
-images.command('list')
+images
+  .command('list')
   .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
@@ -22,13 +23,15 @@ images.command('list')
         args.bookId = response.bookId
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.images.list(args)
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        const res = await engineAPI.images.list(args)
+        return formatReturnJSON(res)
+      }))
   })
 
-images.command('create')
+images
+  .command('create')
   .addOption(new Option('--book-id <bookId>'))
   .addOption(new Option('--image <image>', 'image object'))
   .action(async (args) => {
@@ -54,14 +57,16 @@ images.command('create')
         args.image = response.image
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.images.addToBook(args)
-      log(chalk.bold(`🎆 - Image added to book ${args.bookId}!`))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        const res = await engineAPI.images.addToBook(args)
+        log(chalk.bold(`🎆 - Image added to book ${args.bookId}!`))
+        return formatReturnJSON(res)
+      }))
   })
 
-images.command('retrieve')
+images
+  .command('retrieve')
   .addOption(new Option('--book-id <bookId>'))
   .addOption(new Option('--image-id <imageId>'))
   .action(async (args) => {
@@ -84,14 +89,16 @@ images.command('retrieve')
         args.imageId = response.imageId
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.images.retrieve(args)
-      log(chalk.bold('🎇 - Image retrieved!'))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        const res = await engineAPI.images.retrieve(args)
+        log(chalk.bold('🎇 - Image retrieved!'))
+        return formatReturnJSON(res)
+      }))
   })
 
-images.command('update')
+images
+  .command('update')
   .addOption(new Option('--book-id <bookId>'))
   .addOption(new Option('--image-id <imageId>'))
   .addOption(new Option('--image <image>'))
@@ -126,16 +133,18 @@ images.command('update')
         args.image = response.image
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      args.payload = args.image
-      delete args.image
-      const res = await engineAPI.images.update(args)
-      log(chalk.yellow.bold('🎇 - Image updated!'))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        args.payload = args.image
+        delete args.image
+        const res = await engineAPI.images.update(args)
+        log(chalk.yellow.bold('🎇 - Image updated!'))
+        return formatReturnJSON(res)
+      }))
   })
 
-images.command('delete')
+images
+  .command('delete')
   .addOption(new Option('--book-id <bookId>'))
   .addOption(new Option('--image-id <imageId>'))
   .action(async (args) => {
@@ -158,8 +167,9 @@ images.command('delete')
         args.imageId = response.imageId
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      await engineAPI.images.delete(args)
-      log(chalk.bold('🗑️ - Image deleted!'))
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        await engineAPI.images.delete(args)
+        log(chalk.bold('🗑️ - Image deleted!'))
+      }))
   })

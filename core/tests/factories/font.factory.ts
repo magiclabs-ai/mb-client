@@ -1,7 +1,6 @@
 import {Font, fontSchema} from '@/core/types/font'
 import {faker} from '@faker-js/faker'
 
-
 export type FontFactoryProps = {
   slug?: string
   family?: string
@@ -14,7 +13,6 @@ export function fontFactory(props?: FontFactoryProps): Font {
   })
 }
 
-
 // export type EmbellishmentFontFactoryProps = FontFactoryProps & {
 //   role?: typeof fontRoles[number]
 // }
@@ -26,4 +24,3 @@ export function fontFactory(props?: FontFactoryProps): Font {
 //     role: faker.helpers.arrayElement(fontRoles)
 //   })
 // }
-

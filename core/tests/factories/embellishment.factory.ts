@@ -1,26 +1,26 @@
-
 import {EmbellishmentTextSticker, embellishmentTextStickerSchema} from '@/core/types/embellishment'
 import {faker} from '@faker-js/faker'
 
 export type EmbellishmentTextStickerFactoryProps = {
-  id?: string,
-  active?: boolean,
-  url?: string,
-  name?: string,
-  pattern?: string,
-  primaryColor?: string,
-  margin?: number,
-  width?: number,
-  height?: number,
-  style?: string,
-  text?: string,
-  isSpecific?: boolean,
-  minSurface?: number,
+  id?: string
+  active?: boolean
+  url?: string
+  name?: string
+  pattern?: string
+  primaryColor?: string
+  margin?: number
+  width?: number
+  height?: number
+  style?: string
+  text?: string
+  isSpecific?: boolean
+  minSurface?: number
   maxSurface?: number
 }
 
-export function embellishmentTextStickerFactory
-(props?: EmbellishmentTextStickerFactoryProps): EmbellishmentTextSticker {
+export function embellishmentTextStickerFactory(
+  props?: EmbellishmentTextStickerFactoryProps
+): EmbellishmentTextSticker {
   return embellishmentTextStickerSchema.parse({
     id: props?.id || faker.string.uuid(),
     active: props?.active || faker.datatype.boolean(),

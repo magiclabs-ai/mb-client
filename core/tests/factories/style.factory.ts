@@ -21,7 +21,7 @@ export function styleBaseFactory(props?: StyleBaseFactoryProps): StyleBase {
 export type StyleFactoryProps = StyleBaseFactoryProps & {
   position?: number
   layoutConstraints?: Record<string, unknown>
-  colors?: Record<string, unknown>,
+  colors?: Record<string, unknown>
   fonts: Array<StyleFont>
   compatibleBackground: Array<unknown>
 }

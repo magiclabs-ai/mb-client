@@ -21,17 +21,16 @@ type CancelProps = RetrieveProps
 type RetrieveGalleonProps = RetrieveProps
 
 type UpdateProps = BaseUpdateEndpointProps<Partial<Book>> & {
-  bookId: string,
+  bookId: string
 }
 
-type ReportProps = RetrieveProps &{
+type ReportProps = RetrieveProps & {
   report: BookReport
 }
 
-export class BooksEndpoints {  
+export class BooksEndpoints {
   // eslint-disable-next-line no-unused-vars
-  constructor(private readonly engineAPI: EngineAPI) {
-  }
+  constructor(private readonly engineAPI: EngineAPI) {}
 
   create({book, qs}: CreateProps) {
     return handleAsyncFunction(async () => {
@@ -73,7 +72,6 @@ export class BooksEndpoints {
     })
   }
 
-
   delete({bookId, qs}: DeleteProps) {
     return handleAsyncFunction(async () => {
       await this.engineAPI.fetcher.call<Record<string, unknown>>({
@@ -86,6 +84,7 @@ export class BooksEndpoints {
 
   design({bookId, qs}: DesignProps) {
     return handleAsyncFunction(async () => {
+      console.log(`/v1/books/${bookId}/design`)
       const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
         path: `/v1/books/${bookId}/design`,
         options: {method: 'POST'},
@@ -130,5 +129,4 @@ export class BooksEndpoints {
       })
     })
   }
-
 }

@@ -30,4 +30,3 @@ export function spreadFactory(props?: SpreadFactoryProps): Spread {
 export function spreadServerFactory(props?: SpreadFactoryProps): SpreadServer {
   return spreadServerSchema.parse(camelCaseObjectKeysToSnakeCase(spreadFactory(props)))
 }
-

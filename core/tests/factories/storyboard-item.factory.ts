@@ -1,7 +1,4 @@
-import {
-  StoryboardItem,
-  StoryboardItemSchema
-} from '@/core/types/storyboard-item'
+import {StoryboardItem, StoryboardItemSchema} from '@/core/types/storyboard-item'
 import {faker} from '@faker-js/faker'
 
 export type StoryboardItemFactoryProps = {

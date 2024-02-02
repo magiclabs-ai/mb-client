@@ -22,7 +22,11 @@ export class Images {
   designRequestState: State
 
   // eslint-disable-next-line no-unused-vars
-  constructor(private readonly client: MagicBookClient, parentId: string, designRequestState: State) {
+  constructor(
+    private readonly client: MagicBookClient,
+    parentId: string,
+    designRequestState: State
+  ) {
     this.parentId = parentId
     this.images = []
     this.length = this.images.length
@@ -43,7 +47,6 @@ export class Images {
         resolve(this.length)
       })
     }
-
   }
 }
 

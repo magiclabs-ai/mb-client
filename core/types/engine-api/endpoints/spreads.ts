@@ -30,8 +30,7 @@ type DeleteProps = BaseEndpointProps & {
 
 export class SpreadsEndpoints {
   // eslint-disable-next-line no-unused-vars
-  constructor(private readonly engineAPI: EngineAPI) {
-  }
+  constructor(private readonly engineAPI: EngineAPI) {}
 
   list({bookId, qs}: ListProps) {
     return handleAsyncFunction(async () => {
@@ -42,7 +41,7 @@ export class SpreadsEndpoints {
       return z.array(spreadSchema).parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
-  
+
   create({bookId, spread, qs}: CreateProps) {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({

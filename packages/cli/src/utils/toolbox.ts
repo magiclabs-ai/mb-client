@@ -10,9 +10,9 @@ import fs from 'fs'
 import os from 'os'
 import path from 'path'
 
-
-export const basePath = path.join(fileURLToPath(import.meta.url),
-/* istanbul ignore next */
+export const basePath = path.join(
+  fileURLToPath(import.meta.url),
+  /* istanbul ignore next */
   import.meta.url.includes('index.mjs') ? '..' : '../../..'
 )
 export const configPath = path.join(basePath, '.config.json')
@@ -44,7 +44,7 @@ export async function validateArgs(fn: () => void | Promise<void>) {
   try {
     await fn()
     return {isValid: true}
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     log(chalk.red.bold(error.message))
     return {isValid: false}
@@ -87,14 +87,14 @@ export function retrieveImageSet(imageSet: string) {
   if (fs.existsSync(imageSetPath)) {
     file = fs.readFileSync(imageSetPath, 'utf8')
   } else if (fs.existsSync(imageSet)) {
-    file = fs.readFileSync(imageSet, 'utf8')  
+    file = fs.readFileSync(imageSet, 'utf8')
   } else if (fs.existsSync(relativePath)) {
     file = fs.readFileSync(relativePath, 'utf8')
   } else {
     throw new Error(`Image set ${imageSet} not found`)
   }
-  file = JSON.parse(file)  
-  const images = file[Object.keys(file)[0]]?.map((image: ImageServer|Image) => {
+  file = JSON.parse(file)
+  const images = file[Object.keys(file)[0]]?.map((image: ImageServer | Image) => {
     if (imageServerSchema.safeParse(image).success) {
       return imageServerToImage(image as ImageServer)
     } else {

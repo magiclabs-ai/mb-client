@@ -7,7 +7,8 @@ import {configPath} from '../utils/toolbox'
 import {defaultApiHost, defaultWebSocketHost} from '@/core/config'
 import {promises as fs} from 'fs'
 
-export const config = program.command('config')
+export const config = program
+  .command('config')
   .addOption(new Option('--api-host <apiHost>').default(defaultApiHost))
   .addOption(new Option('--ws-host <wsHost>').default(defaultWebSocketHost))
   .addOption(new Option('--api-key <apiKey>'))
@@ -25,7 +26,7 @@ export const config = program.command('config')
         type: 'text',
         name: 'apiHost',
         message: 'Please enter a valid URL for API host:',
-        validate: value => isURL(value) ? true : 'Please enter a valid URL'
+        validate: (value) => (isURL(value) ? true : 'Please enter a valid URL')
       })
       config.apiHost = response.apiHost
     }
@@ -50,7 +51,7 @@ export const config = program.command('config')
         type: 'text',
         name: 'wsHost',
         message: 'Please enter a valid URL for WS host:',
-        validate: value => isURL(value) ? true : 'Please enter a valid URL'
+        validate: (value) => (isURL(value) ? true : 'Please enter a valid URL')
       })
       config.wsHost = response.wsHost
     }

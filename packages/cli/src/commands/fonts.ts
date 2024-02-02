@@ -6,7 +6,8 @@ import chalk from 'chalk'
 
 export const fonts = program.command('fonts')
 
-fonts.command('list')
+fonts
+  .command('list')
   .addOption(new Option('--qs <qs>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()

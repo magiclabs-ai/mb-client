@@ -8,7 +8,8 @@ import prompts from 'prompts'
 
 export const embellishments = program.command('embellishments')
 
-embellishments.command('list')
+embellishments
+  .command('list')
   .addOption(new Option('--style-slug <styleSlug>'))
   .addOption(new Option('--qs <qs>'))
   .action(async (args) => {
@@ -23,14 +24,16 @@ embellishments.command('list')
         args.styleSlug = response.styleSlug
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.embellishments.list(args)
-      log(chalk.bold('⭐️ - Embellishments retrieved!'))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        const res = await engineAPI.embellishments.list(args)
+        log(chalk.bold('⭐️ - Embellishments retrieved!'))
+        return formatReturnJSON(res)
+      }))
   })
 
-embellishments.command('retrieve')
+embellishments
+  .command('retrieve')
   .addOption(new Option('--embellishment-id <embellishmentId>'))
   .addOption(new Option('--style-slug <styleSlug>'))
   .addOption(new Option('--qs <qs>'))
@@ -54,14 +57,16 @@ embellishments.command('retrieve')
         args.styleSlug = response.styleSlug
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.embellishments.retrieve(args)
-      log(chalk.bold('⭐️ - Embellishments retrieved!'))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        const res = await engineAPI.embellishments.retrieve(args)
+        log(chalk.bold('⭐️ - Embellishments retrieved!'))
+        return formatReturnJSON(res)
+      }))
   })
 
-embellishments.command('update')
+embellishments
+  .command('update')
   .addOption(new Option('--embellishment-id <embellishmentId>'))
   .addOption(new Option('--style-slug <styleSlug>'))
   .addOption(new Option('--embellishment <embellishment>'))
@@ -96,11 +101,12 @@ embellishments.command('update')
         args.embellishment = embellishmentUpdateSchemas.parse(JSON.parse(response.embellishment))
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      args.payload = args.embellishment
-      delete args.embellishment
-      const res = await engineAPI.embellishments.update(args)
-      log(chalk.yellow.bold('⭐️ - Embellishment updated!'))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        args.payload = args.embellishment
+        delete args.embellishment
+        const res = await engineAPI.embellishments.update(args)
+        log(chalk.yellow.bold('⭐️ - Embellishment updated!'))
+        return formatReturnJSON(res)
+      }))
   })

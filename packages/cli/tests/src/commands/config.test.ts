@@ -10,14 +10,15 @@ mockProcessExit()
 vi.mock('prompts', async () => {
   return {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    default: (props: any) => Promise.resolve({
-      apiHost: 'https://api.magicbook.io',
-      wsHost: 'wss://socket.magicbook.io',
-      apiKey: faker.string.uuid(),
-      userId: faker.string.uuid(),
-      isValid: typeof props.validate === 'function' ? props.validate(faker.internet.url()) : true,
-      invalid: typeof props.validate === 'function' ? props.validate(JSON.stringify({})) : true
-    })
+    default: (props: any) =>
+      Promise.resolve({
+        apiHost: 'https://api.magicbook.io',
+        wsHost: 'wss://socket.magicbook.io',
+        apiKey: faker.string.uuid(),
+        userId: faker.string.uuid(),
+        isValid: typeof props.validate === 'function' ? props.validate(faker.internet.url()) : true,
+        invalid: typeof props.validate === 'function' ? props.validate(JSON.stringify({})) : true
+      })
   }
 })
 
@@ -33,10 +34,12 @@ describe('Config', () => {
       env: 'fake',
       apiKey: faker.string.uuid()
     }
-    await program.parseAsync(['config', '--api-host', fakeConfig.apiHost, '--ws-host', fakeConfig.wsHost, '--api-key',
-      fakeConfig.apiKey], {from: 'user'})
+    await program.parseAsync(
+      ['config', '--api-host', fakeConfig.apiHost, '--ws-host', fakeConfig.wsHost, '--api-key', fakeConfig.apiKey],
+      {from: 'user'}
+    )
   })
-  
+
   test('setup', async () => {
     const fakeConfig = {
       apiHost: 'https://api.fake.magicbook.io',
@@ -45,8 +48,20 @@ describe('Config', () => {
       apiKey: faker.string.uuid(),
       userId: faker.string.uuid()
     }
-    await program.parseAsync(['config', '--api-host', fakeConfig.apiHost, '--ws-host', fakeConfig.wsHost, '--api-key',
-      fakeConfig.apiKey, '--user-id', fakeConfig.userId], {from: 'user'})
+    await program.parseAsync(
+      [
+        'config',
+        '--api-host',
+        fakeConfig.apiHost,
+        '--ws-host',
+        fakeConfig.wsHost,
+        '--api-key',
+        fakeConfig.apiKey,
+        '--user-id',
+        fakeConfig.userId
+      ],
+      {from: 'user'}
+    )
     const config = await getConfig()
     expect(config).toStrictEqual(fakeConfig)
   })

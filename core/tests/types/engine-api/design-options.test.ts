@@ -6,7 +6,6 @@ import {fetchMocker} from '../../mocks/fetch'
 import {snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 
 describe('Engine API Design Options Endpoints', () => {
-
   test('retrieve', async () => {
     const fakeDesignOptions = designOptionsServerFactory()
     fetchMocker.mockResponse(JSON.stringify(fakeDesignOptions))

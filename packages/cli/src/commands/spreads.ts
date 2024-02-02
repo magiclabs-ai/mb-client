@@ -8,7 +8,8 @@ import prompts from 'prompts'
 
 export const spreads = program.command('spreads')
 
-spreads.command('list')
+spreads
+  .command('list')
   .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
@@ -22,13 +23,15 @@ spreads.command('list')
         args.bookId = response.bookId
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.spreads.list(args)
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        const res = await engineAPI.spreads.list(args)
+        return formatReturnJSON(res)
+      }))
   })
 
-spreads.command('create')
+spreads
+  .command('create')
   .addOption(new Option('--book-id <bookId>'))
   .addOption(new Option('--spread <spread>'))
   .action(async (args) => {
@@ -49,14 +52,16 @@ spreads.command('create')
         process.exit(1)
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.spreads.create(args)
-      log(chalk.bold('🌠 - Spread created!'))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        const res = await engineAPI.spreads.create(args)
+        log(chalk.bold('🌠 - Spread created!'))
+        return formatReturnJSON(res)
+      }))
   })
 
-spreads.command('retrieve')
+spreads
+  .command('retrieve')
   .addOption(new Option('--spread-id <spreadId>'))
   .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
@@ -79,14 +84,16 @@ spreads.command('retrieve')
         args.bookId = response.bookId
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.spreads.retrieve(args)
-      log(chalk.bold('🌠 - Spread retrieved!'))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        const res = await engineAPI.spreads.retrieve(args)
+        log(chalk.bold('🌠 - Spread retrieved!'))
+        return formatReturnJSON(res)
+      }))
   })
 
-spreads.command('update')
+spreads
+  .command('update')
   .addOption(new Option('--spread-id <spreadId>'))
   .addOption(new Option('--book-id <bookId>'))
   .addOption(new Option('--spread <spread>'))
@@ -116,16 +123,18 @@ spreads.command('update')
         process.exit(1)
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      args.payload = args.spread
-      delete args.spread
-      const res = await engineAPI.spreads.retrieve(args)
-      log(chalk.yellow.bold('🌠 - Spread updated!'))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        args.payload = args.spread
+        delete args.spread
+        const res = await engineAPI.spreads.retrieve(args)
+        log(chalk.yellow.bold('🌠 - Spread updated!'))
+        return formatReturnJSON(res)
+      }))
   })
 
-spreads.command('delete')
+spreads
+  .command('delete')
   .addOption(new Option('--spread-id <spreadId>'))
   .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
@@ -148,10 +157,10 @@ spreads.command('delete')
         args.bookId = response.bookId
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.spreads.delete(args)
-      log(chalk.bold('🗑️ - Spread deleted!'))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        const res = await engineAPI.spreads.delete(args)
+        log(chalk.bold('🗑️ - Spread deleted!'))
+        return formatReturnJSON(res)
+      }))
   })
-

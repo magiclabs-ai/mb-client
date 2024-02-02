@@ -17,8 +17,16 @@ export const embellishmentTypes = [
   'graphic-sticker',
   'text-sticker'
 ] as const
-export const embellishmentOrientations = ['top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-right',
-  'bottom-left'] as const
+export const embellishmentOrientations = [
+  'top',
+  'bottom',
+  'left',
+  'right',
+  'top-left',
+  'top-right',
+  'bottom-right',
+  'bottom-left'
+] as const
 export const embellishmentThicknesses = ['thin', 'thick', 'normal'] as const
 export const embellishmentStackings = ['front', 'back'] as const
 
@@ -170,23 +178,25 @@ const embellishmentSchemasArray: Array<z.AnyZodObject> = [
   embellishmentPostcardSchema,
   embellishmentGraphicStickerSchema
 ]
-export const embellishmentSchemas = z.union(
-  [...embellishmentSchemasArray] as unknown as readonly [ZodTypeAny, ZodTypeAny, ...ZodTypeAny[]]
-)
+export const embellishmentSchemas = z.union([...embellishmentSchemasArray] as unknown as readonly [
+  ZodTypeAny,
+  ZodTypeAny,
+  ...ZodTypeAny[]
+])
 export type Embellishment = z.infer<typeof embellishmentSchemas>
 
-export const embellishmentUpdateSchemas = z.union(
-  [
-    ...embellishmentSchemasArray.map((schema) => schema.partial().optional())
-  ] as unknown as readonly [ZodTypeAny, ZodTypeAny, ...ZodTypeAny[]]
-)
+export const embellishmentUpdateSchemas = z.union([
+  ...embellishmentSchemasArray.map((schema) => schema.partial().optional())
+] as unknown as readonly [ZodTypeAny, ZodTypeAny, ...ZodTypeAny[]])
 export type EmbellishmentUpdate = z.infer<typeof embellishmentUpdateSchemas>
 
 const embellishmentListSchemasArray = [...embellishmentSchemasArray]
 embellishmentListSchemasArray.shift() // remove background
 embellishmentListSchemasArray.push(embellishmentBackgroundListSchema) // add base background
 
-export const embellishmentListSchemas = z.union(
-  [...embellishmentListSchemasArray] as unknown as readonly [ZodTypeAny, ZodTypeAny, ...ZodTypeAny[]]
-)
+export const embellishmentListSchemas = z.union([...embellishmentListSchemasArray] as unknown as readonly [
+  ZodTypeAny,
+  ZodTypeAny,
+  ...ZodTypeAny[]
+])
 export type EmbellishmentList = z.infer<typeof embellishmentListSchemas>

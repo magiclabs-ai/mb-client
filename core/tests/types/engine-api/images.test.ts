@@ -4,7 +4,6 @@ import {fetchMocker} from '../../mocks/fetch'
 import {imageServerFactory} from '../../factories/image.factory'
 
 describe('Engine API Images Endpoints', () => {
-
   test('list', async () => {
     const fakeImageList = [imageServerFactory(), imageServerFactory()]
     fetchMocker.mockResponse(JSON.stringify(fakeImageList))
@@ -53,5 +52,4 @@ describe('Engine API Images Endpoints', () => {
     })
     expect(image).toEqual(JSON.parse(JSON.stringify(fakeImage)))
   })
-
 })

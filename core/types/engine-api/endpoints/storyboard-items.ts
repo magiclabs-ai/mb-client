@@ -8,8 +8,7 @@ type listProps = BaseEndpointProps & {
 }
 export class StoryboardItemsEndpoints {
   // eslint-disable-next-line no-unused-vars
-  constructor(private readonly engineAPI: EngineAPI) {
-  }
+  constructor(private readonly engineAPI: EngineAPI) {}
 
   list(props: listProps): Promise<Array<StoryboardItem>> {
     return handleAsyncFunction(async () => {
@@ -19,5 +18,4 @@ export class StoryboardItemsEndpoints {
       return z.array(StoryboardItemSchema).parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
-
 }

@@ -24,8 +24,19 @@ describe('MB Client', () => {
       [JSON.stringify(book), {status: 200}],
       [JSON.stringify(book), {status: 200}]
     )
-    prompts.inject(['baby', '1005', '10x10', 'sc', 'sp', 'low', 'best', 'lots', 'lots', 'custom',
-      './data/image-sets/00-nice-and-rome-client.json'])
+    prompts.inject([
+      'baby',
+      '1005',
+      '10x10',
+      'sc',
+      'sp',
+      'low',
+      'best',
+      'lots',
+      'lots',
+      'custom',
+      './data/image-sets/00-nice-and-rome-client.json'
+    ])
     await program.parseAsync(['mb-client', 'design-request', 'new'], {from: 'user'})
   })
   test('new slow request with all args', async () => {
@@ -36,11 +47,34 @@ describe('MB Client', () => {
       [JSON.stringify(book), {status: 200}],
       [JSON.stringify(book), {status: 200}]
     )
-    await program.parseAsync(['mb-client', 'design-request', 'new', '--occasion', 'baby',
-      '--style', '1005', '--book-size', '10x10', '--cover-type', 'sc', '--page-type', 'sp', '--image-density', 'low',
-      '--image-filtering-level', 'best', '--embellishment-level', 'lots', '--text-sticker-level', 'lots',
-      '--image-set', './data/image-sets/00-nice-and-rome-client.json']
-    , {from: 'user'})
+    await program.parseAsync(
+      [
+        'mb-client',
+        'design-request',
+        'new',
+        '--occasion',
+        'baby',
+        '--style',
+        '1005',
+        '--book-size',
+        '10x10',
+        '--cover-type',
+        'sc',
+        '--page-type',
+        'sp',
+        '--image-density',
+        'low',
+        '--image-filtering-level',
+        'best',
+        '--embellishment-level',
+        'lots',
+        '--text-sticker-level',
+        'lots',
+        '--image-set',
+        './data/image-sets/00-nice-and-rome-client.json'
+      ],
+      {from: 'user'}
+    )
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     eventEmitter.emit('event', {
@@ -52,7 +86,7 @@ describe('MB Client', () => {
       }
     })
     vi.useFakeTimers()
-    setInterval(()=>{}, 1000 * 40)
+    setInterval(() => {}, 1000 * 40)
     vi.advanceTimersToNextTimer()
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore

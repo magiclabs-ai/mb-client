@@ -8,7 +8,8 @@ import prompts from 'prompts'
 
 export const styles = program.command('styles')
 
-styles.command('list')
+styles
+  .command('list')
   .addOption(new Option('--qs <qs>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
@@ -19,7 +20,8 @@ styles.command('list')
     })
   })
 
-styles.command('retrieve')
+styles
+  .command('retrieve')
   .addOption(new Option('--style-slug <styleSlug>'))
   .addOption(new Option('--qs <qs>'))
   .action(async (args) => {
@@ -34,14 +36,16 @@ styles.command('retrieve')
         args.styleSlug = response.styleSlug
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.styles.retrieve(args)
-      log(chalk.bold('🖌️ - Style retrieved!'))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        const res = await engineAPI.styles.retrieve(args)
+        log(chalk.bold('🖌️ - Style retrieved!'))
+        return formatReturnJSON(res)
+      }))
   })
 
-styles.command('update')
+styles
+  .command('update')
   .addOption(new Option('--style-slug <styleSlug>'))
   .addOption(new Option('--style <style>'))
   .addOption(new Option('--qs <qs>'))
@@ -67,11 +71,12 @@ styles.command('update')
         args.style = styleSchema.parse(JSON.parse(response.style))
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      args.payload = args.style
-      delete args.style
-      const res = await engineAPI.styles.update(args)
-      log(chalk.yellow.bold('🖌️ - Style updated!'))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        args.payload = args.style
+        delete args.style
+        const res = await engineAPI.styles.update(args)
+        log(chalk.yellow.bold('🖌️ - Style updated!'))
+        return formatReturnJSON(res)
+      }))
   })

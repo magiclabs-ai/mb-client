@@ -5,12 +5,11 @@ import {snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 import {spreadServerFactory} from '../../factories/spread.factory'
 
 describe('Engine API Spreads Endpoints', () => {
-
   test('list', async () => {
     const fakeSpreadList = [spreadServerFactory(), spreadServerFactory()]
     fetchMocker.mockResponse(JSON.stringify(fakeSpreadList))
     const spreads = await engineAPI.spreads.list({bookId: 'bookId'})
-    expect(spreads).toEqual(fakeSpreadList.map(spread => snakeCaseObjectKeysToCamelCase(spread)))
+    expect(spreads).toEqual(fakeSpreadList.map((spread) => snakeCaseObjectKeysToCamelCase(spread)))
   })
 
   test('create', async () => {

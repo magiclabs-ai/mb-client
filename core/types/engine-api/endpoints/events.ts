@@ -23,8 +23,7 @@ type DeleteBookEventProps = BaseEndpointProps & {
 
 export class EventsEndpoints {
   // eslint-disable-next-line no-unused-vars
-  constructor(private readonly engineAPI: EngineAPI) {
-  }
+  constructor(private readonly engineAPI: EngineAPI) {}
 
   listBookEvents({bookId, qs}: ListBookEventsProps) {
     return handleAsyncFunction(async () => {
@@ -65,5 +64,4 @@ export class EventsEndpoints {
       })
     })
   }
-
 }

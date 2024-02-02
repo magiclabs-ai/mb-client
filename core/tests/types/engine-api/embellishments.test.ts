@@ -6,7 +6,6 @@ import {fetchMocker} from '../../mocks/fetch'
 import {paginationFactory} from '../../factories/pagination.factory'
 
 describe('Engine API Embellishments Endpoints', () => {
-
   test('list', async () => {
     const fakeEmbellishments = paginationFactory({
       factory: embellishmentTextStickerFactory,
@@ -26,7 +25,7 @@ describe('Engine API Embellishments Endpoints', () => {
     })
     expect(embellishment).toStrictEqual(fakeEmbellishment)
   })
-  
+
   test('update', async () => {
     const fakeEmbellishment = await embellishmentTextStickerFactory()
     fetchMocker.mockResponse(JSON.stringify(fakeEmbellishment))
@@ -37,5 +36,4 @@ describe('Engine API Embellishments Endpoints', () => {
     })
     expect(embellishment).toStrictEqual(fakeEmbellishment)
   })
-
 })

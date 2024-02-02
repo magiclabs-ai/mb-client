@@ -7,7 +7,8 @@ import prompts from 'prompts'
 
 export const events = program.command('events')
 
-events.command('list')
+events
+  .command('list')
   .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
@@ -21,13 +22,15 @@ events.command('list')
         args.bookId = response.bookId
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.events.listBookEvents(args)
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        const res = await engineAPI.events.listBookEvents(args)
+        return formatReturnJSON(res)
+      }))
   })
 
-events.command('create')
+events
+  .command('create')
   .addOption(new Option('--book-id <bookId>'))
   .addOption(new Option('--name <name>'))
   .addOption(new Option('--context <context>'))
@@ -51,14 +54,16 @@ events.command('create')
         args.name = response.name
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.events.createBookEvent(args)
-      log(chalk.bold(`✉️ - Event created to book ${args.bookId}!`))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        const res = await engineAPI.events.createBookEvent(args)
+        log(chalk.bold(`✉️ - Event created to book ${args.bookId}!`))
+        return formatReturnJSON(res)
+      }))
   })
 
-events.command('delete')
+events
+  .command('delete')
   .addOption(new Option('--book-id <bookId>'))
   .addOption(new Option('--name <name>'))
   .action(async (args) => {
@@ -81,8 +86,9 @@ events.command('delete')
         args.name = response.name
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      await engineAPI.events.deleteBookEvent(args)
-      log(chalk.bold('🗑️ - Event deleted!'))
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        await engineAPI.events.deleteBookEvent(args)
+        log(chalk.bold('🗑️ - Event deleted!'))
+      }))
   })

@@ -5,14 +5,13 @@ import {fetchMocker} from '../../mocks/fetch'
 import {galleonFactory} from '../../factories/galleon.factory'
 
 describe('Engine API Book Endpoints', () => {
-
   test('create', async () => {
     const fakeBook = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(fakeBook.toBookProps()))
     const book = await engineAPI.books.create({book: fakeBook})
     expect(book).toStrictEqual(fakeBook)
   })
-  
+
   test('retrieve', async () => {
     const fakeBook = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(fakeBook.toBookProps()))

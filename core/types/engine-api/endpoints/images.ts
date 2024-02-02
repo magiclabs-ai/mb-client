@@ -9,29 +9,28 @@ type ListProps = BaseEndpointProps & {
 }
 
 type AddToBookProps = BaseEndpointProps & {
-  bookId: string,
+  bookId: string
   image: ImageServer
 }
 
 type RetrieveProps = BaseEndpointProps & {
-  bookId: string,
+  bookId: string
   imageId: string
 }
 
 type UpdateProps = BaseUpdateEndpointProps<Partial<ImageServer>> & {
-  bookId: string,
+  bookId: string
   imageId: string
 }
 
 type DeleteProps = BaseEndpointProps & {
-  bookId: string,
+  bookId: string
   imageId: string
 }
 
 export class ImagesEndpoints {
   // eslint-disable-next-line no-unused-vars
-  constructor(private readonly engineAPI: EngineAPI) {
-  }
+  constructor(private readonly engineAPI: EngineAPI) {}
 
   list({bookId, qs}: ListProps) {
     return handleAsyncFunction(async () => {
@@ -56,7 +55,7 @@ export class ImagesEndpoints {
       return imageServerSchema.parse(res)
     })
   }
-  
+
   retrieve({bookId, imageId, qs}: RetrieveProps) {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
@@ -66,7 +65,7 @@ export class ImagesEndpoints {
       return imageServerSchema.parse(res)
     })
   }
-  
+
   update({bookId, imageId, payload, qs}: UpdateProps) {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
@@ -80,7 +79,7 @@ export class ImagesEndpoints {
       return imageServerSchema.parse(res)
     })
   }
-  
+
   delete({bookId, imageId, qs}: DeleteProps) {
     return handleAsyncFunction(async () => {
       await this.engineAPI.fetcher.call<Record<string, unknown>>({
@@ -92,5 +91,4 @@ export class ImagesEndpoints {
       })
     })
   }
-
 }

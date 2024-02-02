@@ -36,14 +36,16 @@ export class Fetcher {
         const result = await res.text()
         try {
           return JSON.parse(result) as T
-        } catch (error){
+        } catch (error) {
           return result as T
         }
       } else {
         let detail = res.statusText
-        try { 
+        try {
           detail = JSON.stringify((await res.json())?.detail)
-        } catch (error) { /* empty */ }
+        } catch (error) {
+          /* empty */
+        }
         throw Error(`${res.status} ${detail}`)
       }
     } catch (error) {

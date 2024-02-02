@@ -1,7 +1,4 @@
-import {
-  BaseEndpointProps,
-  EngineAPI
-} from '..'
+import {BaseEndpointProps, EngineAPI} from '..'
 import {fontSchema} from '../../font'
 import {handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 import {paginatedResponseSchema} from '../pagination'
@@ -13,8 +10,7 @@ type FontListReturnType = z.infer<typeof fontPaginatedSchema>
 
 export class FontsEndpoints {
   // eslint-disable-next-line no-unused-vars
-  constructor(private readonly engineAPI: EngineAPI) {
-  }
+  constructor(private readonly engineAPI: EngineAPI) {}
 
   list<T extends BaseEndpointProps>(props?: T): Promise<FontListReturnType> {
     return handleAsyncFunction(async () => {

@@ -8,14 +8,13 @@ export class MagicBookClient {
 
   public constructor(
     private readonly apiKey: string,
-    private readonly apiHost=defaultApiHost,
-    readonly webSocketHost=defaultWebSocketHost
+    private readonly apiHost = defaultApiHost,
+    readonly webSocketHost = defaultWebSocketHost
   ) {
     this.engineAPI = new EngineAPI(this.apiHost, this.apiKey)
   }
 
-  async createDesignRequest(designRequestProps: DesignRequestProps)
-  : Promise<DesignRequest> {
+  async createDesignRequest(designRequestProps: DesignRequestProps): Promise<DesignRequest> {
     if (designRequestProps.userId) {
       const book = await this.engineAPI.books.create({book: {user_id: designRequestProps.userId}})
       return new DesignRequest(book.id, this, designRequestProps)

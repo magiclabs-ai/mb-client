@@ -25,7 +25,7 @@ describe('Book', () => {
     const book = bookFactory()
     expect(book).toStrictEqual(new Book(book.toBookProps()))
   })
-  
+
   test('book to BookProps with undefined timeout', async () => {
     const book = bookFactory()
     book.timeout = undefined

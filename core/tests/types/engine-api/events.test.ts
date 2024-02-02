@@ -6,7 +6,6 @@ import {fetchMocker} from '../../mocks/fetch'
 import {paginationFactory} from '../../factories/pagination.factory'
 
 describe('Engine API Design Options Endpoints', () => {
-
   test('listBookEvents', async () => {
     const fakeEvents = paginationFactory({factory: eventFactory, schema: eventSchema})
     fetchMocker.mockResponse(JSON.stringify(fakeEvents))
@@ -25,7 +24,7 @@ describe('Engine API Design Options Endpoints', () => {
     })
     expect(event).toStrictEqual(fakeEvent)
   })
-  
+
   test('createBookEvent with context', async () => {
     const fakeEvent = eventFactory({context: {foo: 'bar'}})
     fetchMocker.mockResponse(JSON.stringify(fakeEvent))
@@ -45,5 +44,4 @@ describe('Engine API Design Options Endpoints', () => {
     })
     expect(res).toStrictEqual(undefined)
   })
-
 })

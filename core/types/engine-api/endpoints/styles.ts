@@ -1,8 +1,4 @@
-import {
-  BaseEndpointProps,
-  BaseUpdateEndpointProps,
-  EngineAPI
-} from '..'
+import {BaseEndpointProps, BaseUpdateEndpointProps, EngineAPI} from '..'
 import {Style, styleBaseSchema, styleSchema} from '../../style'
 import {cleanJSON, handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 import {paginatedResponseSchema} from '../pagination'
@@ -23,11 +19,10 @@ export type RetrieveStyleProps = BaseEndpointProps & {
 }
 
 export type StyleReturnType = z.infer<typeof styleSchema>
-  
+
 export class StylesEndpoints {
   // eslint-disable-next-line no-unused-vars
-  constructor(private readonly engineAPI: EngineAPI) {
-  }
+  constructor(private readonly engineAPI: EngineAPI) {}
 
   list<T extends ListStylesProps>(props?: T): Promise<StyleListReturnType> {
     return handleAsyncFunction(async () => {
@@ -62,5 +57,4 @@ export class StylesEndpoints {
       return styleSchema.parse(snakeCaseObjectKeysToCamelCase(res))
     })
   }
-
 }
