@@ -1,7 +1,6 @@
 import {BaseEndpointProps, BaseUpdateEndpointProps, EngineAPI} from '..'
 import {ImageServer, imageServerSchema} from '../../design-request/image'
 import {cleanJSON} from '@/core/utils/toolbox'
-import {handleAsyncFunction} from '@/core/utils/toolbox'
 import {z} from 'zod'
 
 type ListProps = BaseEndpointProps & {
@@ -32,63 +31,53 @@ export class ImagesEndpoints {
   // eslint-disable-next-line no-unused-vars
   constructor(private readonly engineAPI: EngineAPI) {}
 
-  list({bookId, qs}: ListProps) {
-    return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
-        path: `/v1/images/book/${bookId}`,
-        qs
-      })
-      return z.array(imageServerSchema).parse(res)
+  async list({bookId, qs}: ListProps) {
+    const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
+      path: `/v1/images/book/${bookId}`,
+      qs
     })
+    return z.array(imageServerSchema).parse(res)
   }
 
-  addToBook({bookId, image, qs}: AddToBookProps) {
-    return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
-        path: `/v1/images/book/${bookId}`,
-        options: {
-          method: 'POST',
-          body: cleanJSON(image)
-        },
-        qs
-      })
-      return imageServerSchema.parse(res)
+  async addToBook({bookId, image, qs}: AddToBookProps) {
+    const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
+      path: `/v1/images/book/${bookId}`,
+      options: {
+        method: 'POST',
+        body: cleanJSON(image)
+      },
+      qs
     })
+    return imageServerSchema.parse(res)
   }
 
-  retrieve({bookId, imageId, qs}: RetrieveProps) {
-    return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
-        path: `/v1/images/${imageId}/book/${bookId}/`,
-        qs
-      })
-      return imageServerSchema.parse(res)
+  async retrieve({bookId, imageId, qs}: RetrieveProps) {
+    const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
+      path: `/v1/images/${imageId}/book/${bookId}/`,
+      qs
     })
+    return imageServerSchema.parse(res)
   }
 
-  update({bookId, imageId, payload, qs}: UpdateProps) {
-    return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
-        path: `/v1/images/${imageId}/book/${bookId}/`,
-        options: {
-          method: 'PUT',
-          body: cleanJSON(payload)
-        },
-        qs
-      })
-      return imageServerSchema.parse(res)
+  async update({bookId, imageId, payload, qs}: UpdateProps) {
+    const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
+      path: `/v1/images/${imageId}/book/${bookId}/`,
+      options: {
+        method: 'PUT',
+        body: cleanJSON(payload)
+      },
+      qs
     })
+    return imageServerSchema.parse(res)
   }
 
-  delete({bookId, imageId, qs}: DeleteProps) {
-    return handleAsyncFunction(async () => {
-      await this.engineAPI.fetcher.call<Record<string, unknown>>({
-        path: `/v1/images/${imageId}/book/${bookId}/`,
-        options: {
-          method: 'DELETE'
-        },
-        qs
-      })
+  async delete({bookId, imageId, qs}: DeleteProps) {
+    await this.engineAPI.fetcher.call<Record<string, unknown>>({
+      path: `/v1/images/${imageId}/book/${bookId}/`,
+      options: {
+        method: 'DELETE'
+      },
+      qs
     })
   }
 }

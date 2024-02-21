@@ -71,14 +71,6 @@ export function camelCaseToWords(str: string) {
   return str.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase()
 }
 
-export async function handleAsyncFunction<T>(fn: () => Promise<T>) {
-  try {
-    return await fn()
-  } catch (error) {
-    return Promise.reject(error)
-  }
-}
-
 export function isURL(str: string) {
   const pattern = /^(https|ws|wss):\/\/[^ "]+$/
   return pattern.test(str)

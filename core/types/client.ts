@@ -22,4 +22,9 @@ export class MagicBookClient {
       throw new Error('userId is required')
     }
   }
+
+  async retrieveDesignRequest(id: string): Promise<DesignRequest> {
+    const book = await this.engineAPI.books.retrieve({bookId: id})
+    return new DesignRequest(id, this, book.toDesignRequestProps())
+  }
 }

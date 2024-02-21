@@ -1,7 +1,7 @@
 import {BaseEndpointProps} from '../index'
 import {EngineAPI} from '..'
 import {EventContext, eventSchema} from '../../event'
-import {cleanJSON, handleAsyncFunction, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
+import {cleanJSON, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 import {paginatedResponseSchema} from '../pagination'
 
 type ListBookEventsProps = BaseEndpointProps & {
@@ -25,43 +25,37 @@ export class EventsEndpoints {
   // eslint-disable-next-line no-unused-vars
   constructor(private readonly engineAPI: EngineAPI) {}
 
-  listBookEvents({bookId, qs}: ListBookEventsProps) {
-    return handleAsyncFunction(async () => {
-      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
-        path: `/v1/events/book/${bookId}`,
-        qs
-      })
-      return eventPaginatedSchema.parse(snakeCaseObjectKeysToCamelCase(res))
+  async listBookEvents({bookId, qs}: ListBookEventsProps) {
+    const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
+      path: `/v1/events/book/${bookId}`,
+      qs
     })
+    return eventPaginatedSchema.parse(snakeCaseObjectKeysToCamelCase(res))
   }
 
-  createBookEvent({name, data, bookId, qs}: CreateBookEventProps) {
-    return handleAsyncFunction(async () => {
-      const body: EventContext = {
-        name
-      }
-      data && (body['context'] = data)
-      const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
-        path: `/v1/events/book/${bookId}`,
-        options: {
-          method: 'POST',
-          body: cleanJSON(body)
-        },
-        qs
-      })
-      return eventSchema.parse(snakeCaseObjectKeysToCamelCase(res))
+  async createBookEvent({name, data, bookId, qs}: CreateBookEventProps) {
+    const body: EventContext = {
+      name
+    }
+    data && (body['context'] = data)
+    const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
+      path: `/v1/events/book/${bookId}`,
+      options: {
+        method: 'POST',
+        body: cleanJSON(body)
+      },
+      qs
     })
+    return eventSchema.parse(snakeCaseObjectKeysToCamelCase(res))
   }
 
-  deleteBookEvent({name, bookId, qs}: DeleteBookEventProps) {
-    return handleAsyncFunction(async () => {
-      await this.engineAPI.fetcher.call<Record<string, unknown>>({
-        path: `/v1/events/book/${bookId}/name/${name}`,
-        options: {
-          method: 'DELETE'
-        },
-        qs
-      })
+  async deleteBookEvent({name, bookId, qs}: DeleteBookEventProps) {
+    return await this.engineAPI.fetcher.call<Record<string, unknown>>({
+      path: `/v1/events/book/${bookId}/name/${name}`,
+      options: {
+        method: 'DELETE'
+      },
+      qs
     })
   }
 }

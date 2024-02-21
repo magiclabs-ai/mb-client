@@ -24,33 +24,35 @@ export class Fetcher {
   }
 
   async call<T>(props: CallProps): Promise<T> {
-    try {
-      if (props.options?.body && typeof props.options.body !== 'string') {
-        props.options.body = JSON.stringify(props.options?.body)
-      }
-      const baseOptions = {...this.options}
-      const options = props.options ? mergeNestedObject(baseOptions, props.options) : baseOptions
-      const qs = props.qs ? `?${props.qs}` : ''
-      const res = await fetch(this.cleanUrl(`${this.baseUrl}${props.path}${qs}`), options)
-      if (res.status >= 200 && res.status < 300 && res.ok) {
-        const result = await res.text()
-        try {
-          return JSON.parse(result) as T
-        } catch (error) {
-          return result as T
-        }
-      } else {
-        let detail = res.statusText
-        try {
-          detail = JSON.stringify((await res.json())?.detail)
-        } catch (error) {
-          /* empty */
-        }
-        throw Error(`${res.status} ${detail}`)
-      }
-    } catch (error) {
-      return Promise.reject(error)
+    const {options, path, qs} = props
+
+    if (options?.body && typeof options.body !== 'string') {
+      options.body = JSON.stringify(options.body)
     }
+
+    const finalOptions = options ? mergeNestedObject({...this.options}, options) : {...this.options}
+
+    const qualityScore = qs ? `?${qs}` : ''
+
+    const response = await fetch(this.cleanUrl(`${this.baseUrl}${path}${qualityScore}`), finalOptions)
+
+    if (response.ok) {
+      const result = await response.text()
+      try {
+        return JSON.parse(result) as T
+      } catch (error) {
+        return result as T
+      }
+    }
+
+    let detail = response.statusText
+    try {
+      detail = JSON.stringify((await response.json())?.detail)
+    } catch (error) {
+      console.error(error)
+    }
+
+    throw Error(`${response.status} ${detail}`)
   }
 
   cleanUrl(url: string) {

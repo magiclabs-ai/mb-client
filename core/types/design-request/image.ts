@@ -21,8 +21,8 @@ export class Images {
   length: number
   designRequestState: State
 
-  // eslint-disable-next-line no-unused-vars
   constructor(
+    // eslint-disable-next-line no-unused-vars
     private readonly client: MagicBookClient,
     parentId: string,
     designRequestState: State

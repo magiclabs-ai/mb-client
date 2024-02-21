@@ -8,7 +8,11 @@ import {additionalImages, images} from '../../../../core/data/images'
 import {useEffect, useState} from 'react'
 
 function App() {
-  const client = new MagicBookClient(import.meta.env.VITE_MB_CLIENT_API_KEY as string)
+  const client = new MagicBookClient(
+    import.meta.env.VITE_MB_CLIENT_API_KEY as string,
+    'https://api.dev-sls.magicbook.io',
+    'wss://socket.dev-sls.magicbook.io'
+  )
   const [isCreatingDesignRequest, setIsCreatingDesignRequest] = useState<boolean>(false)
   const [designRequestEventDetail, setDesignRequestEventDetail] = useState<DesignRequestEventDetail | null>()
   const [currentDesignRequest, setDesignRequest] = useState<DesignRequest | null>()
@@ -48,6 +52,11 @@ function App() {
       removeMagicBookEventListener()
     }
   }, [isCreatingDesignRequest])
+
+  async function retrieveDesignRequest() {
+    const designRequest = await client.retrieveDesignRequest('01HNCTSGY4KWQ9S7ZSHKTWTZ0W')
+    console.log('designRequest:', designRequest)
+  }
 
   async function createDesignRequest() {
     setIsCreatingDesignRequest(true)
@@ -117,6 +126,15 @@ function App() {
         <h2 className='font-mono text-center'>
           State: {designRequestEventDetail ? designRequestEventDetail.slug : 'N/A'}
         </h2>
+        <button
+          onClick={retrieveDesignRequest}
+          disabled={isCreatingDesignRequest}
+          className='rounded-md bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
+           hover:bg-slate-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+           focus-visible:outline-slate-800 disabled:opacity-50 disabled:cursor-not-allowed'
+        >
+          Retrieve design request
+        </button>
         <button
           onClick={createDesignRequest}
           disabled={isCreatingDesignRequest}
