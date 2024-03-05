@@ -53,8 +53,9 @@ function App() {
     }
   }, [isCreatingDesignRequest])
 
-  async function retrieveDesignRequest() {
-    const designRequest = await client.retrieveDesignRequest('01HR466JMXYDEJGAMGCDZBBV07')
+  async function retrieveDesignRequest(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const designRequest = await client.retrieveDesignRequest((e.target as HTMLFormElement).designRequestId.value)
     console.log('designRequest:', designRequest)
   }
 
@@ -126,15 +127,27 @@ function App() {
         <h2 className='font-mono text-center'>
           State: {designRequestEventDetail ? designRequestEventDetail.slug : 'N/A'}
         </h2>
-        <button
-          onClick={retrieveDesignRequest}
-          disabled={isCreatingDesignRequest}
-          className='rounded-md bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
-           hover:bg-slate-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
-           focus-visible:outline-slate-800 disabled:opacity-50 disabled:cursor-not-allowed'
+        <form
+          className='space-y-4'
+          onSubmit={retrieveDesignRequest}
         >
-          Retrieve design request
-        </button>
+          <input
+            type='text'
+            name='designRequestId'
+            placeholder='designRequestId'
+            id='designRequestId'
+            className='w-full px-3.5 py-1.5 border border-slate-800 rounded-md'
+          />
+          <button
+            type='submit'
+            disabled={isCreatingDesignRequest}
+            className='rounded-md bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
+            hover:bg-slate-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+            focus-visible:outline-slate-800 disabled:opacity-50 disabled:cursor-not-allowed w-full'
+          >
+            Retrieve design request
+          </button>
+        </form>
         <button
           onClick={createDesignRequest}
           disabled={isCreatingDesignRequest}
