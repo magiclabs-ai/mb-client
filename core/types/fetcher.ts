@@ -45,11 +45,11 @@ export class Fetcher {
       }
     }
 
-    let detail = response.statusText
+    let detail: string | undefined
     try {
       detail = JSON.stringify((await response.json())?.detail)
     } catch (error) {
-      console.error(error)
+      detail = response.statusText
     }
 
     throw Error(`${response.status} ${detail}`)

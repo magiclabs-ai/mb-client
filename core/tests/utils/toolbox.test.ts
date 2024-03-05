@@ -5,7 +5,6 @@ import {
   camelCaseToSnakeCase,
   chunkArray,
   formatReturnJSON,
-  handleAsyncFunction,
   isURL,
   mergeNestedObject,
   snakeCaseObjectKeysToCamelCase,
@@ -51,16 +50,6 @@ describe('Toolbox', () => {
     const snakeCaseObject = {hello_world: null, hello_world_test: 'helloWorldTest'}
     const camelCaseObject = {helloWorld: null, helloWorldTest: 'helloWorldTest'}
     expect(snakeCaseObjectKeysToCamelCase(snakeCaseObject)).toStrictEqual(camelCaseObject)
-  })
-  test('handleAsyncFunction succeed', async () => {
-    const res = await handleAsyncFunction(async () => new Promise((resolve) => resolve('success')))
-    expect(res).toBe('success')
-  })
-  test.fails('handleAsyncFunction fails', async () => {
-    const res = await handleAsyncFunction(async () => {
-      throw new Error('error')
-    })
-    expect(res).toThrowError('error')
   })
   test('isURL function', async () => {
     const res = isURL('https://www.google.com')

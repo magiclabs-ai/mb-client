@@ -37,11 +37,11 @@ describe('Engine API Design Options Endpoints', () => {
   })
 
   test('deleteBookEvent', async () => {
-    fetchMocker.mockResponse(JSON.stringify({}))
+    fetchMocker.mockResponse('')
     const res = await engineAPI.events.deleteBookEvent({
       bookId: '01HF9PDM0JZRQ26TTFKT9D99ZW',
       name: 'test'
     })
-    expect(res).toStrictEqual(undefined)
+    expect(res).toStrictEqual('')
   })
 })

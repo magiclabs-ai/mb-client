@@ -37,4 +37,11 @@ describe('Client', () => {
     const designRequest = await client.createDesignRequest({...designRequestProps})
     expect(designRequest).toThrowError('userId is required')
   })
+  test('retrieveDesignRequest', async () => {
+    const client = new MagicBookClient('123')
+    const book = bookFactory()
+    fetchMocker.mockResponse(JSON.stringify(book))
+    const designRequest = await client.retrieveDesignRequest(book.id)
+    expect(designRequest.parentId).toStrictEqual(book.id)
+  })
 })

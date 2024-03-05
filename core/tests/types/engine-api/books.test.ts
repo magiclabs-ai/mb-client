@@ -67,7 +67,7 @@ describe('Engine API Book Endpoints', () => {
 
   test('report', async () => {
     const fakeBook = bookFactory()
-    fetchMocker.mockResponse(JSON.stringify(fakeBook.toBookProps()))
+    fetchMocker.mockResponse('')
     const book = await engineAPI.books.report({
       bookId: fakeBook.id,
       report: {
@@ -75,6 +75,6 @@ describe('Engine API Book Endpoints', () => {
         step: 'ingesting'
       }
     })
-    expect(book).toStrictEqual(undefined)
+    expect(book).toStrictEqual('')
   })
 })

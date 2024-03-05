@@ -23,7 +23,7 @@ export type StyleFactoryProps = StyleBaseFactoryProps & {
   layoutConstraints?: Record<string, unknown>
   colors?: Record<string, unknown>
   fonts: Array<StyleFont>
-  compatibleBackground: Array<unknown>
+  compatibleBackgrounds: Array<unknown>
 }
 
 export function styleFactory(props?: StyleFactoryProps): Style {
@@ -34,9 +34,43 @@ export function styleFactory(props?: StyleFactoryProps): Style {
     name: props?.name || name,
     slug: props?.slug || faker.helpers.slugify(name),
     position: props?.position || 1,
-    layoutConstraints: props?.layoutConstraints || {},
+    layoutConstraints: props?.layoutConstraints || {
+      lots: {
+        whitespace: {
+          min: 0,
+          max: 0
+        },
+        iWhitespace: {
+          min: 0,
+          max: 0
+        },
+        classes: []
+      },
+      few: {
+        whitespace: {
+          min: 0,
+          max: 0
+        },
+        iWhitespace: {
+          min: 0,
+          max: 0
+        },
+        classes: []
+      },
+      none: {
+        whitespace: {
+          min: 0,
+          max: 0
+        },
+        iWhitespace: {
+          min: 0,
+          max: 0
+        },
+        classes: []
+      }
+    },
     colors: props?.colors || {},
-    compatibleBackground: props?.compatibleBackground || [],
+    compatibleBackgrounds: props?.compatibleBackgrounds || [],
     fonts: props?.fonts || []
   })
 }

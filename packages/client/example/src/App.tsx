@@ -54,7 +54,7 @@ function App() {
   }, [isCreatingDesignRequest])
 
   async function retrieveDesignRequest() {
-    const designRequest = await client.retrieveDesignRequest('01HNCTSGY4KWQ9S7ZSHKTWTZ0W')
+    const designRequest = await client.retrieveDesignRequest('01HR466JMXYDEJGAMGCDZBBV07')
     console.log('designRequest:', designRequest)
   }
 

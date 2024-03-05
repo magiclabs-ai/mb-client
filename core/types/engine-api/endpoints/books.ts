@@ -74,7 +74,6 @@ export class BooksEndpoints {
   }
 
   async design({bookId, qs}: DesignProps) {
-    console.log(`/v1/books/${bookId}/design`)
     const res = await this.engineAPI.fetcher.call<Record<string, unknown>>({
       path: `/v1/books/${bookId}/design`,
       options: {method: 'POST'},

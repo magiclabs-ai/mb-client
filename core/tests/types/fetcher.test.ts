@@ -11,7 +11,12 @@ describe('Fetcher', () => {
     await fetcher.call({path: '/books', qs: 'test=1'})
   })
   test.fails('fail call', async () => {
-    fetchMocker.mockReject(() => Promise.reject('Something went wrong. Please try again.'))
+    fetchMocker.mockResponse(() => Promise.resolve('Something went wrong. Please try again.'))
+    const res = await fetcher.call({path: '/books'})
+    expect(res).toThrowError('Something went wrong. Please try again.')
+  })
+  test.fails('fail call', async () => {
+    fetchMocker.mockResponse(() => Promise.resolve('Something went wrong. Please try again.'))
     const res = await fetcher.call({path: '/books'})
     expect(res).toThrowError('Something went wrong. Please try again.')
   })
@@ -36,11 +41,6 @@ describe('Fetcher', () => {
       })
     )
     const res = await fetcher.call({path: '/books'})
-    expect(res).toThrowError('400 Detail error')
-  })
-  test.fails('fail call when status code is > 300', async () => {
-    fetchMocker.mockResponse(undefined as unknown as string, {status: 400, statusText: 'Error 400'})
-    const res = await fetcher.call({path: '/books'})
-    expect(res).toThrowError('Error 400')
+    expect(res).toThrowError('400 Error 400')
   })
 })
