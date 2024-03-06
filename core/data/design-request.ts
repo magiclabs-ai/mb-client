@@ -206,7 +206,9 @@ export const styles = {
   6096: {slug: 'simply-scrapbook-sfly'},
   6097: {slug: 'boho-wedding-sfly'},
   6098: {slug: 'black-and-white-rustic-sfly'},
-  6099: {slug: 'bright-color-pop-sfly'}
+  6099: {slug: 'bright-color-pop-sfly'},
+  6159: {slug: 'grateful-for-you-sfly'},
+  6156: {slug: 'europe-mementos-sfly'}
 }
 export const bookSizes = ['8x8', '10x10', '12x12', '8x11', '11x8', '11x14'] as const
 export const coverTypes = ['sc', 'hc', 'pl'] as const
