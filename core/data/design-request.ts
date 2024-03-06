@@ -1,4 +1,4 @@
-import {DesignRequestEventDetail} from '../models/design-request'
+import {DesignRequestEventDetail} from '../types/design-request'
 
 export const states = [
   'new',
@@ -16,8 +16,13 @@ export const states = [
   'error',
   'cancelled'
 ] as const
-export const statesToCloseWS: ReadonlyArray<typeof states[number]> = ['error', 'timeout', 'ready', 'cancelled'] as const
-export const statesToReport: ReadonlyArray<typeof states[number]> = ['error', 'timeout'] as const
+export const statesToCloseWS: ReadonlyArray<(typeof states)[number]> = [
+  'error',
+  'timeout',
+  'ready',
+  'cancelled'
+] as const
+export const statesToReport: ReadonlyArray<(typeof states)[number]> = ['error', 'timeout'] as const
 export const isDesignRequestSubmitted = (state: string) => !['new', 'ingesting'].includes(state)
 export const canSubmitDesignRequest = (state: string) => ['new', 'ingesting', 'ready'].includes(state)
 export const occasions = [

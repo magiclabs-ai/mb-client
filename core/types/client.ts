@@ -1,0 +1,30 @@
+/* eslint-disable no-unused-vars */
+import {DesignRequest, DesignRequestProps} from './design-request'
+import {EngineAPI} from './engine-api'
+import {defaultApiHost, defaultWebSocketHost} from '../config'
+
+export class MagicBookClient {
+  engineAPI: EngineAPI
+
+  public constructor(
+    private readonly apiKey: string,
+    private readonly apiHost = defaultApiHost,
+    readonly webSocketHost = defaultWebSocketHost
+  ) {
+    this.engineAPI = new EngineAPI(this.apiHost, this.apiKey)
+  }
+
+  async createDesignRequest(designRequestProps: DesignRequestProps): Promise<DesignRequest> {
+    if (designRequestProps.userId) {
+      const book = await this.engineAPI.books.create({book: {user_id: designRequestProps.userId}})
+      return new DesignRequest(book.id, this, designRequestProps)
+    } else {
+      throw new Error('userId is required')
+    }
+  }
+
+  async retrieveDesignRequest(id: string): Promise<DesignRequest> {
+    const book = await this.engineAPI.books.retrieve({bookId: id})
+    return new DesignRequest(id, this, book.toDesignRequestProps())
+  }
+}

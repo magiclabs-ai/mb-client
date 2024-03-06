@@ -2,20 +2,21 @@ import {
   DesignRequest,
   DesignRequestEvent,
   DesignRequestEventDetail,
-  Image,
   MagicBookClient
 } from '@magiclabs.ai/magicbook-client'
+import {additionalImages, images} from '../../../../core/data/images'
 import {useEffect, useState} from 'react'
-import niceAndRome from '../../../../core/data/image-sets/56K-Cloud-Experiences-client.json'
 
 function App() {
   const client = new MagicBookClient(
-    import.meta.env.VITE_MB_CLIENT_API_KEY as string
+    import.meta.env.VITE_MB_CLIENT_API_KEY as string,
+    'https://api.dev-sls.magicbook.io',
+    'wss://socket.dev-sls.magicbook.io'
   )
-  const [isCreatingDesignRequest, setIsCreatingDesignRequest] = useState<boolean>(false) 
+  const [isCreatingDesignRequest, setIsCreatingDesignRequest] = useState<boolean>(false)
   const [designRequestEventDetail, setDesignRequestEventDetail] = useState<DesignRequestEventDetail | null>()
   const [currentDesignRequest, setDesignRequest] = useState<DesignRequest | null>()
-  
+
   function handleDesignRequestUpdated(designRequestEvent: DesignRequestEvent) {
     console.log('MagicBook.designRequestUpdated', designRequestEvent.detail)
     setDesignRequestEventDetail(designRequestEvent.detail)
@@ -37,9 +38,9 @@ function App() {
     }
     return () => {
       removeMagicBookEventListener()
-    }  
+    }
   }, [designRequestEventDetail])
-  
+
   useEffect(() => {
     if (isCreatingDesignRequest) {
       addMagicBookEventListener()
@@ -51,6 +52,12 @@ function App() {
       removeMagicBookEventListener()
     }
   }, [isCreatingDesignRequest])
+
+  async function retrieveDesignRequest(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const designRequest = await client.retrieveDesignRequest((e.target as HTMLFormElement).designRequestId.value)
+    console.log('designRequest:', designRequest)
+  }
 
   async function createDesignRequest() {
     setIsCreatingDesignRequest(true)
@@ -68,11 +75,12 @@ function App() {
     designRequest.title = 'My Book TEST'
     designRequest.subtitle = 'Subtitle'
     console.log('designRequest:', designRequest)
-    const images = niceAndRome['56K-Cloud-Experiences'] as Array<Image>
-    await Promise.all(images.map(async (image) => {
-      await designRequest.images.add(image)
-      console.log('designRequest.images.add:', image)
-    }))
+    await Promise.all(
+      images.map(async (image) => {
+        await designRequest.images.add(image)
+        console.log('designRequest.images.add:', image)
+      })
+    )
     console.log('designRequest.images.length:', designRequest.images.length)
     console.log('designRequest.getOptions:', await designRequest.getOptions())
     setDesignRequest(designRequest)
@@ -85,38 +93,31 @@ function App() {
     }
   }
 
-  async function bookViewed() {
-    if (currentDesignRequest) {
-      console.log('designRequest.logEvent:', await currentDesignRequest.logEvent(
-        'bookViewed', {
-          'app': 'mb-client-example'
-        }))
-    }
-  }
-
   async function addImagesAndSubmit() {
     console.log(currentDesignRequest)
-    await Promise.all(additionalImages.map(async (image) => {
-      console.log('designRequest.images.add:', await currentDesignRequest?.images.add(image))
-    }))
+    await Promise.all(
+      additionalImages.map(async (image) => {
+        console.log('designRequest.images.add:', await currentDesignRequest?.images.add(image))
+      })
+    )
     console.log('designRequest.submit:', await currentDesignRequest?.submit())
   }
 
   async function bookViewed() {
     if (currentDesignRequest) {
-      console.log('designRequest.logEvent:', await currentDesignRequest.logEvent(
-        'bookViewed', {
-          'app': 'mb-client-example'
-        }))
+      console.log(
+        'designRequest.logEvent:',
+        await currentDesignRequest.logEvent('bookViewed', {
+          app: 'mb-client-example'
+        })
+      )
     }
   }
 
   return (
     <div className='flex flex-col items-center space-y-8'>
       <div>
-        <h1 className='text-4xl font-bold tracking-tight text-center text-gray-900 sm:text-6xl'>
-          MB-Client Example
-        </h1>
+        <h1 className='text-4xl font-bold tracking-tight text-center text-gray-900 sm:text-6xl'>MB-Client Example</h1>
         <p className='max-w-lg mt-2 text-sm leading-6 text-center text-gray-600'>
           This is an example of a MagicBook client. It is a simple HTML page that imports the magicbook-client module
           and uses it to connect to the MagicBook server.
@@ -126,6 +127,27 @@ function App() {
         <h2 className='font-mono text-center'>
           State: {designRequestEventDetail ? designRequestEventDetail.slug : 'N/A'}
         </h2>
+        <form
+          className='space-y-4'
+          onSubmit={retrieveDesignRequest}
+        >
+          <input
+            type='text'
+            name='designRequestId'
+            placeholder='designRequestId'
+            id='designRequestId'
+            className='w-full px-3.5 py-1.5 border border-slate-800 rounded-md'
+          />
+          <button
+            type='submit'
+            disabled={isCreatingDesignRequest}
+            className='rounded-md bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
+            hover:bg-slate-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+            focus-visible:outline-slate-800 disabled:opacity-50 disabled:cursor-not-allowed w-full'
+          >
+            Retrieve design request
+          </button>
+        </form>
         <button
           onClick={createDesignRequest}
           disabled={isCreatingDesignRequest}
@@ -133,7 +155,7 @@ function App() {
            hover:bg-slate-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
            focus-visible:outline-slate-800 disabled:opacity-50 disabled:cursor-not-allowed'
         >
-           Create design request
+          Create design request
         </button>
         <button
           onClick={cancelDesignRequest}
@@ -157,7 +179,7 @@ function App() {
            hover:bg-slate-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
            focus-visible:outline-slate-800 disabled:opacity-50 disabled:cursor-not-allowed'
         >
-           Add more images and recreate
+          Add more images and recreate
         </button>
       </div>
       <p className='font-mono text-xs leading-8 text-center text-gray-600 rounded-full'>

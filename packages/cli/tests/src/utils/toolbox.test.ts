@@ -18,7 +18,7 @@ describe('Toolbox', () => {
     const data = {
       state: 'SUCCESS'
     }
-    await handleAPIResponse(async () => new Promise(resolve => resolve(data)))
+    await handleAPIResponse(async () => new Promise((resolve) => resolve(data)))
   })
   test('handleAPIResponse', async () => {
     const config = await getConfig()
