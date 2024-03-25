@@ -1,6 +1,7 @@
 import {EngineAPI} from '..'
 import {SpreadServer, spreadServerSchema} from '../../spread'
 import {bindThisToFunctions, handleAsyncFunction} from '@/core/utils/toolbox'
+import {canvasSchema} from '@/core/models/galleon'
 import {cleanJSON} from '@/core/utils/toolbox'
 import {z} from 'zod'
 
@@ -10,9 +11,7 @@ export class SpreadsEndpoints {
     bindThisToFunctions(this)
   }
 
-  list(
-    bookId: string
-  ) {
+  list(bookId: string) {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call({
         path: `/v1/spreads/book/${bookId}`
@@ -20,11 +19,8 @@ export class SpreadsEndpoints {
       return z.array(spreadServerSchema).parse(res)
     })
   }
-  
-  create(
-    bookId: string,
-    spread: SpreadServer
-  ) {
+
+  create(bookId: string, spread: SpreadServer) {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call({
         path: `/v1/spreads/book/${bookId}`,
@@ -37,10 +33,7 @@ export class SpreadsEndpoints {
     })
   }
 
-  retrieve(
-    spreadId: string,
-    bookId: string
-  ) {
+  retrieve(spreadId: string, bookId: string) {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call({
         path: `/v1/spreads/${spreadId}/book/${bookId}`
@@ -49,11 +42,7 @@ export class SpreadsEndpoints {
     })
   }
 
-  update(
-    spreadId: string,
-    bookId: string,
-    spread: SpreadServer
-  ) {
+  update(spreadId: string, bookId: string, spread: SpreadServer) {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call({
         path: `/v1/spreads/${spreadId}/book/${bookId}`,
@@ -66,10 +55,7 @@ export class SpreadsEndpoints {
     })
   }
 
-  delete(
-    spreadId: string,
-    bookId: string
-  ) {
+  delete(spreadId: string, bookId: string) {
     return handleAsyncFunction(async () => {
       await this.engineAPI.fetcher.call({
         path: `/v1/spreads/${spreadId}/book/${bookId}`,
@@ -80,4 +66,19 @@ export class SpreadsEndpoints {
     })
   }
 
+  layouts(bookId: string, page: number) {
+    return handleAsyncFunction(async () => {
+      const res = await this.engineAPI.fetcher.call({
+        path: '/v1/spreads/layouts',
+        options: {
+          method: 'POST',
+          body: cleanJSON({
+            user_id: bookId,
+            page_num: page
+          })
+        }
+      })
+      return z.array(canvasSchema).parse(res)
+    })
+  }
 }

@@ -21,6 +21,7 @@ import {
   textStickerLevels,
   timeoutEventDetail
 } from '@/core/data/design-request'
+import {canvasFactory} from '../factories/alternate-layout.factory'
 import {designOptionsServerFactory} from '@/core/tests/factories/design-options.factory'
 import {eventFactory} from '../factories/event.factory'
 import {faker} from '@faker-js/faker'
@@ -34,7 +35,7 @@ describe('Design Request', async () => {
   const client = new MagicBookClient('123', 'https://api.magicbook.mock', webSocketHost)
 
   beforeEach(async () => {
-    ws = vi.spyOn(window, 'WebSocket').mockImplementation((value) => (new WebSocketMock(value) as unknown as WebSocket))
+    ws = vi.spyOn(window, 'WebSocket').mockImplementation((value) => new WebSocketMock(value) as unknown as WebSocket)
   })
 
   async function createDesignRequest(props?: Partial<DesignRequestProps>) {
@@ -82,7 +83,7 @@ describe('Design Request', async () => {
       height: 500,
       rotation: 0,
       captureTime: '2021-01-01T00:00:00.000Z',
-      cameraMake: 'cameraMake', 
+      cameraMake: 'cameraMake',
       cameraModel: 'cameraModel',
       filename: 'filename'
     }
@@ -99,7 +100,7 @@ describe('Design Request', async () => {
       height: 500,
       rotation: 0,
       captureTime: '2021-01-01T00:00:00.000Z',
-      cameraMake: 'cameraMake', 
+      cameraMake: 'cameraMake',
       cameraModel: 'cameraModel',
       filename: 'filename'
     }
@@ -122,6 +123,20 @@ describe('Design Request', async () => {
     expect(designRequestJSON.title).toStrictEqual(designRequest.title)
   })
 
+  test.fails('getAlternateLayouts while dr is not ready', async () => {
+    const designRequest = await createDesignRequest({state: 'new'})
+    const designRequestJSON = await designRequest.getAlternateLayouts()
+    expect(designRequestJSON).toThrowError('Design Request is not ready')
+  })
+
+  test('getAlternateLayouts', async () => {
+    const designRequest = await createDesignRequest({state: 'ready'})
+    const alternateLayouts = [canvasFactory()]
+    fetchMocker.mockResponse(JSON.stringify(alternateLayouts))
+    const drAlternateLayouts = await designRequest.getAlternateLayouts()
+    expect(drAlternateLayouts[0].backgroundId).toStrictEqual(drAlternateLayouts[0].backgroundId)
+  })
+
   test('getOptions', async () => {
     const designRequest = await createDesignRequest()
     const designOptions = designOptionsServerFactory()
@@ -135,8 +150,9 @@ describe('Design Request', async () => {
   test.fails('submitDesignRequest while dr cannot be resubmitted', async () => {
     const designRequest = await createDesignRequest({state: 'submitted'})
     const designRequestJSON = await designRequest.submit()
-    expect(designRequestJSON)
-      .toThrowError('You need to wait for the current design request to be ready before submitting a new one')
+    expect(designRequestJSON).toThrowError(
+      'You need to wait for the current design request to be ready before submitting a new one'
+    )
   })
 
   test('submitDesignRequest', async () => {
@@ -154,7 +170,7 @@ describe('Design Request', async () => {
     })
     expect(ws).toHaveBeenCalledWith(`${webSocketHost}/?book_id=${designRequest.parentId}`)
     expect(submitDesignRequest).toStrictEqual(designRequest)
-    const submittedDetail =  {
+    const submittedDetail = {
       state: 'submitted',
       slug: 'submitted',
       progress: 0,
@@ -204,7 +220,7 @@ describe('Design Request', async () => {
   test('eventHandler with timeout event', async () => {
     await eventHandlerTester('timeout', timeoutEventDetail)
   })
-  
+
   test('eventHandler with error event', async () => {
     const expectedState = 'error'
     const errorEventDetail = {
@@ -227,16 +243,16 @@ describe('Design Request', async () => {
   })
 
   test.fails('timeoutHandler to throw error', async () => {
-    const designRequest = await createDesignRequest({state: 'submitted'})  
+    const designRequest = await createDesignRequest({state: 'submitted'})
     expect(designRequest.timeoutHandler()).toThrowError('Design request timeout not set')
   })
-  
+
   test('setGuid', async () => {
     const designRequest = await createDesignRequest({state: 'ready'})
     fetchMocker.mockResponse(JSON.stringify(bookFactory()))
     expect(await designRequest.setGuid(faker.string.uuid())).toStrictEqual(designRequest.guid)
   })
-  
+
   test.fails('setGuid before dr is submitted', async () => {
     const designRequest = await createDesignRequest({state: 'new'})
     await designRequest.setGuid(faker.string.uuid())
@@ -261,19 +277,19 @@ describe('Design Request', async () => {
     await designRequest.cancel()
     expect(designRequest).toThrowError('Design Request is already cancelled')
   })
-  
+
   test.fails('cancel when dr is already ready', async () => {
     const designRequest = await createDesignRequest({state: 'ready'})
     await designRequest.cancel()
     expect(designRequest).toThrowError('Design Request is already ready')
   })
-  
+
   test.fails('cancel when dr is already new', async () => {
     const designRequest = await createDesignRequest({state: 'new'})
     await designRequest.cancel()
     expect(designRequest).toThrowError('Design request not submitted')
   })
- 
+
   test('cancel', async () => {
     const designRequest = await createDesignRequest({state: 'submitted'})
     fetchMocker.mockResponse(JSON.stringify(bookFactory({state: 'cancelled'})))

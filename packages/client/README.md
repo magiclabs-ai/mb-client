@@ -1,4 +1,3 @@
-
 ![GitHub CI](https://github.com/magiclabs-ai/mb-client/actions/workflows/ci.yml/badge.svg) [![npm version](https://img.shields.io/npm/v/@magiclabs.ai/magicbook-client.svg)](https://www.npmjs.com/package/@magiclabs.ai/magicbook-client)
 
 # magicbook-client
@@ -13,7 +12,7 @@ npm install @magiclabs.ai/magicbook-client
 
 ## Usage
 
-Create a Magicbook API client instance with your API key. 
+Create a Magicbook API client instance with your API key.
 
 ```ts
 const client = new MagicBookClient('api-key')`
@@ -37,13 +36,14 @@ Individual parameters can also be set directly on the design request instance (e
 
 ```ts
 const designRequest = await client.createDesignRequest()
-designRequest.title = 'Australia 2023',
-designRequest.occasion = 'travel',
-designRequest.style = '1234',
-designRequest.bookSize = '8x8',
-designRequest.coverType = 'hc',
-designRequest.pageType = 'sp'
+;(designRequest.title = 'Australia 2023'),
+  (designRequest.occasion = 'travel'),
+  (designRequest.style = '1234'),
+  (designRequest.bookSize = '8x8'),
+  (designRequest.coverType = 'hc'),
+  (designRequest.pageType = 'sp')
 ```
+
 As images are getting ready to be handed over to Magicbook, for example when successfully uploaded, add them to the design request object.
 
 ```ts
@@ -73,9 +73,12 @@ const designOptions = designRequest.getOptions(selectedImageCount)
 Before submitting the design request to Magicbook, register a callback to receive update events.
 
 ```ts
-window.addEventListener('Magicbook.designRequestUpdated', async ((designRequestEvent: DesignRequestEvent) => {
-  console.log(designRequestEvent.detail)
-}) as EventListener)
+window.addEventListener(
+  'Magicbook.designRequestUpdated',
+  async((designRequestEvent: DesignRequestEvent) => {
+    console.log(designRequestEvent.detail)
+  }) as EventListener
+)
 ```
 
 Submit the design request. Again, the argument object can receive additional or updated design parameters.
@@ -102,13 +105,19 @@ Once the design request is complete, retrieve it in JSON format.
 await designRequest.getJSON()
 ```
 
+You can get alternate layouts for a specific page.
+
+```ts
+await designRequest.getAlternateLayouts(-1)
+```
+
 When a user performs a specific action, log it by calling the `logEvent` method.
 
 ```ts
 await designRequest.logEvent('book.viewed', data)
 ```
 
-___
+---
 
 ## Example
 

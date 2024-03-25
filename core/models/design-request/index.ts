@@ -23,18 +23,18 @@ import {camelCaseObjectKeysToSnakeCase, cleanJSON, snakeCaseObjectKeysToCamelCas
 import {designOptionsSchema} from './design-options'
 import {isDesignRequestSubmitted} from '../../data/design-request'
 
-export type Occasion = typeof occasions[number]
+export type Occasion = (typeof occasions)[number]
 export type Style = keyof typeof styles
-export type BookSize = typeof bookSizes[number]
-export type CoverType = typeof coverTypes[number]
-export type PageType = typeof pageTypes[number]
-export type ImageDensity = typeof imageDensities[number]
-export type ImageFilteringLevel = typeof imageFilteringLevels[number]
-export type EmbellishmentLevel = typeof embellishmentLevels[number]
-export type TextStickerLevel = typeof textStickerLevels[number]
+export type BookSize = (typeof bookSizes)[number]
+export type CoverType = (typeof coverTypes)[number]
+export type PageType = (typeof pageTypes)[number]
+export type ImageDensity = (typeof imageDensities)[number]
+export type ImageFilteringLevel = (typeof imageFilteringLevels)[number]
+export type EmbellishmentLevel = (typeof embellishmentLevels)[number]
+export type TextStickerLevel = (typeof textStickerLevels)[number]
 export const DesignRequestOptions = {
   occasion: occasions,
-  style: Object.keys(styles).map(key => parseInt(key)),
+  style: Object.keys(styles).map((key) => parseInt(key)),
   bookSize: bookSizes,
   coverType: coverTypes,
   pageType: pageTypes,
@@ -58,7 +58,7 @@ export type DesignRequestProps = {
   textStickerLevel?: TextStickerLevel
   userId: string
 }
-export type State = typeof states[number]
+export type State = (typeof states)[number]
 export type DesignRequestEventDetail = {
   state: string
   slug: State
@@ -82,7 +82,7 @@ export class DesignRequest {
   textStickerLevel: TextStickerLevel
   images: Images
   private webSocket?: WebSocket
-  userId?:string
+  userId?: string
   guid?: string
   timeout?: number
 
@@ -97,7 +97,7 @@ export class DesignRequest {
     this.title = designRequestProps?.title || ''
     this.subtitle = designRequestProps?.subtitle
     this.occasion = designRequestProps?.occasion || occasions[0]
-    this.style = designRequestProps?.style || parseInt(Object.keys(styles)[0]) as Style
+    this.style = designRequestProps?.style || (parseInt(Object.keys(styles)[0]) as Style)
     this.bookSize = designRequestProps?.bookSize || bookSizes[0]
     this.coverType = designRequestProps?.coverType || coverTypes[0]
     this.pageType = designRequestProps?.pageType || pageTypes[0]
@@ -107,7 +107,7 @@ export class DesignRequest {
     this.textStickerLevel = designRequestProps?.textStickerLevel || textStickerLevels[0]
     this.images = new Images(this.client, this.parentId, this.state)
     this.userId = designRequestProps?.userId
-  } 
+  }
 
   private updateDesignRequest(designRequestProps: Partial<DesignRequestProps>) {
     Object.assign(this, designRequestProps)
@@ -117,11 +117,24 @@ export class DesignRequest {
   }
 
   async getOptions(imageCount?: number) {
-    const options = designOptionsSchema.parse(snakeCaseObjectKeysToCamelCase(
-      await this.client.engineAPI.designOptions.retrieve(this.bookSize, imageCount || this.images.length,
-        this.imageFilteringLevel)
-    ))
+    const options = designOptionsSchema.parse(
+      snakeCaseObjectKeysToCamelCase(
+        await this.client.engineAPI.designOptions.retrieve(
+          this.bookSize,
+          imageCount || this.images.length,
+          this.imageFilteringLevel
+        )
+      )
+    )
     return options
+  }
+
+  async getAlternateLayouts(pageNumber: number) {
+    if (this.state === 'ready') {
+      return await this.client.engineAPI.spreads.layouts(this.parentId, pageNumber)
+    } else {
+      throw new Error('Design request not ready')
+    }
   }
 
   async submit(submitDesignRequestProps?: Partial<DesignRequestProps>) {
@@ -131,9 +144,7 @@ export class DesignRequest {
       submitDesignRequestProps && this.updateDesignRequest(submitDesignRequestProps)
       this.webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
       await this.client.engineAPI.books.update(this.parentId, this.toBook())
-      this.updateDesignRequest(
-        (await this.client.engineAPI.books.design(this.parentId)).toDesignRequestProps()
-      )
+      this.updateDesignRequest((await this.client.engineAPI.books.design(this.parentId)).toDesignRequestProps())
       this.getProgress()
       return this
     }
@@ -150,7 +161,7 @@ export class DesignRequest {
       return this.guid
     }
   }
- 
+
   async cancel() {
     if (this.state === 'cancelled') {
       throw new Error('Design request already cancelled')
@@ -180,7 +191,7 @@ export class DesignRequest {
     return await this.client.engineAPI.events.createBookEvent(this.parentId, name, data)
   }
 
-  private async eventHandler(detail: DesignRequestEventDetail, type='MagicBook.designRequestUpdated') {
+  private async eventHandler(detail: DesignRequestEventDetail, type = 'MagicBook.designRequestUpdated') {
     const customEvent = new CustomEvent<DesignRequestEventDetail>(type, {detail})
     if (statesToCloseWS.includes(detail.slug)) {
       this.webSocket?.close()
@@ -224,13 +235,12 @@ export class DesignRequest {
     const designRequest = {
       ...this,
       images: this.images['images']
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as Record<string, any>
     delete designRequest.client
     delete designRequest.webSocket
     const styleSlug = styles[this.style].slug
-    const bookDesignRequest = 
-      camelCaseObjectKeysToSnakeCase(cleanJSON(designRequest)) as BookDesignRequestProps
+    const bookDesignRequest = camelCaseObjectKeysToSnakeCase(cleanJSON(designRequest)) as BookDesignRequestProps
     bookDesignRequest.style = styleSlug
     return new Book({
       id: designRequest.parentId,
