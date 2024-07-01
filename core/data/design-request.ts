@@ -16,8 +16,13 @@ export const states = [
   'error',
   'cancelled'
 ] as const
-export const statesToCloseWS: ReadonlyArray<typeof states[number]> = ['error', 'timeout', 'ready', 'cancelled'] as const
-export const statesToReport: ReadonlyArray<typeof states[number]> = ['error', 'timeout'] as const
+export const statesToCloseWS: ReadonlyArray<(typeof states)[number]> = [
+  'error',
+  'timeout',
+  'ready',
+  'cancelled'
+] as const
+export const statesToReport: ReadonlyArray<(typeof states)[number]> = ['error', 'timeout'] as const
 export const isDesignRequestSubmitted = (state: string) => !['new', 'ingesting'].includes(state)
 export const canSubmitDesignRequest = (state: string) => ['new', 'ingesting', 'ready'].includes(state)
 export const occasions = [
@@ -229,3 +234,5 @@ export const cancelledEventDetail: DesignRequestEventDetail = {
   progress: 100,
   message: 'Design canceled'
 }
+export const formats = ['galleon', 'snapfish'] as const
+export type Format = (typeof formats)[number]

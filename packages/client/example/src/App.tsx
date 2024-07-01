@@ -10,7 +10,11 @@ import experiences from '../../../../core/data/image-sets/56K-Cloud-Experiences-
 import niceAndRome from '../../../../core/data/image-sets/00-nice-and-rome-client.json'
 
 function App() {
-  const client = new MagicBookClient(import.meta.env.VITE_MB_CLIENT_API_KEY as string)
+  const client = new MagicBookClient(
+    import.meta.env.VITE_MB_CLIENT_API_KEY as string,
+    import.meta.env.VITE_MB_CLIENT_API_HOST as string,
+    import.meta.env.VITE_MB_CLIENT_WS_HOST as string
+  )
   const [isCreatingDesignRequest, setIsCreatingDesignRequest] = useState<boolean>(false)
   const [designRequestEventDetail, setDesignRequestEventDetail] = useState<DesignRequestEventDetail | null>()
   const [currentDesignRequest, setDesignRequest] = useState<DesignRequest | null>()
@@ -30,8 +34,11 @@ function App() {
 
   useEffect(() => {
     if (designRequestEventDetail?.slug === 'ready' && currentDesignRequest) {
-      currentDesignRequest.getJSON().then((res) => {
-        console.log('designRequest.getJSON:', res)
+      currentDesignRequest.getJSON('galleon').then((res) => {
+        console.log('designRequest.getJSON.galleon:', res)
+      })
+      currentDesignRequest.getJSON('snapfish').then((res) => {
+        console.log('designRequest.getJSON.snapfish:', res)
       })
     }
     return () => {
