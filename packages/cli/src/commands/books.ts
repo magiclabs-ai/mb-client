@@ -8,17 +8,17 @@ import prompts from 'prompts'
 
 export const books = program.command('books')
 
-books.command('create')
-  .action(async () => {
-    const {engineAPI, config} = await actionSetup()
-    await handleAPIResponse(async () => {
-      const res = await engineAPI.books.create({user_id: config.userId})
-      log(chalk.bold('📕 - Book created!'))
-      return formatReturnJSON(res)
-    })
+books.command('create').action(async () => {
+  const {engineAPI, config} = await actionSetup()
+  await handleAPIResponse(async () => {
+    const res = await engineAPI.books.create({user_id: config.userId})
+    log(chalk.bold('📕 - Book created!'))
+    return formatReturnJSON(res)
   })
+})
 
-books.command('get')
+books
+  .command('get')
   .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
@@ -32,14 +32,16 @@ books.command('get')
         args.bookId = response.bookId
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.books.retrieve(args.bookId)
-      log(chalk.bold('✅ - Book retrieved!'))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        const res = await engineAPI.books.retrieve(args.bookId)
+        log(chalk.bold('✅ - Book retrieved!'))
+        return formatReturnJSON(res)
+      }))
   })
 
-books.command('update')
+books
+  .command('update')
   .addOption(new Option('--book-id <bookId>'))
   .addOption(new Option('--book <book>'))
   .action(async (args) => {
@@ -65,14 +67,16 @@ books.command('update')
         args.book = response.book
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.books.update(args.bookId, args.book)
-      log(chalk.yellow.bold('📕 - Book updated!'))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        const res = await engineAPI.books.update(args.bookId, args.book)
+        log(chalk.yellow.bold('📕 - Book updated!'))
+        return formatReturnJSON(res)
+      }))
   })
 
-books.command('cancel')
+books
+  .command('cancel')
   .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
@@ -86,14 +90,16 @@ books.command('cancel')
         args.bookId = response.bookId
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.books.cancel(args.bookId)
-      log(chalk.yellow.bold('📕 - Book canceled!'))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        const res = await engineAPI.books.cancel(args.bookId)
+        log(chalk.yellow.bold('📕 - Book canceled!'))
+        return formatReturnJSON(res)
+      }))
   })
 
-books.command('delete')
+books
+  .command('delete')
   .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
@@ -107,14 +113,16 @@ books.command('delete')
         args.bookId = response.bookId
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.books.delete(args.bookId)
-      log(chalk.red.bold('🗑️ - Book deleted!'))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        const res = await engineAPI.books.delete(args.bookId)
+        log(chalk.red.bold('🗑️ - Book deleted!'))
+        return formatReturnJSON(res)
+      }))
   })
 
-books.command('galleon')
+books
+  .command('galleon')
   .addOption(new Option('--book-id <bookId>'))
   .action(async (args) => {
     const {engineAPI} = await actionSetup()
@@ -128,9 +136,10 @@ books.command('galleon')
         args.bookId = response.bookId
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.books.retrieveGalleon(args.bookId)
-      log(chalk.bold('✅ - Galleon retrieved!'))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        const res = await engineAPI.books.format(args.bookId)
+        log(chalk.bold('✅ - Galleon retrieved!'))
+        return formatReturnJSON(res)
+      }))
   })

@@ -1,8 +1,7 @@
 import {Book, BookDesignRequestProps} from '../book'
 import {EventContext} from '../event'
-import {Images} from './image'
-import {MagicBookClient} from '../client'
 import {
+  Format,
   bookSizes,
   canSubmitDesignRequest,
   cancelledEventDetail,
@@ -19,6 +18,8 @@ import {
   textStickerLevels,
   timeoutEventDetail
 } from '@/core/data/design-request'
+import {Images} from './image'
+import {MagicBookClient} from '../client'
 import {camelCaseObjectKeysToSnakeCase, cleanJSON, snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 import {designOptionsSchema} from './design-options'
 import {isDesignRequestSubmitted} from '../../data/design-request'
@@ -179,9 +180,9 @@ export class DesignRequest {
     }
   }
 
-  async getJSON() {
+  async getJSON(format: Format) {
     if (this.state === 'ready') {
-      return await this.client.engineAPI.books.retrieveGalleon(this.parentId)
+      return await this.client.engineAPI.books.format(this.parentId, format)
     } else {
       throw new Error('Design request not ready')
     }

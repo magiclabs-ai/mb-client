@@ -13,7 +13,7 @@ describe('Engine API Book Endpoints', () => {
     const book = await engineAPI.books.create({user_id: 'test-user-id'})
     expect(book).toStrictEqual(fakeBook)
   })
-  
+
   test('retrieve', async () => {
     const fakeBook = bookFactory()
     fetchMocker.mockResponse(JSON.stringify(fakeBook.toBookProps()))
@@ -58,10 +58,10 @@ describe('Engine API Book Endpoints', () => {
     expect(book).toBeUndefined()
   })
 
-  test('retrieveGalleon', async () => {
+  test('format', async () => {
     const fakeGalleon = galleonFactory()
     fetchMocker.mockResponse(JSON.stringify(fakeGalleon))
-    const galleon = await engineAPI.books.retrieveGalleon('123')
+    const galleon = await engineAPI.books.format('123')
     expect(galleon).toStrictEqual(fakeGalleon)
   })
 })
