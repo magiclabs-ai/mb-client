@@ -102,7 +102,8 @@ await designRequest.setGuid('a9ccb406-015a-47df-bb59-ea171b8617ca')
 Once the design request is complete, retrieve it in JSON format.
 
 ```ts
-await designRequest.getJSON()
+// format: 'galleon' | 'snapfish'
+await designRequest.getJSON(format)
 ```
 
 You can get alternate layouts for a specific page.
