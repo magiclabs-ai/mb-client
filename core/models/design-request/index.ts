@@ -50,6 +50,7 @@ export type DesignRequestProps = {
   state?: State
   occasion?: Occasion
   style?: Style
+  sku?: string
   bookSize?: BookSize
   coverType?: CoverType
   pageType?: PageType
@@ -74,6 +75,7 @@ export class DesignRequest {
   subtitle?: string
   occasion: Occasion
   style: Style
+  sku?: string
   bookSize: BookSize
   coverType: CoverType
   pageType: PageType
@@ -99,6 +101,7 @@ export class DesignRequest {
     this.subtitle = designRequestProps?.subtitle
     this.occasion = designRequestProps?.occasion || occasions[0]
     this.style = designRequestProps?.style || (parseInt(Object.keys(styles)[0]) as Style)
+    this.sku = designRequestProps?.sku
     this.bookSize = designRequestProps?.bookSize || bookSizes[0]
     this.coverType = designRequestProps?.coverType || coverTypes[0]
     this.pageType = designRequestProps?.pageType || pageTypes[0]
@@ -144,6 +147,7 @@ export class DesignRequest {
     } else {
       submitDesignRequestProps && this.updateDesignRequest(submitDesignRequestProps)
       this.webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
+      console.log('✅✅✅✅')
       await this.client.engineAPI.books.update(this.parentId, this.toBook())
       this.updateDesignRequest((await this.client.engineAPI.books.design(this.parentId)).toDesignRequestProps())
       this.getProgress()
@@ -241,6 +245,7 @@ export class DesignRequest {
     delete designRequest.client
     delete designRequest.webSocket
     const styleSlug = styles[this.style].slug
+    console.log('styleSlug 💣', styleSlug)
     const bookDesignRequest = camelCaseObjectKeysToSnakeCase(cleanJSON(designRequest)) as BookDesignRequestProps
     bookDesignRequest.style = styleSlug
     return new Book({
@@ -249,6 +254,7 @@ export class DesignRequest {
       title: designRequest.title,
       subtitle: designRequest.subtitle,
       design_request: bookDesignRequest,
+      sku: designRequest.sku,
       state: designRequest.state,
       user_id: designRequest.userId
     })
