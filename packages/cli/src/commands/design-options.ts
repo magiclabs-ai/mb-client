@@ -8,7 +8,8 @@ import prompts from 'prompts'
 
 export const designOptions = program.command('design-options')
 
-designOptions.command('get-densities')
+designOptions
+  .command('retrieve-densities')
   .addOption(new Option('--book-size <bookSize>'))
   .addOption(new Option('--image-count <imageCount>'))
   .addOption(new Option('--image-filtering-level <imageFilteringLevel>'))
@@ -30,7 +31,7 @@ designOptions.command('get-densities')
           type: 'number',
           name: 'imageCount',
           message: 'Enter the image count:',
-          validate: value => value > 0 ? true : 'Please enter a valid number'
+          validate: (value) => (value > 0 ? true : 'Please enter a valid number')
         })
         args.imageCount = response.imageCount
       }
@@ -45,10 +46,10 @@ designOptions.command('get-densities')
         args.imageFilteringLevel = response.imageFilteringLevel
       }
     })
-    isValid && await handleAPIResponse(async () => {
-      const res = await engineAPI.designOptions.retrieve(args.bookSize, args.imageCount, args.imageFilteringLevel)
-      log(chalk.bold('🎛️ - Densities retrieved!'))
-      return formatReturnJSON(res)
-    })
+    isValid &&
+      (await handleAPIResponse(async () => {
+        const res = await engineAPI.designOptions.retrieve(args)
+        log(chalk.bold('🎛️ - Densities retrieved!'))
+        return formatReturnJSON(res)
+      }))
   })
-

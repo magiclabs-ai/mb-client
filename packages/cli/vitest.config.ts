@@ -11,9 +11,7 @@ export default defineConfig({
     ]
   },
   test: {
-    setupFiles: [
-      '../../core/tests/mocks/fetch.ts'
-    ],
+    setupFiles: ['../../core/tests/mocks/fetch.ts'],
     server: {
       deps: {
         inline: ['vitest-mock-process']

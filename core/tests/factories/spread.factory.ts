@@ -1,4 +1,4 @@
-import {Spread, SpreadServer, spreadSchema, spreadServerSchema} from '@/core/models/spread'
+import {Spread, SpreadServer, spreadSchema, spreadServerSchema} from '@/core/types/spread'
 import {camelCaseObjectKeysToSnakeCase} from '@/core/utils/toolbox'
 import {faker} from '@faker-js/faker'
 
@@ -30,4 +30,3 @@ export function spreadFactory(props?: SpreadFactoryProps): Spread {
 export function spreadServerFactory(props?: SpreadFactoryProps): SpreadServer {
   return spreadServerSchema.parse(camelCaseObjectKeysToSnakeCase(spreadFactory(props)))
 }
-

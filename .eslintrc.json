@@ -5,11 +5,8 @@
     "node": true,
     "es2021": true
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended"
-  ],
-  "ignorePatterns": ["dist", "types", "package-lock.json", "react-example"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "ignorePatterns": ["dist", "package-lock.json", "react-example"],
   "overrides": [
     {
       "files": ["**/*.ts", "**/*.tsx"],
@@ -24,10 +21,7 @@
       },
       "plugins": ["@typescript-eslint"],
       "rules": {
-        "quotes": [
-          "error",
-          "single"
-        ]
+        "quotes": ["error", "single"]
       }
     }
   ],
@@ -36,31 +30,23 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": [
-    "@typescript-eslint",
-    "sort-imports-es6-autofix"
-  ],
+  "plugins": ["@typescript-eslint", "sort-imports-es6-autofix"],
   "rules": {
-    "indent": [
-      "error",
-      2
-    ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
-    "semi": [
-      "error",
-      "never"
-    ],
+    "indent": ["error", 2],
+    "linebreak-style": ["error", "unix"],
+    "semi": ["error", "never"],
+    "no-multi-spaces": ["error"],
     "no-unused-vars": "error",
     "comma-dangle": "error",
     "object-curly-spacing": ["error", "never"],
-    "sort-imports-es6-autofix/sort-imports-es6": [2, {
-      "ignoreCase": false,
-      "ignoreMemberSort": false,
-      "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
-    }],
+    "sort-imports-es6-autofix/sort-imports-es6": [
+      2,
+      {
+        "ignoreCase": false,
+        "ignoreMemberSort": false,
+        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+      }
+    ],
     "max-len": ["error", {"code": 120}]
   }
 }

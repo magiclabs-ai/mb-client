@@ -1,10 +1,4 @@
-import {
-  StoryboardItem,
-  StoryboardItemSchema,
-  StoryboardItemServer,
-  StoryboardItemServerSchema
-} from '@/core/models/storyboard-item'
-import {camelCaseObjectKeysToSnakeCase} from '@/core/utils/toolbox'
+import {StoryboardItem, StoryboardItemSchema} from '@/core/types/storyboard-item'
 import {faker} from '@faker-js/faker'
 
 export type StoryboardItemFactoryProps = {
@@ -30,7 +24,10 @@ export function storyboardItemFactory(props?: StoryboardItemFactoryProps): Story
       id: faker.string.uuid(),
       url: faker.internet.url(),
       category: faker.lorem.word(),
-      aestheticScore: faker.number.int({min: 1, max: 100}),
+      aesthetics: {
+        score: faker.number.int({min: 1, max: 100}),
+        scoreWithoutDistance: faker.number.int({min: 1, max: 100})
+      },
       faces: [],
       roi: {
         x: faker.number.int({min: 1, max: 100}),
@@ -44,10 +41,3 @@ export function storyboardItemFactory(props?: StoryboardItemFactoryProps): Story
     }
   })
 }
-
-export function storyboardItemServerFactory(props?: StoryboardItemFactoryProps): StoryboardItemServer {
-  return StoryboardItemServerSchema.parse(
-    camelCaseObjectKeysToSnakeCase(storyboardItemFactory(props))
-  )
-}
-

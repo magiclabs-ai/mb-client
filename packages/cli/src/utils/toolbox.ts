@@ -1,6 +1,6 @@
-import {Config, configSchema} from '../models/config'
-import {EngineAPI} from '@/core/models/engine-api'
-import {Image, ImageServer, imageServerSchema, imageServerToImage} from '@/core/models/design-request/image'
+import {Config, configSchema} from '../types/config'
+import {EngineAPI} from '@/core/types/engine-api'
+import {Image, ImageServer, imageServerSchema, imageServerToImage} from '@/core/types/design-request/image'
 import {type PackageJson} from 'type-fest'
 import {cleanJSON} from '@/core/utils/toolbox'
 import {fileURLToPath} from 'url'
@@ -10,9 +10,9 @@ import fs from 'fs'
 import os from 'os'
 import path from 'path'
 
-
-export const basePath = path.join(fileURLToPath(import.meta.url),
-/* istanbul ignore next */
+export const basePath = path.join(
+  fileURLToPath(import.meta.url),
+  /* istanbul ignore next */
   import.meta.url.includes('index.mjs') ? '..' : '../../..'
 )
 export const configPath = path.join(basePath, '.config.json')
@@ -21,7 +21,7 @@ export function getConfig() {
   try {
     return JSON.parse(fs.readFileSync(configPath, 'utf-8')) as Config
   } catch (error) {
-    log(chalk.red.bold('❌ - No config file found. Please run the config command: mb-cli config'))
+    log(chalk.red.bold('❌ - No config file found. Please run the config command: mb config'))
   }
 }
 
@@ -44,7 +44,7 @@ export async function validateArgs(fn: () => void | Promise<void>) {
   try {
     await fn()
     return {isValid: true}
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     log(chalk.red.bold(error.message))
     return {isValid: false}
@@ -87,14 +87,14 @@ export function retrieveImageSet(imageSet: string) {
   if (fs.existsSync(imageSetPath)) {
     file = fs.readFileSync(imageSetPath, 'utf8')
   } else if (fs.existsSync(imageSet)) {
-    file = fs.readFileSync(imageSet, 'utf8')  
+    file = fs.readFileSync(imageSet, 'utf8')
   } else if (fs.existsSync(relativePath)) {
     file = fs.readFileSync(relativePath, 'utf8')
-  }  else {
+  } else {
     throw new Error(`Image set ${imageSet} not found`)
   }
-  file = JSON.parse(file)  
-  const images = file[Object.keys(file)[0]]?.map((image: ImageServer|Image) => {
+  file = JSON.parse(file)
+  const images = file[Object.keys(file)[0]]?.map((image: ImageServer | Image) => {
     if (imageServerSchema.safeParse(image).success) {
       return imageServerToImage(image as ImageServer)
     } else {
