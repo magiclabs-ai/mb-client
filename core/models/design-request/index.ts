@@ -126,7 +126,8 @@ export class DesignRequest {
         await this.client.engineAPI.designOptions.retrieve(
           this.bookSize,
           imageCount || this.images.length,
-          this.imageFilteringLevel
+          this.imageFilteringLevel,
+          this.sku
         )
       )
     )

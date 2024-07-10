@@ -9,18 +9,13 @@ export class DesignOptionsEndpoints {
     bindThisToFunctions(this)
   }
 
-  retrieve(
-    bookSize: BookSize,
-    imageCount: number,
-    imageFilteringLevel: ImageFilteringLevel
-  ) {
+  retrieve(bookSize: BookSize, imageCount: number, imageFilteringLevel: ImageFilteringLevel, sku?: string) {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call({
         // eslint-disable-next-line max-len
-        path: `/v1/designoptions/booksize/${bookSize}/imagecount/${imageCount}/imagefilteringlevel/${imageFilteringLevel}`
+        path: `/v1/designoptions/booksize/${bookSize}/imagecount/${imageCount}/imagefilteringlevel/${imageFilteringLevel}${sku ? `?sku=${sku}` : ''}`
       })
       return designOptionsServerSchema.parse(res)
     })
   }
-
 }
