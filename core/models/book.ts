@@ -25,7 +25,7 @@ import {getStyleIdBySlug, snakeCaseObjectKeysToCamelCase} from '../utils/toolbox
 import {z} from 'zod'
 
 export type BookReport = {
-  error: 'timeout'|'design'
+  error: 'timeout' | 'design'
   step: string
 }
 
@@ -82,6 +82,7 @@ export const bookPropsSchema = z.object({
   title: z.string(),
   subtitle: z.string().optional(),
   design_request: bookDesignRequestSchema,
+  sku: z.string().optional(),
   state: z.enum(states).optional(),
   guid: z.string().optional(),
   cancelled_at: z.string().optional(),
@@ -97,6 +98,7 @@ export class Book {
   revision?: number
   subtitle?: string
   design_request: BookDesignRequest
+  sku?: string
   state?: State
   guid?: string
   cancelled_at?: string
@@ -108,6 +110,7 @@ export class Book {
     this.title = props.title
     this.subtitle = props.subtitle
     this.design_request = new BookDesignRequest(props.design_request)
+    this.sku = props.sku
     this.state = props.state
     this.guid = props.guid
     this.cancelled_at = props.cancelled_at

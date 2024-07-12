@@ -50,6 +50,7 @@ export type DesignRequestProps = {
   state?: State
   occasion?: Occasion
   style?: Style
+  sku?: string
   bookSize?: BookSize
   coverType?: CoverType
   pageType?: PageType
@@ -74,6 +75,7 @@ export class DesignRequest {
   subtitle?: string
   occasion: Occasion
   style: Style
+  sku?: string
   bookSize: BookSize
   coverType: CoverType
   pageType: PageType
@@ -99,6 +101,7 @@ export class DesignRequest {
     this.subtitle = designRequestProps?.subtitle
     this.occasion = designRequestProps?.occasion || occasions[0]
     this.style = designRequestProps?.style || (parseInt(Object.keys(styles)[0]) as Style)
+    this.sku = designRequestProps?.sku
     this.bookSize = designRequestProps?.bookSize || bookSizes[0]
     this.coverType = designRequestProps?.coverType || coverTypes[0]
     this.pageType = designRequestProps?.pageType || pageTypes[0]
@@ -123,7 +126,8 @@ export class DesignRequest {
         await this.client.engineAPI.designOptions.retrieve(
           this.bookSize,
           imageCount || this.images.length,
-          this.imageFilteringLevel
+          this.imageFilteringLevel,
+          this.sku
         )
       )
     )
@@ -249,6 +253,7 @@ export class DesignRequest {
       title: designRequest.title,
       subtitle: designRequest.subtitle,
       design_request: bookDesignRequest,
+      sku: designRequest.sku,
       state: designRequest.state,
       user_id: designRequest.userId
     })

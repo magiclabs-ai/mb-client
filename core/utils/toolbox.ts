@@ -101,11 +101,11 @@ export function cleanJSON(obj: unknown) {
   return JSON.parse(JSON.stringify(obj))
 }
 
-export function getStyleIdBySlug(slug: string): number | undefined {
+export function getStyleIdBySlug(slug: string): string | undefined {
   for (const id  in styles) {
     const style = styles[id as unknown as keyof typeof styles]
     if (style.slug === slug) {
-      return parseInt(id)
+      return id
     }
   }
   return undefined

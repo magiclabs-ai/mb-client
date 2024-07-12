@@ -37,7 +37,7 @@ export function bookFactory(props?: BookFactoryProps) {
     design_request: {
       occasion: props?.design_request?.occasion || faker.helpers.arrayElement(occasions),
       style: props?.design_request?.style ||
-       styles[parseInt(faker.helpers.arrayElement(Object.keys(styles))) as Style].slug,
+       styles[faker.helpers.arrayElement(Object.keys(styles)) as Style].slug,
       book_size: props?.design_request?.book_size || faker.helpers.arrayElement(bookSizes),
       cover_type: props?.design_request?.cover_type || faker.helpers.arrayElement(coverTypes),
       page_type: props?.design_request?.page_type || faker.helpers.arrayElement(pageTypes),

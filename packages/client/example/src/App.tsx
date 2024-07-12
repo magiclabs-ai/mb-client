@@ -62,11 +62,12 @@ function App() {
     setIsCreatingDesignRequest(true)
     const designRequest = await client.createDesignRequest({
       occasion: 'default',
-      style: 5144,
-      bookSize: '10x10',
+      style: '519bf5f2b6734103a9a359469be4961b',
+      bookSize: '5x7',
       coverType: 'hc',
       pageType: 'sp',
       userId: 'MB-EXAMPLE',
+      sku: 'CommerceProduct_124538',
       imageDensity: 'high',
       embellishmentLevel: 'few',
       textStickerLevel: 'none'
