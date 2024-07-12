@@ -148,7 +148,6 @@ export class DesignRequest {
     } else {
       submitDesignRequestProps && this.updateDesignRequest(submitDesignRequestProps)
       this.webSocket = new WebSocket(`${this.client.webSocketHost}/?book_id=${this.parentId}`)
-      console.log('✅✅✅✅')
       await this.client.engineAPI.books.update(this.parentId, this.toBook())
       this.updateDesignRequest((await this.client.engineAPI.books.design(this.parentId)).toDesignRequestProps())
       this.getProgress()
@@ -246,7 +245,6 @@ export class DesignRequest {
     delete designRequest.client
     delete designRequest.webSocket
     const styleSlug = styles[this.style].slug
-    console.log('styleSlug 💣', styleSlug)
     const bookDesignRequest = camelCaseObjectKeysToSnakeCase(cleanJSON(designRequest)) as BookDesignRequestProps
     bookDesignRequest.style = styleSlug
     return new Book({
