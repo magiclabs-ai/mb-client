@@ -319,16 +319,8 @@ export const styles = {
   '97f70f6cdb5244a08d45772cccfa2788': {slug: 'year-of-memories-snap'}
 }
 export const bookSizes = [
-  //snapfish book sizes
-  '14x11',
-  '7x5',
-  '8x6',
   '5x7',
-  '5x5',
-  '6x8',
-  '6x4',
-  '5x6',
-  //shutterfly book sizes
+  '6x6',
   '8x8',
   '10x10',
   '12x12',

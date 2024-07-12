@@ -67,7 +67,7 @@ function App() {
       coverType: 'hc',
       pageType: 'sp',
       userId: 'MB-EXAMPLE',
-      sku: 'CommerceProduct_17249',
+      sku: 'CommerceProduct_124538',
       imageDensity: 'high',
       embellishmentLevel: 'few',
       textStickerLevel: 'none'
