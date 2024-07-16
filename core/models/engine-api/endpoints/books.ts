@@ -2,7 +2,7 @@ import {Book, BookReport, bookPropsSchema} from '../../book'
 import {EngineAPI} from '..'
 import {Format} from '@/core/data/design-request'
 import {bindThisToFunctions, handleAsyncFunction} from '@/core/utils/toolbox'
-import {bookCreationRequestSchema} from '../../galleon'
+// import {bookCreationRequestSchema} from '../../galleon'
 import {cleanJSON} from '@/core/utils/toolbox'
 
 export class BooksEndpoints {
@@ -95,7 +95,7 @@ export class BooksEndpoints {
       const res = await this.engineAPI.fetcher.call({
         path: `/v1/books/${bookId}/format/${format}`
       })
-      return bookCreationRequestSchema.parse(res)
+      return res
     })
   }
 }
