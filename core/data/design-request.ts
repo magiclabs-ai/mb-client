@@ -318,16 +318,7 @@ export const styles = {
   '03f332e3b2b947ebae73b67a9a22b6f4': {slug: 'winter-sparkle-snap'},
   '97f70f6cdb5244a08d45772cccfa2788': {slug: 'year-of-memories-snap'}
 }
-export const bookSizes = [
-  '5x7',
-  '6x6',
-  '8x8',
-  '10x10',
-  '12x12',
-  '8x11',
-  '11x8',
-  '11x14'
-] as const
+export const bookSizes = ['5x7', '6x6', '8x8', '10x10', '12x12', '8x11', '11x8', '11x14'] as const
 export const coverTypes = ['sc', 'hc', 'pl'] as const
 export const pageTypes = ['sp', 'sl', 'dl'] as const
 export const imageDensities = ['low', 'medium', 'high'] as const

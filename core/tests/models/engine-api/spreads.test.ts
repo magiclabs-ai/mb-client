@@ -1,5 +1,5 @@
 import {EngineAPI} from '@/core/models/engine-api'
-import {canvasFactory} from '../../factories/alternate-layout.factory'
+import {canvasFactory, snapCanvasFactory} from '../../factories/alternate-layout.factory'
 import {describe, expect, test} from 'vitest'
 import {fetchMocker} from '../../mocks/fetch'
 import {spreadServerFactory} from '../../factories/spread.factory'
@@ -45,6 +45,13 @@ describe('Engine API Spreads Endpoints', () => {
     const fakeAlternateLayouts = Array.from({length: 10}, () => canvasFactory())
     fetchMocker.mockResponse(JSON.stringify(fakeAlternateLayouts))
     const alternateLayouts = await engineAPI.spreads.layouts('bookId', 1)
+    expect(alternateLayouts).toEqual(fakeAlternateLayouts)
+  })
+
+  test('layouts with surfaceCategoryName', async () => {
+    const fakeAlternateLayouts = Array.from({length: 10}, () => snapCanvasFactory())
+    fetchMocker.mockResponse(JSON.stringify(fakeAlternateLayouts))
+    const alternateLayouts = await engineAPI.spreads.layouts('bookId', 1, 'cover')
     expect(alternateLayouts).toEqual(fakeAlternateLayouts)
   })
 })

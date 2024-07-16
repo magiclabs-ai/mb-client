@@ -2,8 +2,8 @@ import {EngineAPI} from '..'
 import {SpreadServer, spreadServerSchema} from '../../spread'
 import {SurfaceCategoryName} from '@/core/data/design-request'
 import {bindThisToFunctions, handleAsyncFunction} from '@/core/utils/toolbox'
-import {canvasSchema} from '@/core/models/galleon'
 import {cleanJSON} from '@/core/utils/toolbox'
+import {sflyCanvasSchema, snapCanvasSchema} from '@/core/models/galleon'
 import {z} from 'zod'
 
 export class SpreadsEndpoints {
@@ -80,7 +80,7 @@ export class SpreadsEndpoints {
           })
         }
       })
-      return z.array(canvasSchema).parse(res)
+      return z.array(surfaceCategoryName ? snapCanvasSchema : sflyCanvasSchema).parse(res)
     })
   }
 }
