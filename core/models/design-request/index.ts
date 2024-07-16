@@ -2,6 +2,7 @@ import {Book, BookDesignRequestProps} from '../book'
 import {EventContext} from '../event'
 import {
   Format,
+  SurfaceCategoryName,
   bookSizes,
   canSubmitDesignRequest,
   cancelledEventDetail,
@@ -134,9 +135,9 @@ export class DesignRequest {
     return options
   }
 
-  async getAlternateLayouts(pageNumber: number) {
+  async getAlternateLayouts(pageNumber: number, surfaceCategoryName?: SurfaceCategoryName) {
     if (this.state === 'ready') {
-      return await this.client.engineAPI.spreads.layouts(this.parentId, pageNumber)
+      return await this.client.engineAPI.spreads.layouts(this.parentId, pageNumber, surfaceCategoryName)
     } else {
       throw new Error('Design request not ready')
     }

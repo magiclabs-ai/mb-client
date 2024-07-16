@@ -348,3 +348,5 @@ export const cancelledEventDetail: DesignRequestEventDetail = {
 }
 export const formats = ['galleon', 'snapfish'] as const
 export type Format = (typeof formats)[number]
+export const surfaceCategoryNames = ['inside', 'cover'] as const
+export type SurfaceCategoryName = (typeof surfaceCategoryNames)[number]
