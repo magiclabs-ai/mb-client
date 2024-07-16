@@ -14,6 +14,13 @@ describe('Engine API Design Options Endpoints', () => {
     expect(designOptions).toStrictEqual(fakeDesignOptions)
   })
 
+  test('retrieve with sku', async () => {
+    const fakeDesignOptions = designOptionsServerFactory()
+    fetchMocker.mockResponse(JSON.stringify(fakeDesignOptions))
+    const designOptions = await engineAPI.designOptions.retrieve('10x10', 20, 'best', 'sku')
+    expect(designOptions).toStrictEqual(fakeDesignOptions)
+  })
+
   test('design options factory', async () => {
     const factory = designOptionsFactory()
     expect(designOptionsSchema.parse(factory)).toBeTruthy()

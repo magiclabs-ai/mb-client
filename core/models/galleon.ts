@@ -69,16 +69,23 @@ export const reportingDataSchema = z.object({
 })
 export type ReportingData = z.infer<typeof reportingDataSchema>
 
-export const canvasSchema = z.object({
+export const sflyCanvasSchema = z.object({
   backgroundId: z.string().nullable(),
   assets: z.array(assetSchema).optional()
 })
-export type Canvas = z.infer<typeof canvasSchema>
+export type SflyCanvas = z.infer<typeof sflyCanvasSchema>
+
+export const snapCanvasSchema = z.object({
+  surfaceNumber: z.number(),
+  surfaceData: z.record(z.any()),
+  version: z.string()
+})
+export type SnapCanvas = z.infer<typeof snapCanvasSchema>
 
 export const pageSchema = z.object({
   pageNum: z.number(),
   type: z.string(),
-  canvas: canvasSchema
+  canvas: sflyCanvasSchema
 })
 export type Page = z.infer<typeof pageSchema>
 

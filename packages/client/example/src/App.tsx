@@ -118,7 +118,7 @@ function App() {
 
   async function getAlternateLayouts() {
     console.log(currentDesignRequest)
-    console.log('designRequest.getAlternateLayouts:', await currentDesignRequest?.getAlternateLayouts(-1))
+    console.log('designRequest.getAlternateLayouts:', await currentDesignRequest?.getAlternateLayouts(0, 'cover'))
   }
 
   return (

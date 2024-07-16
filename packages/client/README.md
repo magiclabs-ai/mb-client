@@ -106,10 +106,10 @@ Once the design request is complete, retrieve it in JSON format.
 await designRequest.getJSON(format)
 ```
 
-You can get alternate layouts for a specific page.
+You can get alternate layouts for a specific page. Optionally, you can pass surfaceCategoryName if your style supports it (only Snapfish).
 
 ```ts
-await designRequest.getAlternateLayouts(-1)
+await designRequest.getAlternateLayouts(-1, 'cover' | 'inside')
 ```
 
 When a user performs a specific action, log it by calling the `logEvent` method.
