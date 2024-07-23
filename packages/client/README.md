@@ -122,14 +122,19 @@ await designRequest.logEvent('book.viewed', data)
 
 ## Usage as script
 
+For example using express convert to static route
+
+```js
+app.use('/scripts/magicbook-client', express.static(__dirname + '/node_modules/@magiclabs.ai/magicbook-client'))
+```
+
 ```html
 <!doctype html>
 <html>
   <head>
     <script
       type="text/javascript"
-      src="../node_modules/@magiclabs-ai/magicbook-client
-/index.iife.js"
+      src="/scripts/magicbook-client/index.iife.js"
     ></script>
   </head>
   <script type="text/javascript">
