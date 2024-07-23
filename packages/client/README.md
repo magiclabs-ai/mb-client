@@ -2,7 +2,7 @@
 
 # magicbook-client
 
-TypeScript package to create photo books with the Magicbook API.
+TypeScript package to create photo books with the MagicBook API.
 
 ## Installation
 
@@ -12,7 +12,7 @@ npm install @magiclabs.ai/magicbook-client
 
 ## Usage
 
-Create a Magicbook API client instance with your API key.
+Create a MagicBook API client instance with your API key.
 
 ```ts
 const client = new MagicBookClient('api-key')`
@@ -44,7 +44,7 @@ const designRequest = await client.createDesignRequest()
   (designRequest.pageType = 'sp')
 ```
 
-As images are getting ready to be handed over to Magicbook, for example when successfully uploaded, add them to the design request object.
+As images are getting ready to be handed over to MagicBook, for example when successfully uploaded, add them to the design request object.
 
 ```ts
 import {Image} from '@magiclabs.ai/magicbook-client'
@@ -70,11 +70,11 @@ const selectedImageCount = 200
 const designOptions = designRequest.getOptions(selectedImageCount)
 ```
 
-Before submitting the design request to Magicbook, register a callback to receive update events.
+Before submitting the design request to MagicBook, register a callback to receive update events.
 
 ```ts
 window.addEventListener(
-  'Magicbook.designRequestUpdated',
+  'MagicBook.designRequestUpdated',
   async((designRequestEvent: DesignRequestEvent) => {
     console.log(designRequestEvent.detail)
   }) as EventListener
@@ -120,9 +120,28 @@ await designRequest.logEvent('book.viewed', data)
 
 ---
 
+## Usage as script
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <script
+      type="text/javascript"
+      src="../node_modules/@magiclabs-ai/magicbook-client
+/index.iife.js"
+    ></script>
+  </head>
+  <script type="text/javascript">
+    const client = new MagicLabs.MagicBookClient('api-key')
+    ...
+  </script>
+</html>
+```
+
 ## Example
 
-To see the Magicbook client in action, run the following commands (make sure you created a `.env` file before building):
+To see the MagicBook client in action, run the following commands (make sure you created a `.env` file before building):
 
 ```bash
 npm run build
