@@ -11,6 +11,7 @@ export type ImageFactoryProps = {
   cameraMake?: string
   cameraModel?: string
   filename?: string
+  metadata?: Record<string, unknown>
 }
 
 export function imageFactory(props?: ImageFactoryProps): Image {
@@ -25,7 +26,8 @@ export function imageFactory(props?: ImageFactoryProps): Image {
     captureTime: props?.captureTime || faker.date.past().toISOString(),
     cameraMake: props?.cameraMake,
     cameraModel: props?.cameraModel,
-    filename: props?.filename || faker.system.commonFileName('.jpg')
+    filename: props?.filename || faker.system.commonFileName('.jpg'),
+    metadata: props?.metadata
   }
 }
 

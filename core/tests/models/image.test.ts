@@ -14,7 +14,8 @@ describe('Image', () => {
       captureTime: image.taken_at,
       cameraMake: image.camera_make,
       cameraModel: image.camera,
-      filename: image.filename
+      filename: image.filename,
+      metadata: image.metadata
     })
   })
 })

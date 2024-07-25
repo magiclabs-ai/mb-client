@@ -13,6 +13,7 @@ export type Image = {
   cameraMake?: string
   cameraModel?: string
   filename: string
+  metadata?: Record<string, unknown>
 }
 
 export class Images {
@@ -21,8 +22,12 @@ export class Images {
   length: number
   designRequestState: State
 
-  // eslint-disable-next-line no-unused-vars
-  constructor(private readonly client: MagicBookClient, parentId: string, designRequestState: State) {
+  constructor(
+    // eslint-disable-next-line no-unused-vars
+    private readonly client: MagicBookClient,
+    parentId: string,
+    designRequestState: State
+  ) {
     this.parentId = parentId
     this.images = []
     this.length = this.images.length
@@ -40,7 +45,6 @@ export class Images {
         resolve(this.length)
       })
     }
-
   }
 }
 
@@ -54,7 +58,8 @@ export const imageServerSchema = z.object({
   taken_at: z.string(),
   camera_make: z.string().optional(),
   camera: z.string().optional(),
-  filename: z.string()
+  filename: z.string(),
+  metadata: z.record(z.unknown()).optional()
 })
 
 export class ImageServer {
@@ -67,6 +72,7 @@ export class ImageServer {
   camera_make?: string
   camera?: string
   filename: string
+  metadata?: Record<string, unknown>
 
   constructor(image: Image) {
     this.handle = image.handle
@@ -78,6 +84,7 @@ export class ImageServer {
     this.camera_make = image.cameraMake
     this.camera = image.cameraModel
     this.filename = image.filename
+    this.metadata = image.metadata
   }
 }
 
@@ -91,6 +98,7 @@ export function imageServerToImage(imageServer: ImageServer): Image {
     captureTime: imageServer.taken_at,
     cameraMake: imageServer.camera_make,
     cameraModel: imageServer.camera,
-    filename: imageServer.filename
+    filename: imageServer.filename,
+    metadata: imageServer.metadata
   }
 }
