@@ -53,6 +53,12 @@ const image: Image = {...}
 await designRequest.images.add(image)
 ```
 
+To remove an image, you can invoke the delete function as follows:
+
+```ts
+await designRequest.images.delete(imageId)
+```
+
 This would typically be done in an event handler connected to the image manager.
 
 ```ts

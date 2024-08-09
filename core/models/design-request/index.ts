@@ -240,7 +240,7 @@ export class DesignRequest {
   private toBook() {
     const designRequest = {
       ...this,
-      images: this.images['images']
+      images: this.images.list
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as Record<string, any>
     delete designRequest.client

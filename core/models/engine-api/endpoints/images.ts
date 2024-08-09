@@ -22,7 +22,7 @@ export class ImagesEndpoints {
   retrieve(imageId: string, bookId: string) {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call({
-        path: `/v1/images/${imageId}/book/${bookId}/`
+        path: `/v1/images/${imageId}/book/${bookId}`
       })
       return imageServerSchema.parse(res)
     })
@@ -31,7 +31,7 @@ export class ImagesEndpoints {
   update(imageId: string, bookId: string, image: ImageServer) {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call({
-        path: `/v1/images/${imageId}/book/${bookId}/`,
+        path: `/v1/images/${imageId}/book/${bookId}`,
         options: {
           method: 'PUT',
           body: cleanJSON(image)
@@ -44,7 +44,7 @@ export class ImagesEndpoints {
   delete(imageId: string, bookId: string) {
     return handleAsyncFunction(async () => {
       await this.engineAPI.fetcher.call({
-        path: `/v1/images/${imageId}/book/${bookId}/`,
+        path: `/v1/images/${imageId}/book/${bookId}`,
         options: {
           method: 'DELETE'
         }

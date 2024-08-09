@@ -4,7 +4,7 @@ import {
   DesignRequestEventDetail,
   DesignRequestProps
 } from '@/core/models/design-request'
-import {Image, ImageServer, Images} from '@/core/models/design-request/image'
+import {Image, ImageServer, Images, imageServerToImage} from '@/core/models/design-request/image'
 import {MagicBookClient} from '@/core/models/client'
 import {SpyInstance, beforeEach, describe, expect, test, vi} from 'vitest'
 import {WebSocketMock} from '@/core/tests/mocks/websocket'
@@ -27,6 +27,7 @@ import {eventFactory} from '../factories/event.factory'
 import {faker} from '@faker-js/faker'
 import {fetchMocker} from '@/core/tests/mocks/fetch'
 import {galleonFactory} from '@/core/tests/factories/galleon.factory'
+import {imageServerFactory} from '@/core/tests/factories/image.factory'
 import {snakeCaseObjectKeysToCamelCase} from '@/core/utils/toolbox'
 
 describe('Design Request', async () => {
@@ -87,8 +88,9 @@ describe('Design Request', async () => {
       cameraModel: 'cameraModel',
       filename: 'filename'
     }
-    fetchMocker.mockResponse(JSON.stringify(new ImageServer(image)))
-    expect(await designRequest.images.add(image)).toStrictEqual(1)
+    const fakeServerImage = imageServerFactory()
+    fetchMocker.mockResponse(JSON.stringify(fakeServerImage))
+    expect(await designRequest.images.add(image)).toStrictEqual(imageServerToImage(fakeServerImage))
   })
 
   test.fails('addImage when design request is creating', async () => {
@@ -106,6 +108,46 @@ describe('Design Request', async () => {
     }
     expect(await designRequest.images.add(image)).toThrowError(
       'You need to wait for the current design request to be ready before adding new images.'
+    )
+  })
+
+  test('deleteImage', async () => {
+    const designRequest = await createDesignRequest()
+    const image: Image = {
+      handle: 'imageId',
+      url: 'imageURL',
+      width: 1000,
+      height: 500,
+      rotation: 0,
+      captureTime: '2021-01-01T00:00:00.000Z',
+      cameraMake: 'cameraMake',
+      cameraModel: 'cameraModel',
+      filename: 'filename'
+    }
+    const fakeServerImage = imageServerFactory()
+    fetchMocker.mockResponse(JSON.stringify(fakeServerImage))
+    expect(await designRequest.images.add(image)).toStrictEqual(imageServerToImage(fakeServerImage))
+
+    const deleteImage = await designRequest.images.delete(image.handle)
+    expect(deleteImage).toStrictEqual(0)
+  })
+
+  test.fails('deleteImage when design request is creating', async () => {
+    const designRequest = await createDesignRequest({state: 'layouting'})
+    const image: Image = {
+      id: 'imageId',
+      handle: 'imageId',
+      url: 'imageURL',
+      width: 1000,
+      height: 500,
+      rotation: 0,
+      captureTime: '2021-01-01T00:00:00.000Z',
+      cameraMake: 'cameraMake',
+      cameraModel: 'cameraModel',
+      filename: 'filename'
+    }
+    expect(await designRequest.images.delete(image.id as string)).toThrowError(
+      'You need to wait for the current design request to be ready before deleting images.'
     )
   })
 
