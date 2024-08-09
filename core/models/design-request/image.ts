@@ -4,6 +4,7 @@ import {canSubmitDesignRequest} from '@/core/data/design-request'
 import {z} from 'zod'
 
 export type Image = {
+  id?: string
   handle: string
   url: string
   width: number
@@ -18,7 +19,7 @@ export type Image = {
 
 export class Images {
   private parentId: string
-  private images: Array<Image>
+  list: Array<Image>
   length: number
   designRequestState: State
 
@@ -29,18 +30,33 @@ export class Images {
     designRequestState: State
   ) {
     this.parentId = parentId
-    this.images = []
-    this.length = this.images.length
+    this.list = []
+    this.length = this.list.length
     this.designRequestState = designRequestState
   }
 
-  async add(image: Image): Promise<number> {
+  async add(image: Image): Promise<Image> {
     if (!canSubmitDesignRequest(this.designRequestState)) {
       throw new Error('You need to wait for the current design request to be ready before adding new images.')
     } else {
-      this.images.push(image)
-      this.length = this.images.length
-      await this.client.engineAPI.images.addToBook(this.parentId, new ImageServer(image))
+      // this.list.push(image)
+      const serverImage = await this.client.engineAPI.images.addToBook(this.parentId, new ImageServer(image))
+      const img = imageServerToImage(serverImage)
+      this.list.push(img)
+      this.length = this.list.length
+      return new Promise<Image>((resolve) => {
+        resolve(img)
+      })
+    }
+  }
+
+  async delete(imageId: string): Promise<number> {
+    if (!canSubmitDesignRequest(this.designRequestState)) {
+      throw new Error('You need to wait for the current design request to be ready before deleting images.')
+    } else {
+      await this.client.engineAPI.images.delete(imageId, this.parentId)
+      this.list.splice(this.list.findIndex((image) => image.handle === imageId), 1)
+      this.length = this.list.length
       return new Promise<number>((resolve) => {
         resolve(this.length)
       })
@@ -63,6 +79,7 @@ export const imageServerSchema = z.object({
 })
 
 export class ImageServer {
+  id?: string
   handle: string
   url: string
   width: number
@@ -75,6 +92,7 @@ export class ImageServer {
   metadata?: Record<string, unknown>
 
   constructor(image: Image) {
+    this.id = image.id
     this.handle = image.handle
     this.url = image.url
     this.width = image.width
@@ -90,6 +108,7 @@ export class ImageServer {
 
 export function imageServerToImage(imageServer: ImageServer): Image {
   return {
+    id: imageServer.id,
     handle: imageServer.handle,
     url: imageServer.url,
     width: imageServer.width,
