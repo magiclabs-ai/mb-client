@@ -4,7 +4,7 @@ import {
   DesignRequestEventDetail,
   DesignRequestProps
 } from '@/core/models/design-request'
-import {Image, ImageServer, Images, imageServerToImage} from '@/core/models/design-request/image'
+import {Image, Images, imageServerToImage} from '@/core/models/design-request/image'
 import {MagicBookClient} from '@/core/models/client'
 import {SpyInstance, beforeEach, describe, expect, test, vi} from 'vitest'
 import {WebSocketMock} from '@/core/tests/mocks/websocket'
