@@ -102,13 +102,13 @@ export function cleanJSON(obj: unknown) {
 }
 
 export function getStyleIdBySlug(slug: string): string | undefined {
-  for (const id  in styles) {
+  for (const id in styles) {
     const style = styles[id as unknown as keyof typeof styles]
     if (style.slug === slug) {
       return id
     }
   }
-  return undefined
+  return slug
 }
 
 export function chunkArray(array: Array<unknown>, chunkSize: number) {

@@ -67,9 +67,9 @@ describe('Toolbox', () => {
     const res = formatReturnJSON({hello: 'world'})
     expect(res).toBe('{\n  "hello": "world"\n}')
   })
-  test('getStyleIdBySlug to return undefined', async () => {
+  test('getStyleIdBySlug to return slug', async () => {
     const res = getStyleIdBySlug('test')
-    expect(res).toBeUndefined()
+    expect(res).toBe('test')
   })
   test('camelCaseToWords', async () => {
     const res = camelCaseToWords('helloWorld')
