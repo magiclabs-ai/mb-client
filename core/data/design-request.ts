@@ -24,7 +24,7 @@ export const statesToCloseWS: ReadonlyArray<(typeof states)[number]> = [
 ] as const
 export const statesToReport: ReadonlyArray<(typeof states)[number]> = ['error', 'timeout'] as const
 export const isDesignRequestSubmitted = (state: string) => !['new', 'ingesting'].includes(state)
-export const canSubmitDesignRequest = (state: string) => ['new', 'ingesting', 'ready'].includes(state)
+export const canSubmitDesignRequest = (state: string) => ['new', 'ingesting', 'ready', 'error'].includes(state)
 export const occasions = [
   'baby',
   'birthday',
