@@ -107,7 +107,7 @@ describe('Design Request', async () => {
       filename: 'filename'
     }
     expect(await designRequest.images.add(image)).toThrowError(
-      'You need to wait for the current design request to be ready before adding new images.'
+      'You need to wait for the current design request to be completed before adding new images.'
     )
   })
 
@@ -147,7 +147,7 @@ describe('Design Request', async () => {
       filename: 'filename'
     }
     expect(await designRequest.images.delete(image.id as string)).toThrowError(
-      'You need to wait for the current design request to be ready before deleting images.'
+      'You need to wait for the current design request to be completed before deleting images.'
     )
   })
 
@@ -193,7 +193,7 @@ describe('Design Request', async () => {
     const designRequest = await createDesignRequest({state: 'submitted'})
     const designRequestJSON = await designRequest.submit()
     expect(designRequestJSON).toThrowError(
-      'You need to wait for the current design request to be ready before submitting a new one'
+      'You need to wait for the current design request to be completed before submitting a new one.'
     )
   })
 

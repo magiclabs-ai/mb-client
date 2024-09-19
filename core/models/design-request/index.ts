@@ -245,9 +245,9 @@ export class DesignRequest {
     } as Record<string, any>
     delete designRequest.client
     delete designRequest.webSocket
-    const styleSlug = styles[this.style].slug
+    const styleSlug = styles[this.style]?.slug || this.style
     const bookDesignRequest = camelCaseObjectKeysToSnakeCase(cleanJSON(designRequest)) as BookDesignRequestProps
-    bookDesignRequest.style = styleSlug
+    bookDesignRequest.style = styleSlug as string
     return new Book({
       id: designRequest.parentId,
       guid: designRequest.guid,

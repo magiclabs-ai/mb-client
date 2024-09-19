@@ -37,7 +37,7 @@ export class Images {
 
   async add(image: Image): Promise<Image> {
     if (!canSubmitDesignRequest(this.designRequestState)) {
-      throw new Error('You need to wait for the current design request to be ready before adding new images.')
+      throw new Error('You need to wait for the current design request to be completed before adding new images.')
     } else {
       // this.list.push(image)
       const serverImage = await this.client.engineAPI.images.addToBook(this.parentId, new ImageServer(image))
@@ -52,7 +52,7 @@ export class Images {
 
   async delete(imageId: string): Promise<number> {
     if (!canSubmitDesignRequest(this.designRequestState)) {
-      throw new Error('You need to wait for the current design request to be ready before deleting images.')
+      throw new Error('You need to wait for the current design request to be completed before deleting images.')
     } else {
       await this.client.engineAPI.images.delete(imageId, this.parentId)
       this.list.splice(this.list.findIndex((image) => image.handle === imageId), 1)
