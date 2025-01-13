@@ -42,6 +42,15 @@ export class SpreadsEndpoints {
       return spreadServerSchema.parse(res)
     })
   }
+ 
+  render(spreadId: string, bookId: string, size = 512) {
+    return handleAsyncFunction(async () => {
+      const res = await this.engineAPI.fetcher.call({
+        path: `/v1/spreads/${spreadId}/book/${bookId}/render/${size}`
+      })
+      return spreadServerSchema.parse(res)
+    })
+  }
 
   update(spreadId: string, bookId: string, spread: SpreadServer) {
     return handleAsyncFunction(async () => {
