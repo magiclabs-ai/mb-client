@@ -48,7 +48,7 @@ export class SpreadsEndpoints {
       const res = await this.engineAPI.fetcher.call({
         path: `/v1/spreads/${spreadId}/book/${bookId}/render/${size}`
       })
-      return spreadServerSchema.parse(res)
+      return res
     })
   }
 
