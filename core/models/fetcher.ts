@@ -34,7 +34,11 @@ export class Fetcher {
         try {
           return await res.json()
         } catch (error) {
-          return {}
+          try {
+            return await res.text()
+          } catch (e) {
+            return {}
+          }
         }
       } else {
         let detail = res.statusText
