@@ -21,7 +21,7 @@ export class SpreadsEndpoints {
     })
   }
 
-  create(bookId: string, spread: SpreadServer) {
+  create(bookId: string, spread: Partial<SpreadServer>) {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call({
         path: `/v1/spreads/book/${bookId}`,
@@ -52,7 +52,7 @@ export class SpreadsEndpoints {
     })
   }
 
-  update(spreadId: string, bookId: string, spread: SpreadServer) {
+  update(spreadId: string, bookId: string, spread: Partial<SpreadServer>) {
     return handleAsyncFunction(async () => {
       const res = await this.engineAPI.fetcher.call({
         path: `/v1/spreads/${spreadId}/book/${bookId}`,

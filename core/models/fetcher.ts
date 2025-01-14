@@ -32,7 +32,7 @@ export class Fetcher {
       const res = await fetch(this.cleanUrl((new URL(props.path, this.baseUrl)).href), options)
       if (res.status >= 200 && res.status < 300) {
         try {
-          return await res.json()
+          return await res.clone().json()
         } catch (error) {
           try {
             return await res.text()

@@ -1,12 +1,12 @@
 import {z} from 'zod'
 
 export const spreadServerSchema = z.object({
-  id: z.string().optional(),
+  id: z.string(),
   book_id: z.string(),
   state: z.string(),
   spread_type: z.string(),
-  width: z.number().optional(),
-  height: z.number().optional(),
+  width: z.number(),
+  height: z.number(),
   sequence: z.number(),
   wells: z.array(z.unknown()),
   background: z.unknown(),
@@ -19,12 +19,12 @@ export const spreadServerSchema = z.object({
 export type SpreadServer = z.infer<typeof spreadServerSchema>
 
 export const spreadSchema = z.object({
-  id: z.string().optional(),
+  id: z.string(),
   bookId: z.string(),
   state: z.string(),
   spreadType: z.string(),
-  width: z.number().optional(),
-  height: z.number().optional(),
+  width: z.number(),
+  height: z.number(),
   sequence: z.number(),
   wells: z.array(z.unknown()),
   background: z.unknown(),
