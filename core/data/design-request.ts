@@ -1470,7 +1470,8 @@ export const styles = {
   '5771ff862c394c9a8fcf4237a267651c': {slug: 'studio-dark-snap'},
   '990e71b3b45d4baaa7236328c64c8364': {slug: 'our-family-snap'},
   '2c5700f2b32c49d186b85e57449cdda6': {slug: 'favourite-things-snap'},
-  e276151076d94d279d0d0b3608e3fba7: {slug: 'my-family-snap'}
+  e276151076d94d279d0d0b3608e3fba7: {slug: 'my-family-snap'},
+  'cbec6602c5474f8fafc1980fb068db2a': {slug: 'graphic-love-snap'}
 }
 export const bookSizes = [
   '4.5x4',
