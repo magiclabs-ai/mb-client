@@ -1471,7 +1471,25 @@ export const styles = {
   '990e71b3b45d4baaa7236328c64c8364': {slug: 'our-family-snap'},
   '2c5700f2b32c49d186b85e57449cdda6': {slug: 'favourite-things-snap'},
   e276151076d94d279d0d0b3608e3fba7: {slug: 'my-family-snap'},
-  'cbec6602c5474f8fafc1980fb068db2a': {slug: 'graphic-love-snap'}
+  'cbec6602c5474f8fafc1980fb068db2a': {slug: 'graphic-love-snap'},
+  'c11db86d4af6468c82c03e63ccee03d2': {slug: 'graphic-love-snap'},
+  '01af1dbfd31448dd8afdb956c5369be3': {slug: 'graphic-love-snap'},
+  'ac083e4b0ca44af9bc694afd0fdec9b1': {slug: 'graphic-love-snap'},
+  '9914c7e7a6974019af2f28841b271be5': {slug: 'graphic-love-snap'},
+  'b6d4b71df3f24f24bb5f7f30ab97e593': {slug: 'graphic-love-snap'},
+  'f8b67e571005409791ff3faf64aa4772': {slug: 'graphic-love-snap'},
+  'b82386a8a64d41b0be57bccbf667121f': {slug: 'graphic-love-snap'},
+  'd3ba2657e3524edcaac5cb4d000632c6': {slug: 'graphic-love-snap'},
+  'b3aed2593b944db78bf5e72465d31b18': {slug: 'graphic-love-snap'},
+  'cf600f86adcb494d9fbba02799aed443': {slug: 'graphic-love-snap'},
+  'f39284122e594e46ae7a4fda586567ac': {slug: 'graphic-love-snap'},
+  '68a5490447e9432ca89d3e95d363e42c': {slug: 'graphic-love-snap'},
+  '5ca12c9b2a21496391b8265121361ae1': {slug: 'graphic-love-snap'},
+  '117aa84d8f464ee6933430cef5170566': {slug: 'graphic-love-snap'},
+  'fc8152aed8414e43b511dabd3775dc3b': {slug: 'graphic-love-snap'},
+  'ae5cf32acc7544269a0f6a866c484d17': {slug: 'graphic-love-snap'},
+  '5c293ff9fe6148ed836680b9dcf5eabd': {slug: 'graphic-love-snap'},
+  'b3859e5367314872a95d088e8557aa98': {slug: 'graphic-love-snap'}
 }
 export const bookSizes = [
   '4.5x4',
