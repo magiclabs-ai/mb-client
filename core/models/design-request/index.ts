@@ -101,7 +101,10 @@ export class DesignRequest {
     this.title = designRequestProps?.title || ''
     this.subtitle = designRequestProps?.subtitle
     this.occasion = designRequestProps?.occasion || occasions[0]
-    this.style = designRequestProps?.style || (designRequestProps?.sku ? 'eed1dc1510934cd3aa6ac9395d9c2d20' as Style : (parseInt(Object.keys(styles)[0]) as Style))
+    this.style = designRequestProps?.style ||
+      (designRequestProps?.sku
+        ? 'eed1dc1510934cd3aa6ac9395d9c2d20' as Style
+        : (parseInt(Object.keys(styles)[0]) as Style))
     this.sku = designRequestProps?.sku
     this.bookSize = designRequestProps?.bookSize || bookSizes[0]
     this.coverType = designRequestProps?.coverType || coverTypes[0]
