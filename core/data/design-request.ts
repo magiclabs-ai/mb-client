@@ -220,6 +220,12 @@ export const styles = {
   6166: {slug: 'disney-mickey-and-friends-sfly'},
   6169: {slug: 'through-the-years-sfly'},
   6172: {slug: 'modern-editorial-moments-sfly'},
+  6173: {slug: 'disneys-happily-ever-after-sfly'},
+  6176: {slug: 'disney-mickey-and-friends-christmas-sfly'},
+  6180: {slug: 'illustrated-with-love-sfly'},
+  6177: {slug: 'timeless-love-story-sfly'},
+  6178: {slug: 'tiny-moments-sfly'},
+  6179: {slug: 'travel-archives-sfly'},
   //snapfish styles
   be5f79d7525f4717844db77a2f1b5e50: {slug: 'abstract-baby-first-year-snap'},
   '519bf5f2b6734103a9a359469be4961b': {slug: 'album-snap'},
