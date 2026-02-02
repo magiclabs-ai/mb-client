@@ -226,8 +226,8 @@ export const styles = {
   6178: {slug: 'tiny-moments-sfly'},
   6179: {slug: 'travel-archives-sfly'},
   6180: {slug: 'illustrated-with-love-sfly'},
-  6183: { slug: 'modern-school-yearbook-sfly' },
-  6186: { slug: 'professional-portfolio-sfly' },
+  6183: {slug: 'modern-school-yearbook-sfly'},
+  6186: {slug: 'professional-portfolio-sfly'},
   //snapfish styles
   be5f79d7525f4717844db77a2f1b5e50: {slug: 'abstract-baby-first-year-snap'},
   '519bf5f2b6734103a9a359469be4961b': {slug: 'album-snap'},
